@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>OpenBar wizard</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  html,body{height:100%;overflow:hidden;background:#05070a;display:flex;align-items:center;justify-content:center;}
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .cap{color:#6b7682;font-size:14px;font-weight:600;}
+  .bezel{padding:14px;background:#04060a;border:1px solid #161d27;border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.6);}
+  .screen{position:relative;width:960px;height:544px;border-radius:10px;overflow:hidden;
+    background:radial-gradient(130% 100% at 12% 0%, #121823 0%, #0a0e14 55%, #05080c 100%);color:#eef3f9;}
+  .muted{color:#7e8a98;}.grn{color:#39d98a;}.amb{color:#ff8a3d;}
+  /* header */
+  .hd{position:absolute;top:0;left:0;right:0;height:62px;display:flex;align-items:center;padding:0 26px;gap:14px;border-bottom:1px solid rgba(255,255,255,.06);}
+  .hd .chev{color:#7e8a98;font-size:30px;font-weight:700;}
+  .hd .t{font-size:24px;font-weight:800;}.hd .t span{color:#7e8a98;font-weight:600;}
+  .hd .step{margin-left:auto;color:#7e8a98;font-size:19px;font-weight:700;}
+  .prog{position:absolute;top:62px;left:0;right:0;height:4px;background:#10151c;}
+  .prog i{display:block;height:100%;width:69%;background:linear-gradient(90deg,#ff8a3d,#ffb27a);}
+  /* body */
+  .body{position:absolute;top:66px;left:0;right:0;bottom:64px;display:flex;}
+  .instr{width:560px;padding:26px 28px;}
+  .instr h2{font-size:38px;font-weight:800;letter-spacing:-.5px;}
+  .instr p{color:#c3cdd9;font-size:21px;line-height:1.5;margin-top:14px;}
+  .chips{display:flex;gap:14px;margin-top:28px;}
+  .chip{padding:14px 20px;border-radius:12px;border:1px solid #232c38;background:#11161d;font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px;}
+  .chip.rev{border-color:#ff8a3d;color:#ffb27a;background:rgba(255,138,61,.10);}
+  /* swash visual */
+  .vis{flex:1;border-left:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;}
+  .swash{position:relative;width:240px;height:150px;}
+  .ring{position:absolute;inset:40px 0;border:4px solid #3a4756;border-radius:50%;transform:rotateX(60deg);}
+  .srv{position:absolute;width:26px;height:26px;border-radius:50%;background:#39d98a;box-shadow:0 0 14px rgba(57,217,138,.5);}
+  .s1{left:107px;top:0;}.s2{left:8px;bottom:8px;background:#ff8a3d;box-shadow:0 0 16px #ff8a3d;}.s3{right:8px;bottom:8px;}
+  .vis .hint{color:#7e8a98;font-size:17px;font-weight:600;}
+  /* footer */
+  .ft{position:absolute;bottom:0;left:0;right:0;height:64px;display:flex;align-items:center;padding:0 26px;gap:18px;border-top:1px solid rgba(255,255,255,.06);background:#0b1017;}
+  .safe{display:flex;align-items:center;gap:10px;color:#ff5a5f;font-size:19px;font-weight:800;}
+  .safe .d{width:11px;height:11px;border-radius:50%;background:#ff5a5f;box-shadow:0 0 12px #ff5a5f;}
+  .mode{color:#7e8a98;font-size:18px;font-weight:700;display:flex;align-items:center;gap:12px;}
+  .mode .pro{color:#ffb27a;padding:7px 14px;border:1px solid #3a2a1c;border-radius:999px;}
+  .next{margin-left:auto;background:linear-gradient(180deg,#39d98a,#23b573);color:#06281a;font-weight:800;font-size:22px;padding:14px 30px;border-radius:14px;display:flex;align-items:center;gap:10px;}
+</style></head>
+<body><div class="wrap">
+  <div class="cap">OpenBar — New Heli Setup wizard (verify-gated) · 480×272</div>
+  <div class="bezel"><div class="screen">
+    <div class="hd"><span class="chev">‹</span><div class="t">New Heli · <span>Swashplate</span></div><div class="step">STEP 9 / 13</div></div>
+    <div class="prog"><i></i></div>
+    <div class="body">
+      <div class="instr">
+        <h2>Check swash direction</h2>
+        <p>Raise the collective stick. The swashplate should rise <b>evenly and upward</b>.</p>
+        <p>If a servo moves the wrong way, tap it to reverse.</p>
+        <div class="chips">
+          <div class="chip">CH1 <span class="grn">▲</span></div>
+          <div class="chip rev">CH2 ▼ reversed</div>
+          <div class="chip">CH3 <span class="grn">▲</span></div>
+        </div>
+      </div>
+      <div class="vis">
+        <div class="swash"><div class="ring"></div><div class="srv s1"></div><div class="srv s2"></div><div class="srv s3"></div></div>
+        <div class="hint">tap a servo to reverse</div>
+      </div>
+    </div>
+    <div class="ft">
+      <div class="safe"><span class="d"></span>MOTOR SAFE</div>
+      <div class="mode">BASIC <span class="pro">hold for Pro ▸</span></div>
+      <div class="next">Looks right ✓</div>
+    </div>
+  </div></div>
+</div>
+<script>
+  function fit(){var d=document.querySelector('.bezel');d.style.transform='scale(1)';var r=d.getBoundingClientRect();
+    var s=Math.min((innerWidth*.96)/r.width,(innerHeight*.9)/r.height);d.style.transform='scale('+s+')';d.style.transformOrigin='center';}
+  fit();addEventListener('resize',fit);
+</script>
+</body></html>
