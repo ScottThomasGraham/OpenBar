@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Evora flight v5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f4f7fb; --dim:#aeb8c4; --muted:#6f7c89;
+    --amber:#ff9242; --amber-soft:#ffb274; --green:#3fe0a0; --cyan:#56c7e6;
+    --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#04050a;display:flex;align-items:center;justify-content:center;
+    font-family:"Barlow Semi Condensed",sans-serif;}
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .cap{color:#5a6571;font-size:14px;font-weight:600;letter-spacing:.4px;}
+  .bezel{padding:16px;background:linear-gradient(180deg,#0a0c12,#05070b);border:1px solid #1b2330;border-radius:24px;
+    box-shadow:0 30px 80px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.04);}
+  .screen{position:relative;width:960px;height:544px;border-radius:12px;overflow:hidden;color:var(--ink);
+    background:
+      radial-gradient(120% 120% at 12% -10%, #16202e 0%, #0b111a 42%, #06090f 100%);}
+  /* faint instrument grid + vignette */
+  .screen::before{content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:40px 40px;mask:radial-gradient(120% 90% at 30% 30%,#000 30%,transparent 80%);}
+  .screen::after{content:"";position:absolute;inset:0;pointer-events:none;
+    box-shadow:inset 0 0 120px 20px rgba(0,0,0,.55);}
+
+  .tabnum{font-variant-numeric:tabular-nums;}
+
+  /* ---------- top status bar ---------- */
+  .top{position:absolute;top:0;left:0;right:0;height:62px;display:flex;align-items:center;gap:20px;padding:0 30px;
+    border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.025),transparent);}
+  .brand{display:flex;align-items:center;gap:11px;}
+  .brand .dot{width:13px;height:13px;border-radius:50%;background:var(--amber);box-shadow:0 0 14px var(--amber);}
+  .minidog{height:21px;width:auto;fill:var(--amber);filter:drop-shadow(0 0 8px rgba(255,146,66,.6));}
+  .brand b{font-family:"Rajdhani";font-weight:700;font-size:25px;letter-spacing:.5px;}
+  .model{color:var(--muted);font-size:18px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}
+  .sp{flex:1;}
+  .chip{display:flex;align-items:center;gap:8px;font-weight:600;font-size:18px;letter-spacing:.5px;padding:6px 14px;border-radius:999px;}
+  .chip .d{width:8px;height:8px;border-radius:50%;}
+  .chip.bank{color:var(--amber-soft);background:rgba(255,146,66,.12);border:1px solid rgba(255,146,66,.3);}
+  .chip.bank .d{background:var(--amber);box-shadow:0 0 8px var(--amber);}
+  .chip.armed{color:var(--green);} .chip.armed .d{background:var(--green);box-shadow:0 0 8px var(--green);}
+  .stat{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:20px;font-weight:600;}
+  .stat svg{width:22px;height:22px;color:var(--green);}
+  .clock{font-family:"Rajdhani";font-weight:600;font-size:22px;color:var(--muted);}
+
+  /* ---------- left: circular headspeed gauge ---------- */
+  .gauge{position:absolute;left:34px;top:96px;width:360px;height:360px;}
+  .gauge svg{position:absolute;inset:0;}
+  .gv{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .gv .lbl{font-size:18px;font-weight:600;letter-spacing:6px;color:var(--muted);margin-bottom:2px;}
+  .gv .num{font-family:"Rajdhani";font-weight:700;font-size:128px;line-height:.8;letter-spacing:-1px;
+    background:linear-gradient(180deg,#ffffff,#bcc8d6);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .gv .unit{font-size:22px;font-weight:600;letter-spacing:5px;color:var(--muted);margin-top:6px;}
+  .gv .gov{display:flex;align-items:center;gap:8px;margin-top:16px;color:var(--green);font-size:17px;font-weight:600;letter-spacing:2px;}
+  .gv .gov .d{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+
+  /* ---------- right column ---------- */
+  .right{position:absolute;right:30px;top:96px;width:470px;display:flex;flex-direction:column;gap:16px;}
+  .card{background:linear-gradient(165deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+    border:1px solid var(--line);border-radius:18px;padding:18px 20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
+  .batt .hd{display:flex;justify-content:space-between;align-items:baseline;}
+  .batt .hd .k{font-size:17px;font-weight:600;letter-spacing:3px;color:var(--muted);}
+  .batt .hd .cells{font-family:"Rajdhani";font-weight:600;font-size:20px;color:var(--green);letter-spacing:.5px;}
+  .batt .big{display:flex;align-items:baseline;gap:8px;margin-top:4px;}
+  .batt .big .p{font-family:"Rajdhani";font-weight:700;font-size:96px;line-height:.85;letter-spacing:-1px;
+    background:linear-gradient(180deg,#eafff6,#3fe0a0);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .batt .big .pct{font-family:"Rajdhani";font-weight:700;font-size:34px;color:var(--green);}
+  .batt .big .v{margin-left:auto;text-align:right;}
+  .batt .big .v .vv{font-family:"Rajdhani";font-weight:600;font-size:30px;}
+  .batt .big .v .vs{font-size:15px;color:var(--muted);font-weight:600;letter-spacing:1px;}
+  .bar{height:14px;border-radius:7px;background:rgba(255,255,255,.06);margin-top:16px;overflow:hidden;position:relative;}
+  .bar i{position:absolute;inset:0;width:72%;border-radius:7px;background:linear-gradient(90deg,#2bbf86,#3fe0a0);
+    box-shadow:0 0 16px rgba(63,224,160,.55);}
+  .batt .sub{display:flex;justify-content:space-between;margin-top:13px;color:var(--muted);font-size:16px;font-weight:600;}
+  .batt .sub b{color:var(--dim);font-family:"Rajdhani";font-weight:600;}
+  /* mini stats row */
+  .mini{display:flex;gap:12px;}
+  .m{flex:1;background:linear-gradient(165deg,rgba(255,255,255,.05),rgba(255,255,255,.012));border:1px solid var(--line);
+    border-radius:14px;padding:12px 14px;}
+  .m .k{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;letter-spacing:1.5px;color:var(--muted);}
+  .m .k svg{width:16px;height:16px;}
+  .m .v{font-family:"Rajdhani";font-weight:600;font-size:32px;margin-top:4px;}
+  .m .v small{font-size:16px;color:var(--muted);font-weight:600;}
+  .flt{display:flex;align-items:baseline;justify-content:space-between;}
+  .flt .k{font-size:15px;font-weight:600;letter-spacing:3px;color:var(--muted);}
+  .flt .v{font-family:"Rajdhani";font-weight:700;font-size:40px;letter-spacing:1px;}
+</style></head>
+<body><div class="wrap">
+  <div class="cap">Evora — flight home v5 · "aerospace instrument" · 480×272</div>
+  <div class="bezel"><div class="screen">
+
+    <div class="top">
+      <svg width="0" height="0" style="position:absolute"><defs>
+        <path id="dogpath" d="M 790.741 302.649 C 797.255 303.686 799.925 307.237 802.911 312.909 C 812.889 331.862 816.733 353.614 822.525 374.059 C 826.751 388.978 831.338 403.895 834.953 418.913 C 828.562 416.501 824.603 415.309 817.977 413.587 C 826.15 418.586 842.662 427.189 851.382 430.396 C 865.141 418.719 944.413 342.778 959.651 349.356 C 966.838 357.3 966.008 377.248 966.147 387.788 C 966.669 427.538 964.016 508.855 935.085 537.986 C 964.215 591.91 977.933 647.813 992.133 707.122 C 994.98 719.012 1003.09 771.122 1007.25 778.459 C 1018.17 797.701 1042.15 827.008 1054.84 847.13 C 1067.24 866.808 1074.31 889.124 1087.52 907.796 C 1100.13 925.614 1115.61 942.978 1129.69 959.899 C 1151.76 986.403 1174.2 1012.18 1194.63 1040.2 C 1273.76 1148.71 1338.61 1282.1 1363.87 1414.31 C 1369.02 1441.29 1370.11 1468.71 1370.07 1495.68 C 1405.44 1526.06 1473.19 1528.5 1519.63 1538.83 C 1562.13 1548.28 1629.26 1561.33 1654.86 1602.86 C 1660.8 1612.49 1646.65 1614.41 1645.37 1617.22 L 1652.9 1621.61 C 1646.71 1628.49 1639.15 1633.79 1630.73 1637.47 C 1560.02 1668.34 1422.96 1668.28 1352.03 1643.38 C 1378.08 1635.49 1408.52 1623.18 1435.19 1614.37 C 1430.6 1614.48 1426 1614.52 1421.41 1614.48 C 1390.29 1614.07 1340.19 1603.25 1317.86 1580.47 C 1318.29 1591.83 1318.95 1600.79 1316.52 1611.87 C 1264.19 1615.4 1209.69 1613.73 1156.47 1616.48 C 1123.01 1618.25 1089.57 1620.37 1056.15 1622.83 C 1026.55 1624.96 991.467 1629.92 962.235 1625.38 C 943.731 1622.51 941.083 1602.93 935.697 1601.92 C 925.612 1600.04 906.35 1605.87 898.561 1597.79 C 895.972 1595.1 895.183 1592.12 895.189 1588.49 C 895.212 1575.09 902.476 1559.85 911.877 1550.55 C 934.155 1528.53 980.212 1525.8 1009.89 1526.04 C 976.264 1504.67 959.488 1483.8 941.984 1448.54 C 940.01 1444.67 938.306 1441.28 938.446 1436.87 C 939.122 1415.48 942.49 1392.22 945.18 1371.01 L 958.008 1268.47 C 958.681 1263.32 963.137 1227.89 962.797 1224.73 C 960.875 1229.2 959.058 1235.43 958.248 1240.23 C 946.81 1307.99 928.158 1378.31 918.742 1446.19 C 917.519 1454.47 916.729 1462.81 916.376 1471.17 C 916.136 1478.11 916.717 1485.75 915.474 1492.56 C 913.093 1505.61 902.144 1517.86 897.265 1530.38 C 888.255 1553.48 884.249 1578.14 876.324 1601.53 C 873.399 1610.16 869.766 1617.84 861.097 1621.81 C 847.278 1628.13 772.154 1629.32 757.887 1623.92 C 753.244 1622.17 748.601 1619.14 746.711 1614.37 C 744.897 1609.79 746.129 1602.09 747.003 1597.31 C 754.694 1555.23 794.281 1563.01 808.737 1531.77 C 817.285 1513.3 821.527 1492.44 824.368 1472.39 C 832.179 1417.26 835.806 1265.91 816.716 1215.63 C 816.563 1215.23 816.398 1214.83 816.24 1214.43 C 816.167 1269.87 813.298 1324.83 812.127 1380.03 L 811.303 1436.66 C 811.234 1442.56 811.376 1466.2 810.127 1470.88 C 805.194 1489.37 797.484 1514.73 790.013 1532.09 C 783.296 1547.7 761.578 1555.03 750.679 1570.72 C 740.345 1585.59 741.881 1596.18 734.746 1609.84 C 713.25 1610.73 656.942 1615.57 639.219 1607.32 C 635.564 1605.62 632.813 1602.96 631.613 1599.05 C 629.05 1590.68 633.637 1578.13 637.594 1570.78 C 649.039 1549.52 665.794 1542.23 687.877 1535.65 C 699.305 1532.25 706.201 1527.17 711.859 1516.4 C 742.804 1457.46 724.845 1265.25 715.232 1198.74 C 713.026 1183.48 711.714 1166.79 707.057 1152.11 C 702.813 1138.73 692.413 1126.41 686.009 1113.79 C 671.966 1086.13 660.097 1056.22 650.685 1026.67 C 633.486 972.658 640.89 935.993 666.739 886.116 C 655 852.211 664.94 808.64 672.271 774.728 C 669.19 780.684 666.472 787.276 660.618 790.643 L 659.15 789.843 C 653.968 765.983 704.251 672.838 697.934 619.758 C 694.487 590.795 673.656 577.216 652.615 560.425 C 623.759 537.398 606.883 515.659 602.851 477.984 C 601.431 464.717 599.419 435.094 608.844 424.427 C 620.035 411.762 666.624 430.314 681.997 433.534 C 690.512 435.318 698.375 435.315 707.031 434.791 C 724.414 421.586 723.912 411.608 749.076 405.496 C 751.333 375.518 768.826 323.383 790.741 302.649 z M 989.89 1389.34 C 984.583 1356.35 983.54 1331.06 1004.43 1301.88 C 1005.59 1300.27 1006.78 1298.68 1008.01 1297.12 C 1051.27 1248.63 1097.29 1260.52 1150.46 1286.07 C 1129.83 1267.69 1078.4 1249.15 1050.61 1252.37 C 1036.16 1254.24 1024.17 1256.67 1012.32 1265.7 C 974.962 1294.17 974.106 1349.37 989.89 1389.34 z M 769.421 461.377 C 776.566 462.883 792.183 467.616 798.37 471.251 C 802.595 472.867 802.77 473.757 806.435 473.006 C 808.541 465.81 797.363 458.079 791.276 456.324 C 789.025 455.675 785.45 455.954 783.083 456.12 C 778.618 457.791 773.767 459.496 769.421 461.377 z"/>
+      </defs></svg>
+      <div class="brand"><svg class="minidog" viewBox="585 290 1090 1390"><use href="#dogpath"/></svg><b>EVORA</b></div>
+      <span class="model">Goblin 770</span>
+      <span class="sp"></span>
+      <span class="chip bank"><span class="d"></span>BANK 3 · SPORT</span>
+      <span class="chip armed"><span class="d"></span>ARMED</span>
+      <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 18a8 8 0 0 1 16 0"/><path d="M8 18a4 4 0 0 1 8 0"/><circle cx="12" cy="18" r="1.5" fill="currentColor"/></svg>100</span>
+      <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="17" height="10" rx="2.5"/><rect x="4" y="9" width="9" height="6" rx="1" fill="currentColor" stroke="none"/><path d="M21 10v4" stroke-linecap="round"/></svg>72%</span>
+      <span class="clock tabnum">14:32</span>
+    </div>
+
+    <div class="gauge">
+      <svg viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="9"
+          stroke-dasharray="405 540" stroke-linecap="round" transform="rotate(135 100 100)"/>
+        <circle cx="100" cy="100" r="86" fill="none" stroke="url(#g)" stroke-width="9"
+          stroke-dasharray="300 540" stroke-linecap="round" transform="rotate(135 100 100)"
+          style="filter:drop-shadow(0 0 6px rgba(255,146,66,.6))"/>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ff9242"/><stop offset="1" stop-color="#ffce8a"/></linearGradient></defs>
+      </svg>
+      <div class="gv">
+        <div class="lbl">HEADSPEED</div>
+        <div class="num tabnum">1,850</div>
+        <div class="unit">RPM</div>
+        <div class="gov"><span class="d"></span>GOVERNOR HOLDING</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="card batt">
+        <div class="hd"><span class="k">PACK</span><span class="cells">6S · 5500mAh</span></div>
+        <div class="big">
+          <span class="p tabnum">72</span><span class="pct">%</span>
+          <span class="v"><div class="vv tabnum">24.6<span class="vs"> V</span></div><div class="vs">4.10 V/cell</div></span>
+        </div>
+        <div class="bar"><i></i></div>
+        <div class="sub"><span>USED <b class="tabnum">1,850 mAh</b></span><span>MIN <b class="tabnum">22.9 V</b></span></div>
+      </div>
+      <div class="card flt"><span class="k">FLIGHT</span><span class="v tabnum">04:31</span></div>
+      <div class="mini">
+        <div class="m"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#ff9242" stroke-width="2"><path d="M12 3v4M5 8l2 2M19 8l-2 2" stroke-linecap="round"/><circle cx="12" cy="15" r="5"/></svg>ESC</div><div class="v tabnum">61<small>°C</small></div></div>
+        <div class="m"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#56c7e6" stroke-width="2" stroke-linecap="round"><path d="M13 3 5 13h6l-1 8 8-10h-6z"/></svg>CURRENT</div><div class="v tabnum">38<small>A</small></div></div>
+        <div class="m"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#3fe0a0" stroke-width="2" stroke-linecap="round"><path d="M4 14h16M4 14a8 8 0 0 1 16 0"/><path d="M12 14l5-5"/></svg>THR</div><div class="v tabnum">72<small>%</small></div></div>
+      </div>
+    </div>
+
+  </div></div>
+</div>
+<script>
+  function fit(){var d=document.querySelector('.bezel');d.style.transform='scale(1)';var r=d.getBoundingClientRect();
+    var s=Math.min((innerWidth*.96)/r.width,(innerHeight*.9)/r.height);d.style.transform='scale('+s+')';d.style.transformOrigin='center';}
+  fit();addEventListener('resize',fit);setTimeout(fit,400);
+</script>
+</body></html>

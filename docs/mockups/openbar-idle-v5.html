@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>OpenBar idle v5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f4f7fb; --dim:#aeb8c4; --muted:#6f7c89;
+    --amber:#ff9242; --amber-soft:#ffb274; --green:#3fe0a0;
+    --line:rgba(255,255,255,.07);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#04050a;display:flex;align-items:center;justify-content:center;
+    font-family:"Barlow Semi Condensed",sans-serif;}
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .cap{color:#5a6571;font-size:14px;font-weight:600;letter-spacing:.4px;}
+  .bezel{padding:16px;background:linear-gradient(180deg,#0a0c12,#05070b);border:1px solid #1b2330;border-radius:24px;
+    box-shadow:0 30px 80px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.04);}
+  .screen{position:relative;width:960px;height:544px;border-radius:12px;overflow:hidden;color:var(--ink);
+    background:radial-gradient(130% 120% at 50% -20%, #16202e 0%, #0a1019 45%, #06090f 100%);}
+  .screen::before{content:"";position:absolute;inset:0;opacity:.45;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:40px 40px;mask:radial-gradient(120% 90% at 50% 35%,#000 25%,transparent 78%);}
+  .screen::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 130px 24px rgba(0,0,0,.6);}
+  .tabnum{font-variant-numeric:tabular-nums;}
+
+  /* rotor-disc watermark */
+  .disc{position:absolute;left:50%;top:230px;transform:transl(-50%,-50%);width:520px;height:520px;left:calc(50% - 260px);top:-40px;
+    border-radius:50%;opacity:.6;pointer-events:none;
+    background:conic-gradient(from 0deg, rgba(255,146,66,.10), rgba(255,146,66,0) 25%, rgba(86,199,230,.06) 50%, rgba(255,146,66,0) 75%, rgba(255,146,66,.10));
+    mask:radial-gradient(circle, transparent 36%, #000 38%, #000 49%, transparent 51%);}
+
+  /* top bar */
+  .top{position:absolute;top:0;left:0;right:0;height:62px;display:flex;align-items:center;gap:14px;padding:0 30px;
+    border-bottom:1px solid var(--line);}
+  .top .sp{flex:1;}
+  .stat{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:20px;font-weight:600;}
+  .stat svg{width:22px;height:22px;color:var(--green);}
+  .clock{font-family:"Rajdhani";font-weight:600;font-size:22px;color:var(--muted);}
+  .mini-brand{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:17px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}
+  .mini-brand .d{width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber);}
+
+  /* hero */
+  .hero{position:absolute;left:0;right:0;top:104px;text-align:center;}
+  .word{font-family:"Rajdhani";font-weight:700;font-size:104px;line-height:.9;letter-spacing:-1px;}
+  .word .o{background:linear-gradient(180deg,#ffffff,#c2cedb);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .word .b{background:linear-gradient(180deg,#ffb274,#ff7d2a);-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 18px rgba(255,146,66,.35));}
+  .tag{margin-top:6px;font-size:18px;font-weight:600;letter-spacing:11px;color:var(--muted);text-transform:uppercase;padding-left:11px;}
+  .standby{margin-top:18px;display:inline-flex;align-items:center;gap:10px;font-size:18px;font-weight:600;letter-spacing:2px;
+    color:var(--dim);padding:8px 18px;border:1px solid var(--line);border-radius:999px;
+    background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);}
+  .standby .d{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+
+  /* CTA */
+  .cta{position:absolute;left:30px;right:30px;top:330px;display:flex;align-items:center;gap:16px;
+    padding:18px 22px;border-radius:18px;cursor:pointer;
+    background:linear-gradient(100deg, rgba(255,146,66,.18), rgba(255,146,66,.05));
+    border:1px solid rgba(255,146,66,.34);box-shadow:0 0 30px rgba(255,146,66,.10), inset 0 1px 0 rgba(255,255,255,.06);}
+  .cta .ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:rgba(255,146,66,.16);border:1px solid rgba(255,146,66,.3);}
+  .cta .ic svg{width:26px;height:26px;color:var(--amber-soft);}
+  .cta .tx{flex:1;}
+  .cta .tx b{font-family:"Rajdhani";font-weight:700;font-size:30px;letter-spacing:.3px;display:block;}
+  .cta .tx span{color:var(--muted);font-size:17px;font-weight:500;}
+  .cta .chev{color:var(--amber-soft);}
+  .cta .chev svg{width:26px;height:26px;}
+
+  /* info row */
+  .info{position:absolute;left:30px;right:30px;top:418px;display:flex;gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);}
+  .info .i{flex:1;padding:13px 18px;border-right:1px solid var(--line);}
+  .info .i:last-child{border-right:none;}
+  .info .i .k{font-size:14px;font-weight:600;letter-spacing:1.6px;color:var(--muted);}
+  .info .i .v{font-family:"Rajdhani";font-weight:600;font-size:28px;margin-top:2px;}
+  .info .i .v.g{color:var(--green);} .info .i .v small{font-size:15px;color:var(--muted);font-weight:600;}
+
+  /* toolbar */
+  .bar{position:absolute;left:0;right:0;bottom:0;height:64px;display:flex;border-top:1px solid var(--line);
+    background:linear-gradient(0deg,rgba(255,255,255,.025),transparent);}
+  .bar .t{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--muted);position:relative;}
+  .bar .t svg{width:24px;height:24px;}
+  .bar .t span{font-size:13px;font-weight:600;letter-spacing:2px;}
+  .bar .t.on{color:var(--amber-soft);}
+  .bar .t.on::before{content:"";position:absolute;top:0;width:34px;height:3px;border-radius:3px;background:var(--amber);box-shadow:0 0 10px var(--amber);}
+</style></head>
+<body><div class="wrap">
+  <div class="cap">OpenBar — idle / standby home v5 · "aerospace instrument" · 480×272</div>
+  <div class="bezel"><div class="screen">
+    <div class="disc"></div>
+
+    <div class="top">
+      <div class="mini-brand"><span class="d"></span>OpenBar</div>
+      <span class="sp"></span>
+      <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="17" height="10" rx="2.5"/><rect x="4" y="9" width="11" height="6" rx="1" fill="currentColor" stroke="none"/><path d="M21 10v4" stroke-linecap="round"/></svg>92%</span>
+      <span class="clock tabnum">14:32</span>
+    </div>
+
+    <div class="hero">
+      <div class="word"><span class="o">Open</span><span class="b">Bar</span></div>
+      <div class="tag">Open Heli OS</div>
+      <div class="standby"><span class="d"></span>STANDBY · NO HELI CONNECTED</div>
+    </div>
+
+    <div class="cta">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      <div class="tx"><b>Set up a new heli</b><span>Guided on-radio wizard · no PC required</span></div>
+      <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+    </div>
+
+    <div class="info">
+      <div class="i"><div class="k">LINK</div><div class="v"><small>idle</small></div></div>
+      <div class="i"><div class="k">HELIS PAIRED</div><div class="v tabnum">4</div></div>
+      <div class="i"><div class="k">RADIO</div><div class="v g tabnum">92<small>%</small></div></div>
+      <div class="i"><div class="k">FIRMWARE</div><div class="v">v0.3</div></div>
+    </div>
+
+    <div class="bar">
+      <div class="t on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/><path d="M10 19v-5h4v5"/></svg><span>HELIS</span></div>
+      <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11a4 4 0 0 1 0-6l2-2a4 4 0 0 1 6 6l-1 1"/><path d="M15 13a4 4 0 0 1 0 6l-2 2a4 4 0 0 1-6-6l1-1"/></svg><span>BIND</span></div>
+      <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 6.9 4.2l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" stroke-linecap="round" stroke-linejoin="round"/></svg><span>SYSTEM</span></div>
+      <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.7 2.7-2-2z"/></svg><span>TOOLS</span></div>
+    </div>
+
+  </div></div>
+</div>
+<script>
+  function fit(){var d=document.querySelector('.bezel');d.style.transform='scale(1)';var r=d.getBoundingClientRect();
+    var s=Math.min((innerWidth*.96)/r.width,(innerHeight*.9)/r.height);d.style.transform='scale('+s+')';d.style.transformOrigin='center';}
+  fit();addEventListener('resize',fit);setTimeout(fit,400);
+</script>
+</body></html>

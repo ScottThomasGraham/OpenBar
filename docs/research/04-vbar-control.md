@@ -1,7 +1,7 @@
-# Mikado VBar Control — Setup UX Research (for OpenBar)
+# Mikado VBar Control — Setup UX Research (for Evora)
 
 Research target: Mikado's **VBar Control** radio + **VBar NEO/Silverline** flybarless (FBL)
-ecosystem. The thing OpenBar wants to clone is VBar's tight, wizard-driven, **no-PC**
+ecosystem. The thing Evora wants to clone is VBar's tight, wizard-driven, **no-PC**
 setup UX — the radio talks to the FBL unit, reads its parameters, and renders setup menus
 natively. We are *not* cloning VBar's flight tuning (our team believes Rotorflight already
 flies better); we want VBar's *setup/UX magic* and want to improve where we can.
@@ -43,7 +43,7 @@ expensive).
   installs directly; the older Control goes through the PC Manager. You install only the apps
   you need, which keeps the menu surface small (a UX gating mechanism in itself).
 
-**Key architectural idea OpenBar must internalize:** the FBL unit is the **source of truth**.
+**Key architectural idea Evora must internalize:** the FBL unit is the **source of truth**.
 Each VBar stores its own complete setup. The radio is a *renderer/editor* — when you connect,
 the radio reads the unit's parameters and presents the menus. There is no separate PC config
 tool required for normal setup. (Older VBar firmware *did* require PC software for some tail
@@ -113,7 +113,7 @@ Ordered wizard flow:
 12. **Tail setup.** Select tail **servo type** (from a known servo list so timing/limits are
     right), connect the tail servo, verify stick → rotor-slider direction, and set the
     mechanical end limits so the slider doesn't bind. (Tail *gain* is tuned later / in flight;
-    older firmware pushed gain tuning to PC software — a wart OpenBar should avoid.)
+    older firmware pushed gain tuning to PC software — a wart Evora should avoid.)
 
 13. **Governor / ESC.** Choose governor mode: **External Governor** (ESC governs head speed;
     VBar just passes throttle through) or **VBar e-Governor** (radio + FBL govern RPM). Then set
@@ -149,7 +149,7 @@ experts use the same mental model.
 
 ---
 
-## 4. BASIC vs PRO/EXPERT gating — the mental model OpenBar should steal
+## 4. BASIC vs PRO/EXPERT gating — the mental model Evora should steal
 
 VBar hides depth using several layered mechanisms, not one:
 
@@ -172,7 +172,7 @@ VBar hides depth using several layered mechanisms, not one:
    appear; flight menus only show once a model is connected. The UI never shows irrelevant
    options.
 
-For OpenBar the portable pattern is: **one data model, progressively disclosed** — a default
+For Evora the portable pattern is: **one data model, progressively disclosed** — a default
 "basic" view with the 5–6 decisions that matter, an expert layer one gesture away, and the
 whole thing context-gated so you never see settings that don't apply right now. (We'd replace
 "pay to unlock" with a simple Basic/Expert toggle — see §6.)
@@ -224,15 +224,15 @@ VBar's bidirectional link brings data back to the radio, and the radio is a real
   "not guessing." Multiple top pilots reportedly moving to Rotorflight.
 
 **Net:** VBar wins on *getting set up* and *integration*; it loses on *openness, price, and
-deep tuning/feel* — exactly the gap OpenBar is positioned to fill.
+deep tuning/feel* — exactly the gap Evora is positioned to fill.
 
 ---
 
-## 7. VBar UX patterns OpenBar SHOULD replicate
+## 7. VBar UX patterns Evora SHOULD replicate
 
 1. **The FBL is the source of truth; the radio is a renderer/editor.** On connect, read the
    flight controller's params and render native menus. No mandatory PC tool, no cables for
-   normal setup. (OpenBar: EdgeTX Lua/widget reads Rotorflight params over the link/CRSF.)
+   normal setup. (Evora: EdgeTX Lua/widget reads Rotorflight params over the link/CRSF.)
 2. **A single linear "new model" wizard** = ordered checklist, one decision per screen, with a
    **confirm/verify gate** before advancing. Order roughly: link → switches/sticks → mounting
    → head direction → swash type → collective direction → servo wiring+directions → centering
@@ -254,7 +254,7 @@ deep tuning/feel* — exactly the gap OpenBar is positioned to fill.
     (prefix/value/suffix, switch-gated), with optical+tactile+acoustic warnings.
 12. **Install-only-what-you-need apps/modules** to keep the menu surface small.
 
-## 8. Where OpenBar CAN DO BETTER
+## 8. Where Evora CAN DO BETTER
 
 1. **Free the gating.** Replace pay-to-unlock firmware tiers with a simple, free **Basic ↔
    Expert toggle**. Same progressive-disclosure UX, none of the paywall.

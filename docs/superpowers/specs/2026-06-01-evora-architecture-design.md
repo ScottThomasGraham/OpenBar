@@ -1,4 +1,4 @@
-# OpenBar — Architecture & Roadmap Design
+# Evora — Architecture & Roadmap Design
 
 **Date:** 2026-06-01
 **Status:** Approved (architecture); Phase 0 pending
@@ -10,16 +10,16 @@
 
 An open-source, **firmware-level** recreation of the Mikado VBar Control *experience*: a beginner binds a helicopter, runs one guided wizard on the radio's touchscreen, and flies — no PC, no Configurator, no cables. All the plumbing (channels, telemetry, mixers, failsafe, link config) is pre-configured and hidden, with a gated **Pro** area for full control.
 
-OpenBar copies what makes VBar feel like magic — a single integrated ecosystem with a friendly, verify-every-step setup wizard — and rides **Rotorflight** (whose flight performance already beats VBar) for the flight core.
+Evora copies what makes VBar feel like magic — a single integrated ecosystem with a friendly, verify-every-step setup wizard — and rides **Rotorflight** (whose flight performance already beats VBar) for the flight core.
 
 ### Why this is feasible
 
-VBar feels effortless because one vendor owns the whole signal chain (radio + link + FBL). OpenBar reproduces that integration with open firmware by owning the **radio firmware** and **both ends of the link**, and riding Rotorflight for the FC. Over-the-air configuration of the FC is already the *production* mechanism in this ecosystem (MSP-v2 tunneled over CRSF) — OpenBar makes it fast, reliable, and beginner-proof.
+VBar feels effortless because one vendor owns the whole signal chain (radio + link + FBL). Evora reproduces that integration with open firmware by owning the **radio firmware** and **both ends of the link**, and riding Rotorflight for the FC. Over-the-air configuration of the FC is already the *production* mechanism in this ecosystem (MSP-v2 tunneled over CRSF) — Evora makes it fast, reliable, and beginner-proof.
 
 ## 2. Guiding principles
 
-1. **Rotorflight's flight core is sacred and untouched.** OpenBar is a configuration/onboarding layer. Full tuning stays reachable in Pro. Simplicity lives in setup UX and smart defaults — never in flight behavior.
-2. **Bespoke firmware per radio, not universal software.** OpenBar flashes as *OpenBar*. Reference target: **RadioMaster TX16S** (STM32F407, 480×272). Next: **TX16S MK3** (H7, 800×480) as its own tailored build. Design UI resolution-independently to ease the later port.
+1. **Rotorflight's flight core is sacred and untouched.** Evora is a configuration/onboarding layer. Full tuning stays reachable in Pro. Simplicity lives in setup UX and smart defaults — never in flight behavior.
+2. **Bespoke firmware per radio, not universal software.** Evora flashes as *Evora*. Reference target: **RadioMaster TX16S** (STM32F407, 480×272). Next: **TX16S MK3** (H7, 800×480) as its own tailored build. Design UI resolution-independently to ease the later port.
 3. **Keep what's proven, replace what differentiates.** Retain EdgeTX's hardened, safety-critical plumbing (gimbals/ADC, mixer engine, failsafe, SD, USB, bootloader). Replace everything the user sees/feels.
 4. **Verify on the bench, not in the air.** Directions, centering, travels, limits confirmed with motor disabled / blades off before first spin.
 5. **Beginner by default, expert on demand.** Progressive disclosure like VBar, but free — no paywalled tiers.
@@ -28,19 +28,19 @@ VBar feels effortless because one vendor owns the whole signal chain (radio + li
 
 ```
  ┌──────────────────────────── TX16S ────────────────────────────┐
- │ OpenBar RADIO firmware   (fork of EdgeTX · STM32F407)          │
+ │ Evora RADIO firmware   (fork of EdgeTX · STM32F407)          │
  │   • bespoke boot / home / live dashboards                      │
  │   • guided setup WIZARDS + automatic model provisioning        │
  │   • native Rotorflight config UI · Basic⇄Pro disclosure        │
  │   • KEEPS EdgeTX plumbing: gimbals/ADC, mixer, failsafe, SD,   │
  │     USB, bootloader  (proven, flight-safety-critical)          │
- │                          │ internal UART: CRSF + OpenBar ext.  │
- │ OpenBar LINK-TX firmware (fork of ELRS · internal module ESP)  │
+ │                          │ internal UART: CRSF + Evora ext.  │
+ │ Evora LINK-TX firmware (fork of ELRS · internal module ESP)  │
  └──────────────────────────│ 2.4 GHz ──────────────────────────┘
                             │   stock CRSF  (RC + failsafe, fully compatible)
-                            │ + PRIVATE OpenBar fast config/telemetry channel
+                            │ + PRIVATE Evora fast config/telemetry channel
  ┌──────────────────────────▼──────────────────────────┐
- │ OpenBar LINK-RX firmware (fork of ELRS RX)           │
+ │ Evora LINK-RX firmware (fork of ELRS RX)           │
  └──────────────────────────│ UART (MSP) ──────────────┘
  ┌──────────────────────────▼──────────────────────────┐
  │ Rotorflight FC  —  UNTOUCHED flight core             │
@@ -52,18 +52,18 @@ VBar feels effortless because one vendor owns the whole signal chain (radio + li
 
 | Component | Basis | Responsibilities | What we keep / don't touch |
 |---|---|---|---|
-| **OpenBar Radio** | fork of EdgeTX (STM32F407) | Bespoke boot/home/dashboards; setup wizards; automatic model provisioning; native Rotorflight config UI; Basic⇄Pro disclosure; orchestration of binding + link config. | Keep EdgeTX gimbal/ADC sampling & calibration, mixer/curve/logical-switch engine, arming/failsafe, SD/model storage, USB, audio/haptics, **bootloader** (recovery). |
-| **OpenBar Link-TX** | fork of ExpressLRS (internal module ESP/SX1280) | Speaks stock CRSF to the radio; runs the OpenBar private channel; binding, packet rate, power, model match — all driven from OpenBar's UI. | Keep ELRS RF PHY, OTA timing, failsafe semantics. |
-| **OpenBar Link-RX** | fork of ExpressLRS RX | Matched receiver enabling the private channel end-to-end; tunnels MSP to the FC; improved reassembly/retransmit on the config path. | Keep ELRS RF PHY and failsafe. |
+| **Evora TX** | fork of EdgeTX (STM32F407) | Bespoke boot/home/dashboards; setup wizards; automatic model provisioning; native Rotorflight config UI; Basic⇄Pro disclosure; orchestration of binding + link config. | Keep EdgeTX gimbal/ADC sampling & calibration, mixer/curve/logical-switch engine, arming/failsafe, SD/model storage, USB, audio/haptics, **bootloader** (recovery). |
+| **Evora Link-TX** | fork of ExpressLRS (internal module ESP/SX1280) | Speaks stock CRSF to the radio; runs the Evora private channel; binding, packet rate, power, model match — all driven from Evora's UI. | Keep ELRS RF PHY, OTA timing, failsafe semantics. |
+| **Evora Link-RX** | fork of ExpressLRS RX | Matched receiver enabling the private channel end-to-end; tunnels MSP to the FC; improved reassembly/retransmit on the config path. | Keep ELRS RF PHY and failsafe. |
 | **Rotorflight FC** | unchanged | Flight control + the model's source of truth; configured via MSP over the link. | Entire firmware untouched. |
 
 ### 3.2 Hardware reality (kept honest)
 
-ELRS runs on the **RF module's own ESP/SX1280**, not the TX16S STM32 — the transceiver is physically in the module. "ELRS baked in" therefore means **an internal ELRS module running matched OpenBar firmware, fully driven by OpenBar's UI**, not ELRS executing on the main CPU. This is the deepest integration the hardware physically allows.
+ELRS runs on the **RF module's own ESP/SX1280**, not the TX16S STM32 — the transceiver is physically in the module. "ELRS baked in" therefore means **an internal ELRS module running matched Evora firmware, fully driven by Evora's UI**, not ELRS executing on the main CPU. This is the deepest integration the hardware physically allows.
 
-### 3.3 The private OpenBar channel (the differentiator)
+### 3.3 The private Evora channel (the differentiator)
 
-Because OpenBar owns **both** ends of the link, Link-TX and Link-RX keep speaking **stock CRSF** for RC + failsafe (fully compatible and safe), but during setup/tuning negotiate a **bespoke high-bandwidth config & telemetry channel**. This targets the two limits found in research:
+Because Evora owns **both** ends of the link, Link-TX and Link-RX keep speaking **stock CRSF** for RC + failsafe (fully compatible and safe), but during setup/tuning negotiate a **bespoke high-bandwidth config & telemetry channel**. This targets the two limits found in research:
 
 - the **~8-byte uplink chunk** ceiling (the "OpenTX outbound telemetry buffer" limit), and
 - the **no-retransmit fragility** of MSP-over-CRSF (a single dropped fragment discards the whole MSP frame).
@@ -78,7 +78,7 @@ Borrowed wholesale from VBar: *FC = source of truth, radio = renderer/editor/orc
 
 ### 4.1 Out-of-box bind-and-go
 
-First power-on boots into OpenBar's own home. "Set up a new heli" launches a single guided flow: binding-phrase **auto-bind** (no manual-bind footgun), OpenBar detects the FC, **auto-provisions the radio model** (a C++ hook Lua cannot do), and starts the wizard.
+First power-on boots into Evora's own home. "Set up a new heli" launches a single guided flow: binding-phrase **auto-bind** (no manual-bind footgun), Evora detects the FC, **auto-provisions the radio model** (a C++ hook Lua cannot do), and starts the wizard.
 
 ### 4.2 New Heli Setup Wizard — linear, one decision per screen, verify-gate at every step
 
@@ -119,7 +119,7 @@ Each phase is its own spec → plan → build cycle. Riskiest/highest-value bets
 
 - **Phase 0 — Foundations & toolchains.** Fork the three repos; establish reproducible **build + flash + recovery** for the TX16S radio and both ELRS ends; verify vanilla builds flash and recover from a bad flash; define the upstream-rebase / minimal-diff maintenance strategy; CI. *Deliverable: we can build, flash, and recover all three unmodified.*
 - **Phase 1 — Private fast-config channel.** Implement the bespoke channel in the ELRS TX+RX forks alongside stock CRSF; a minimal radio-side MSP client (a throwaway bench harness is fine for measurement) reads/writes Rotorflight params over it. *Deliverable: measurably faster/more reliable OTA config than stock, on the bench — or a documented decision to fall back to optimized stock CRSF.*
-- **Phase 2 — OpenBar Radio shell.** Bespoke boot/home + app skeleton; automatic model provisioning; binding-phrase auto-bind orchestration; detect a connected Rotorflight FC and read its identity/params. *Deliverable: power on → OpenBar home → bind → "Rotorflight detected," model auto-created.*
+- **Phase 2 — Evora TX shell.** Bespoke boot/home + app skeleton; automatic model provisioning; binding-phrase auto-bind orchestration; detect a connected Rotorflight FC and read its identity/params. *Deliverable: power on → Evora home → bind → "Rotorflight detected," model auto-created.*
 - **Phase 3 — New Heli Setup Wizard.** The full linear, verify-gated wizard (Basic) with per-heli-class defaults, writing to the FC over the fast channel. *Deliverable: a beginner sets up a heli to flyable on the bench, entirely on the radio, no PC.*
 - **Phase 4 — Dashboards + Basic/Pro + banks.** Bespoke telemetry home; Pro toggle exposing full Rotorflight tuning; profile/bank switching. *Deliverable: daily-driver usable.*
 - **Phase 5 — On-radio tuning + MK3 port.** Blackbox-informed tuning tools; then the tailored TX16S MK3 (H7/800×480) build. *Deliverable: a "beat-VBar" tuning experience and a second supported radio.*
@@ -130,7 +130,7 @@ Each phase is its own spec → plan → build cycle. Riskiest/highest-value bets
 |---|---|
 | Maintaining **three forks** against fast-moving upstreams | Minimal-diff, layered architecture; periodic rebase; CI that builds against pinned baselines. |
 | Private channel may not fit the ELRS **airtime/timing budget** | Phase 1 proves it in isolation before UX depends on it; documented fallback to optimized stock CRSF. |
-| C++ UI velocity slower than scripting | Reuse EdgeTX's LVGL toolkit already present; build an OpenBar component library early. |
+| C++ UI velocity slower than scripting | Reuse EdgeTX's LVGL toolkit already present; build an Evora component library early. |
 | **Bricking** a radio/module on bad flash | Keep the bootloader; document/verify recovery in Phase 0; bench-only flashing with the maintainer's hardware. |
 | RF firmware changes touch **regulatory** limits (power/region) | Preserve ELRS region/power compliance; never expose non-compliant settings by default. |
 | Flight-safety regressions | Don't touch Rotorflight; keep EdgeTX failsafe/arming; every phase has bench acceptance criteria before flight. |

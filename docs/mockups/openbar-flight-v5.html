@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>OpenBar flight v5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f4f7fb; --dim:#aeb8c4; --muted:#6f7c89;
+    --amber:#ff9242; --amber-soft:#ffb274; --green:#3fe0a0; --cyan:#56c7e6;
+    --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#04050a;display:flex;align-items:center;justify-content:center;
+    font-family:"Barlow Semi Condensed",sans-serif;}
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .cap{color:#5a6571;font-size:14px;font-weight:600;letter-spacing:.4px;}
+  .bezel{padding:16px;background:linear-gradient(180deg,#0a0c12,#05070b);border:1px solid #1b2330;border-radius:24px;
+    box-shadow:0 30px 80px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.04);}
+  .screen{position:relative;width:960px;height:544px;border-radius:12px;overflow:hidden;color:var(--ink);
+    background:
+      radial-gradient(120% 120% at 12% -10%, #16202e 0%, #0b111a 42%, #06090f 100%);}
+  /* faint instrument grid + vignette */
+  .screen::before{content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:40px 40px;mask:radial-gradient(120% 90% at 30% 30%,#000 30%,transparent 80%);}
+  .screen::after{content:"";position:absolute;inset:0;pointer-events:none;
+    box-shadow:inset 0 0 120px 20px rgba(0,0,0,.55);}
+
+  .tabnum{font-variant-numeric:tabular-nums;}
+
+  /* ---------- top status bar ---------- */
+  .top{position:absolute;top:0;left:0;right:0;height:62px;display:flex;align-items:center;gap:20px;padding:0 30px;
+    border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.025),transparent);}
+  .brand{display:flex;align-items:center;gap:11px;}
+  .brand .dot{width:13px;height:13px;border-radius:50%;background:var(--amber);box-shadow:0 0 14px var(--amber);}
+  .brand b{font-family:"Rajdhani";font-weight:700;font-size:25px;letter-spacing:.5px;}
+  .model{color:var(--muted);font-size:18px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}
+  .sp{flex:1;}
+  .chip{display:flex;align-items:center;gap:8px;font-weight:600;font-size:18px;letter-spacing:.5px;padding:6px 14px;border-radius:999px;}
+  .chip .d{width:8px;height:8px;border-radius:50%;}
+  .chip.bank{color:var(--amber-soft);background:rgba(255,146,66,.12);border:1px solid rgba(255,146,66,.3);}
+  .chip.bank .d{background:var(--amber);box-shadow:0 0 8px var(--amber);}
+  .chip.armed{color:var(--green);} .chip.armed .d{background:var(--green);box-shadow:0 0 8px var(--green);}
+  .stat{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:20px;font-weight:600;}
+  .stat svg{width:22px;height:22px;color:var(--green);}
+  .clock{font-family:"Rajdhani";font-weight:600;font-size:22px;color:var(--muted);}
+
+  /* ---------- left: circular headspeed gauge ---------- */
+  .gauge{position:absolute;left:34px;top:96px;width:360px;height:360px;}
+  .gauge svg{position:absolute;inset:0;}
+  .gv{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .gv .lbl{font-size:18px;font-weight:600;letter-spacing:6px;color:var(--muted);margin-bottom:2px;}
+  .gv .num{font-family:"Rajdhani";font-weight:700;font-size:128px;line-height:.8;letter-spacing:-1px;
+    background:linear-gradient(180deg,#ffffff,#bcc8d6);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .gv .unit{font-size:22px;font-weight:600;letter-spacing:5px;color:var(--muted);margin-top:6px;}
+  .gv .gov{display:flex;align-items:center;gap:8px;margin-top:16px;color:var(--green);font-size:17px;font-weight:600;letter-spacing:2px;}
+  .gv .gov .d{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+
+  /* ---------- right column ---------- */
+  .right{position:absolute;right:30px;top:96px;width:470px;display:flex;flex-direction:column;gap:16px;}
+  .card{background:linear-gradient(165deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+    border:1px solid var(--line);border-radius:18px;padding:18px 20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
+  .batt .hd{display:flex;justify-content:space-between;align-items:baseline;}
+  .batt .hd .k{font-size:17px;font-weight:600;letter-spacing:3px;color:var(--muted);}
+  .batt .hd .cells{font-family:"Rajdhani";font-weight:600;font-size:20px;color:var(--green);letter-spacing:.5px;}
+  .batt .big{display:flex;align-items:baseline;gap:8px;margin-top:4px;}
+  .batt .big .p{font-family:"Rajdhani";font-weight:700;font-size:96px;line-height:.85;letter-spacing:-1px;
+    background:linear-gradient(180deg,#eafff6,#3fe0a0);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .batt .big .pct{font-family:"Rajdhani";font-weight:700;font-size:34px;color:var(--green);}
+  .batt .big .v{margin-left:auto;text-align:right;}
+  .batt .big .v .vv{font-family:"Rajdhani";font-weight:600;font-size:30px;}
+  .batt .big .v .vs{font-size:15px;color:var(--muted);font-weight:600;letter-spacing:1px;}
+  .bar{height:14px;border-radius:7px;background:rgba(255,255,255,.06);margin-top:16px;overflow:hidden;position:relative;}
+  .bar i{position:absolute;inset:0;width:72%;border-radius:7px;background:linear-gradient(90deg,#2bbf86,#3fe0a0);
+    box-shadow:0 0 16px rgba(63,224,160,.55);}
+  .batt .sub{display:flex;justify-content:space-between;margin-top:13px;color:var(--muted);font-size:16px;font-weight:600;}
+  .batt .sub b{color:var(--dim);font-family:"Rajdhani";font-weight:600;}
+  /* mini stats row */
+  .mini{display:flex;gap:12px;}
+  .m{flex:1;background:linear-gradient(165deg,rgba(255,255,255,.05),rgba(255,255,255,.012));border:1px solid var(--line);
+    border-radius:14px;padding:12px 14px;}
+  .m .k{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;letter-spacing:1.5px;color:var(--muted);}
+  .m .k svg{width:16px;height:16px;}
+  .m .v{font-family:"Rajdhani";font-weight:600;font-size:32px;margin-top:4px;}
+  .m .v small{font-size:16px;color:var(--muted);font-weight:600;}
+  .flt{display:flex;align-items:baseline;justify-content:space-between;}
+  .flt .k{font-size:15px;font-weight:600;letter-spacing:3px;color:var(--muted);}
+  .flt .v{font-family:"Rajdhani";font-weight:700;font-size:40px;letter-spacing:1px;}
+</style></head>
+<body><div class="wrap">
+  <div class="cap">OpenBar — flight home v5 · "aerospace instrument" · 480×272</div>
+  <div class="bezel"><div class="screen">
+
+    <div class="top">
+      <div class="brand"><span class="dot"></span><b>OpenBar</b></div>
+      <span class="model">Goblin 770</span>
+      <span class="sp"></span>
+      <span class="chip bank"><span class="d"></span>BANK 3 · SPORT</span>
+      <span class="chip armed"><span class="d"></span>ARMED</span>
+      <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 18a8 8 0 0 1 16 0"/><path d="M8 18a4 4 0 0 1 8 0"/><circle cx="12" cy="18" r="1.5" fill="currentColor"/></svg>100</span>
+      <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="17" height="10" rx="2.5"/><rect x="4" y="9" width="9" height="6" rx="1" fill="currentColor" stroke="none"/><path d="M21 10v4" stroke-linecap="round"/></svg>72%</span>
+      <span class="clock tabnum">14:32</span>
+    </div>
+
+    <div class="gauge">
+      <svg viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="9"
+          stroke-dasharray="405 540" stroke-linecap="round" transform="rotate(135 100 100)"/>
+        <circle cx="100" cy="100" r="86" fill="none" stroke="url(#g)" stroke-width="9"
+          stroke-dasharray="300 540" stroke-linecap="round" transform="rotate(135 100 100)"
+          style="filter:drop-shadow(0 0 6px rgba(255,146,66,.6))"/>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ff9242"/><stop offset="1" stop-color="#ffce8a"/></linearGradient></defs>
+      </svg>
+      <div class="gv">
+        <div class="lbl">HEADSPEED</div>
+        <div class="num tabnum">1,850</div>
+        <div class="unit">RPM</div>
+        <div class="gov"><span class="d"></span>GOVERNOR HOLDING</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="card batt">
+        <div class="hd"><span class="k">PACK</span><span class="cells">6S · 5500mAh</span></div>
+        <div class="big">
+          <span class="p tabnum">72</span><span class="pct">%</span>
+          <span class="v"><div class="vv tabnum">24.6<span class="vs"> V</span></div><div class="vs">4.10 V/cell</div></span>
+        </div>
+        <div class="bar"><i></i></div>
+        <div class="sub"><span>USED <b class="tabnum">1,850 mAh</b></span><span>MIN <b class="tabnum">22.9 V</b></span></div>
+      </div>
+      <div class="card flt"><span class="k">FLIGHT</span><span class="v tabnum">04:31</span></div>
+      <div class="mini">
+        <div class="m"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#ff9242" stroke-width="2"><path d="M12 3v4M5 8l2 2M19 8l-2 2" stroke-linecap="round"/><circle cx="12" cy="15" r="5"/></svg>ESC</div><div class="v tabnum">61<small>°C</small></div></div>
+        <div class="m"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#56c7e6" stroke-width="2" stroke-linecap="round"><path d="M13 3 5 13h6l-1 8 8-10h-6z"/></svg>CURRENT</div><div class="v tabnum">38<small>A</small></div></div>
+        <div class="m"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="#3fe0a0" stroke-width="2" stroke-linecap="round"><path d="M4 14h16M4 14a8 8 0 0 1 16 0"/><path d="M12 14l5-5"/></svg>THR</div><div class="v tabnum">72<small>%</small></div></div>
+      </div>
+    </div>
+
+  </div></div>
+</div>
+<script>
+  function fit(){var d=document.querySelector('.bezel');d.style.transform='scale(1)';var r=d.getBoundingClientRect();
+    var s=Math.min((innerWidth*.96)/r.width,(innerHeight*.9)/r.height);d.style.transform='scale('+s+')';d.style.transformOrigin='center';}
+  fit();addEventListener('resize',fit);setTimeout(fit,400);
+</script>
+</body></html>

@@ -1,6 +1,6 @@
-# OpenBar Research 02 — EdgeTX as the On-Radio GUI Platform
+# Evora Research 02 — EdgeTX as the On-Radio GUI Platform
 
-**Question:** How "native" and polished can OpenBar's on-radio GUI realistically be using
+**Question:** How "native" and polished can Evora's on-radio GUI realistically be using
 Lua scripts/widgets, vs. what would require forking EdgeTX's C++ firmware?
 
 **Scope:** Color/touch EdgeTX radios (RadioMaster TX16S and successors). Findings are taken
@@ -12,15 +12,15 @@ Rotorflight docs. File paths below are relative to the repo root.
 
 ## TL;DR Verdict
 
-**A pure-Lua OpenBar can feel genuinely app-like — far closer to VBar Control than
+**A pure-Lua Evora can feel genuinely app-like — far closer to VBar Control than
 most people assume — because modern EdgeTX exposes a full LVGL widget toolkit to Lua
 (`lvgl.*`): buttons, dialogs, sliders, text/number editors, choice pickers, pages,
 menus, an "app mode" that takes over the whole screen, plus a 6 MB Lua memory budget on
 color radios.** The two hard ceilings are: (1) **there is no Lua API to create/select/copy
 a model** — model provisioning is C++ only — and (2) **the radio's own settings/theme
 chrome (top bar, menus, fonts) cannot be restyled from Lua.** Both ceilings have practical
-Lua-level workarounds (write a `.yml` template to the SD card via `io.write`; run OpenBar
-as a full-screen "app" so the EdgeTX chrome is hidden). **Recommendation: build OpenBar as
+Lua-level workarounds (write a `.yml` template to the SD card via `io.write`; run Evora
+as a full-screen "app" so the EdgeTX chrome is hidden). **Recommendation: build Evora as
 a Lua/LVGL "app" suite first; reserve a C++ fork only if you need true model auto-creation,
 custom system theming, or higher MSP throughput.**
 
@@ -41,7 +41,7 @@ custom system theming, or higher MSP throughput.**
 | **Mix / "Custom" script** | Per-model mixer | ~ every 30 ms, GUI thread, not guaranteed | **No LCD access** | `init`/`run`; needs firmware built with `LUA_MIXER=Y` |
 | **Function** (Special Function `Lua`) | Triggered by a switch/logical switch | While condition true | No LCD access | `init`/`run` |
 
-For OpenBar, the **One-Time / Tool** type (preferably the LVGL "app" variant) is the right
+For Evora, the **One-Time / Tool** type (preferably the LVGL "app" variant) is the right
 host: it can take over the whole screen and read touch.
 
 ### 1.2 What Lua can READ / WRITE on the model
@@ -76,9 +76,9 @@ General/global helpers (`api_general.cpp`, `etxlib`): `getValue`, `getSourceValu
 - **Settings persist only when the radio next writes the model file.** Lua writes go into
   the live in-RAM model struct; EdgeTX persists it on its normal schedule.
 
-**Workaround for provisioning:** Lua *does* have file I/O — see §3.3 — so OpenBar can write
+**Workaround for provisioning:** Lua *does* have file I/O — see §3.3 — so Evora can write
 a complete `model.yml` (or a `/TEMPLATES` entry) to the SD card and then ask the user to
-instantiate it via the built-in model wizard (one tap), or have OpenBar mutate an
+instantiate it via the built-in model wizard (one tap), or have Evora mutate an
 already-created model in place via the `model.*` write API above.
 
 ### 1.4 Drawing, touch, fonts, performance, storage
@@ -114,7 +114,7 @@ already-created model in place via the `model.*` write API above.
   - `setShmVar(id,val)` / `getShmVar(id)` — small shared-memory ints, **RAM only, not
     persisted across reboot** (`api_general.cpp:2487`).
   - **Real persistence = the SD card via the `io` + `dir` libraries** (§3.3). This is how
-    OpenBar would store its own config/state.
+    Evora would store its own config/state.
 
 ---
 
@@ -141,7 +141,7 @@ already-created model in place via the `model.*` write API above.
   `SCRIPTS/` folder to the radio; `rf2.lua` appears in `SCRIPTS/TOOLS`; a background
   **telemetry** script (`rf2tlm.lua`) keeps the link alive; the tool then reads API version +
   FC device ID and presents PID/rate/filter/failsafe/governor pages, "Save page" pushes
-  changes via MSP-over-CRSF. **This is the exact pattern OpenBar would reuse.**
+  changes via MSP-over-CRSF. **This is the exact pattern Evora would reuse.**
 - **Alternative tunnel:** `serialWrite`/`serialRead`/`setSerialBaudrate` (`api_general.cpp`)
   allow raw serial (e.g. USB-serial or a configured aux port) — relevant only for bench/PC
   flows, not the in-air CRSF link.
@@ -162,22 +162,22 @@ already-created model in place via the `model.*` write API above.
   `TEMPLATES_PATH = ROOT_PATH "TEMPLATES"`, with a `/2.Personal` subfolder for user
   templates (`radio/src/sdcard.h:38-40`).
 - **EdgeTX Companion** (desktop) can author/edit models and write them to the radio, but it
-  is **not on the radio** and is irrelevant to a no-PC OpenBar flow.
+  is **not on the radio** and is irrelevant to a no-PC Evora flow.
 
 ### 3.3 Can provisioning be fully script-driven on the radio?
 - **Partly.** Lua **cannot** call "create model" directly. But Lua **can write files**: the
   `io` library is compiled in (`thirdparty/lua/src/linit.c:110`) with working
   `io.open`/`io.read`/`io.write`/`io.close` (`liolib.c`), plus a `dir` library
   (`api_filesystem.cpp`) exposing `dir`, `fstat`, `del`, `chdir`, `mkdir`, `rename`.
-- **Therefore OpenBar's realistic provisioning flow is:**
-  1. OpenBar Lua tool gathers heli setup via its own touch UI.
-  2. It writes a fully-formed `OpenBar-Heli.yml` into `/TEMPLATES/2.Personal/`.
-  3. User taps "create model from template" once (built-in C++ screen) — or OpenBar mutates
+- **Therefore Evora's realistic provisioning flow is:**
+  1. Evora Lua tool gathers heli setup via its own touch UI.
+  2. It writes a fully-formed `Evora-Heli.yml` into `/TEMPLATES/2.Personal/`.
+  3. User taps "create model from template" once (built-in C++ screen) — or Evora mutates
      a freshly-created blank model in place using the `model.*` write API (§1.2).
-  4. OpenBar then talks to the FC over MSP-over-CRSF (§2) to push Rotorflight config.
+  4. Evora then talks to the FC over MSP-over-CRSF (§2) to push Rotorflight config.
 - A **single-tap, fully-automated** "create + select + configure" with zero EdgeTX-native
   screens is the one thing that needs a C++ change (expose `createModel`/`selectModel` to
-  Lua, or add an OpenBar provisioning hook).
+  Lua, or add an Evora provisioning hook).
 
 ---
 
@@ -188,13 +188,13 @@ already-created model in place via the `model.*` write API above.
   - **480×320** — `st16`, `t15pro`, `tx15`, newer Horus variant.
   - **320×480 (portrait)** — `pl18` (Jumper T-Pro-ish), `pa01`.
   - **800×480** — `tx16smk3` and `stm32h7s78-dk` (H7-class). The **next-gen radio is very
-    likely an 800×480 H7 target**, so design OpenBar layouts resolution-independently
+    likely an 800×480 H7 target**, so design Evora layouts resolution-independently
     (LVGL flex layout + relative coords), not pixel-pinned to 480×272.
 - **Theme system:** EdgeTX has a C++ theme/Yaml theme system for the *radio's own* UI
   (colors, top bar, menus). **Lua scripts cannot redefine the global theme or the system
   chrome.** What Lua *can* do is take over the **entire screen** in app/full-screen mode and
-  draw whatever it wants with LVGL — so within an OpenBar tool you are not constrained by the
-  EdgeTX look at all; you only see EdgeTX chrome when you *leave* OpenBar.
+  draw whatever it wants with LVGL — so within an Evora tool you are not constrained by the
+  EdgeTX look at all; you only see EdgeTX chrome when you *leave* Evora.
 - **Realistic look-and-feel ceiling for pure Lua:** rich, scrollable, multi-page,
   touch-driven app with custom colors, icons (PNG via `Bitmap.open`/`image`), QR codes,
   styled buttons/cards, modal dialogs, sliders and number spinners, and your own navigation.
@@ -210,10 +210,10 @@ already-created model in place via the `model.*` write API above.
 | Option | What it unlocks | Cost / maintainability |
 |--------|-----------------|------------------------|
 | **A. Pure-Lua / LVGL "app" suite** (recommended start) | Full custom touch UI, read+write all model mixes/inputs/outputs/LS/curves/SF/GVs, MSP-over-CRSF to Rotorflight, SD-card config persistence, write `.yml` templates. ~90% of the VBar setup experience. | **Lowest.** Ships as a folder of `.lua` on the SD card; survives EdgeTX upgrades with little/no change (stable Lua API). No build toolchain. Distributable like Rotorflight's suite. |
-| **B. Lua suite + a custom EdgeTX theme** | Everything in A, plus the *radio's own* chrome (home screen, top bar, model list) matches OpenBar branding. | **Low-moderate.** Theme is data/Yaml + maybe minor C++; cosmetic only, doesn't unlock new capability. Theme format can drift across versions. |
+| **B. Lua suite + a custom EdgeTX theme** | Everything in A, plus the *radio's own* chrome (home screen, top bar, model list) matches Evora branding. | **Low-moderate.** Theme is data/Yaml + maybe minor C++; cosmetic only, doesn't unlock new capability. Theme format can drift across versions. |
 | **C. C++ firmware fork** | True one-tap model auto-create/select, sensor provisioning, custom fonts, deeper UI, larger/faster MSP transport, removing the per-cycle Lua throttle, system-level wizards. | **Highest.** Must track upstream EdgeTX (frequent releases), maintain CI/builds per target, re-flash radios, and users can't use stock firmware. Reserve for capabilities A+B genuinely cannot deliver. |
 
-**Recommended path:** Build OpenBar as **Option A** (Lua/LVGL app + MSP-over-CRSF, modeled on
+**Recommended path:** Build Evora as **Option A** (Lua/LVGL app + MSP-over-CRSF, modeled on
 the Rotorflight suite), optionally add **Option B** branding. Only escalate to **Option C**
 if the product demands fully unattended model creation or a deeper system integration than
 the Lua API allows — and even then, consider upstreaming a minimal "Lua model-provisioning"
@@ -221,7 +221,7 @@ PR to EdgeTX instead of a long-lived fork.
 
 ---
 
-## 6. "Lua can / Lua cannot" capability table (OpenBar use case)
+## 6. "Lua can / Lua cannot" capability table (Evora use case)
 
 | Capability | Lua? | Notes / source |
 |------------|------|----------------|
@@ -235,7 +235,7 @@ PR to EdgeTX instead of a long-lived fork.
 | Read telemetry sensors / values | ✅ | `model.getSensor`, `getValue` |
 | **Create a telemetry sensor / set its config** | ❌ | only `getSensor`/`resetSensor` |
 | MSP tunnel to FC over CRSF (Rotorflight) | ✅ | `crossfireTelemetryPush/Pop`, 64-byte frame cap, chunk in Lua |
-| Persist OpenBar's own config to SD | ✅ | `io.open/write`, `dir.mkdir` etc. |
+| Persist Evora's own config to SD | ✅ | `io.open/write`, `dir.mkdir` etc. |
 | Write a `model.yml` template to SD | ✅ | `io.write` + `/TEMPLATES/2.Personal` |
 | **Create / select / copy / delete a model** | ❌ | C++ only: `createModel()`, `ModelsList::addModel` |
 | **One-tap auto-create+select+configure (no native screen)** | ❌ | needs C++ hook |
@@ -256,14 +256,14 @@ PR to EdgeTX instead of a long-lived fork.
   when hardware arrives; design layouts resolution-independently regardless.
 - **`io` library availability on every shipping color build** — it's in `linit.c`, but confirm
   no target disables it; if blocked, fall back to the `dir`/`api_filesystem` helpers.
-- **Mix/Function script LCD restriction** — confirmed "no LCD access" in docs; OpenBar must use
+- **Mix/Function script LCD restriction** — confirmed "no LCD access" in docs; Evora must use
   Tool/Widget/Telemetry types for any UI.
 
 ---
 
 ## Sources
 
-### Repo files (`/tmp/openbar-research/edgetx`, depth-1 clone, 2026-06-01)
+### Repo files (`/tmp/evora-research/edgetx`, depth-1 clone, 2026-06-01)
 - `radio/src/lua/api_model.cpp` — model read/write API (table `modellib`, lines 1962-2006)
 - `radio/src/lua/api_general.cpp` — global API; `crossfireTelemetryPush` (l.1195), `serialWrite`, `setShmVar`/`getShmVar` (l.2487)
 - `radio/src/lua/api_colorlcd.cpp` — immediate-mode `lcd.*` drawing primitives

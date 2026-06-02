@@ -1,16 +1,16 @@
-# OpenBar Research 03 — ExpressLRS (ELRS): The Link Layer
+# Evora Research 03 — ExpressLRS (ELRS): The Link Layer
 
-**Scope.** ELRS is the open-source RC control link OpenBar will use to carry both RC channels
-and — critically — the over-the-air (OTA) configuration pipe that the OpenBar setup wizard uses
+**Scope.** ELRS is the open-source RC control link Evora will use to carry both RC channels
+and — critically — the over-the-air (OTA) configuration pipe that the Evora setup wizard uses
 to configure a Rotorflight/Betaflight flight controller (FC) from the radio. This report
 characterizes the architecture, the MSP-over-CRSF tunnel (the load-bearing pipe), binding &
 onboarding, configuring ELRS itself, and telemetry to EdgeTX. Findings are drawn from the ELRS
 source (shallow clone, `master` as of 2026-06) and the official docs.
 
-> **Headline for OpenBar:** The OTA config pipe (MSP-over-CRSF) is real and is exactly how
+> **Headline for Evora:** The OTA config pipe (MSP-over-CRSF) is real and is exactly how
 > Betaflight/Rotorflight Lua configurators already run from the radio today — but it is a
 > **narrow, half-duplex, telemetry-rate-limited channel**, not a USB-like link. Full FC
-> configuration over the air is feasible but **slow and bursty**, and OpenBar must design its
+> configuration over the air is feasible but **slow and bursty**, and Evora must design its
 > wizard around chunked transfers, a constrained telemetry budget, and the 8-byte uplink write
 > limit. See "MSP-over-CRSF constraints" below.
 
@@ -79,7 +79,7 @@ source (shallow clone, `master` as of 2026-06) and the official docs.
 ELRS tunnels **MSP** (the MultiWii Serial Protocol used by Betaflight/Rotorflight) through the
 CRSF bus, end-to-end: radio Lua/EdgeTX → TX module → OTA → RX → FC, and the FC's MSP response
 comes back the same way. This is the mechanism a Betaflight/Rotorflight TX Lua configurator uses
-to read and write FC settings from the radio with no PC. **It is OpenBar's setup-wizard pipe.**
+to read and write FC settings from the radio with no PC. **It is Evora's setup-wizard pipe.**
 
 ### How the tunnel works (from source)
 MSP frames (`$M<…`/`$X<…`, V1/V1-Jumbo/V2) are **fragmented into CRSF chunks** and reassembled.
@@ -126,7 +126,7 @@ RC/telemetry frame cadence.
   push config while armed (can desync → failsafe). *(src: WebSearch — Betaflight TX Lua / ELRS
   troubleshooting)*
 
-**Bottom line for OpenBar:** full OTA FC configuration is viable (it is the existing Betaflight
+**Bottom line for Evora:** full OTA FC configuration is viable (it is the existing Betaflight
 CMS/configurator workflow), but treat the pipe as a **slow, lossy serial line**: chunk
 everything, expect 8-byte uplink writes, drive a robust request/response state machine with
 timeouts + retries, show progress, and pick a telemetry-ratio/packet-rate profile during setup
@@ -149,7 +149,7 @@ that prioritizes throughput over RC latency. Do NOT assume USB-class bandwidth.
 - A blank phrase = UID all-zeros = "unbound." On the RX, a non-bound or matching UID triggers
   `EnterBindingMode()`. *(src: `config.cpp` L19; `rx_main.cpp` L1639+)*
 
-### Where beginners get confused (smooth these in OpenBar)
+### Where beginners get confused (smooth these in Evora)
 1. **"Bind button does nothing."** A phrase-equipped RX **will not** enter manual bind, no matter
    how many power cycles — you must reflash without a phrase. Big footgun. *(docs: binding)*
 2. **Region/domain mismatch.** Domain is **compile-time** and region-locked; a 915 MHz RX won't
@@ -169,7 +169,7 @@ that prioritizes throughput over RC latency. Do NOT assume USB-class bandwidth.
 
 ---
 
-## 4. Configuring ELRS itself (can OpenBar fold it into one wizard?)
+## 4. Configuring ELRS itself (can Evora fold it into one wizard?)
 
 - **Yes, via the CRSF parameter system** (not MSP). The on-radio `elrs.lua` script walks the TX
   module's parameter tree using `DEVICE_PING/PARAMETER_SETTINGS_ENTRY/READ/WRITE` and renders a
@@ -179,15 +179,15 @@ that prioritizes throughput over RC latency. Do NOT assume USB-class bandwidth.
   (Normal/MAVLink), VTX admin, Backpack/WiFi, RX protocol selection, bind storage, Team Race.
   *(docs: lua-howto)*
 - **Two separate control planes.** ELRS-link settings use **CRSF parameters**; FC settings use
-  **MSP-over-CRSF**. OpenBar **can present one unified wizard**, but under the hood it must speak
+  **MSP-over-CRSF**. Evora **can present one unified wizard**, but under the hood it must speak
   *both* protocols on the same CRSF bus (different frame types, different endpoints/addresses).
 - **Caveat:** changing Packet Rate or Switch Mode forces a **link renegotiation / brief
-  disconnect**; changing settings while armed can desync → failsafe. OpenBar's wizard should
+  disconnect**; changing settings while armed can desync → failsafe. Evora's wizard should
   sequence link-layer changes first (and out of armed state), then FC config.
 
 ---
 
-## 5. Telemetry to EdgeTX (for OpenBar dashboards)
+## 5. Telemetry to EdgeTX (for Evora dashboards)
 
 Sensors that surface in EdgeTX (from CRSF frame types in `crsf_protocol.h`), all over the
 telemetry-ratio-limited downlink:
@@ -201,13 +201,13 @@ telemetry-ratio-limited downlink:
 - **RPM** (`0x0C`, up to 19 sources), **Temp** (`0x0D`, up to 20), **Cells** (`0x0E`, up to 29),
   **Airspeed** (`0x0A`), **Heartbeat** (`0x0B`).
 
-These give OpenBar dashboards link health (RSSI/LQ/SNR), pack voltage/current, attitude, and —
+These give Evora dashboards link health (RSSI/LQ/SNR), pack voltage/current, attitude, and —
 relevant for helis — RPM and ESC/FC temperatures, all without extra wiring. Note: richer sensors
 (many RPM/temp sources) consume more downlink budget and compete with MSP config traffic.
 
 ---
 
-## 6. What OpenBar must orchestrate at the link layer for bind-and-go
+## 6. What Evora must orchestrate at the link layer for bind-and-go
 
 1. **Pair via binding phrase by default.** Generate/derive the UID
    (`md5("-DMY_BINDING_PHRASE=\"<phrase>\"")[0:6]`) and flash both TX and RX with the same phrase
@@ -252,7 +252,7 @@ relevant for helis — RPM and ESC/FC temperatures, all without extra wiring. No
 
 ## Sources
 
-**Repository** (shallow clone `master`, `/tmp/openbar-research/elrs`):
+**Repository** (shallow clone `master`, `/tmp/evora-research/elrs`):
 - `src/include/crsf_protocol.h` — CRSF frame types, addresses, MSP_REQ/RESP/WRITE sizes, link
   stats struct, telemetry sensor structs, channel scaling.
 - `src/lib/CRSF2MSP/crsfmsp_common.h` — chunk/frame-size constants (57/512), MSP version enum.
@@ -295,7 +295,7 @@ relevant for helis — RPM and ESC/FC temperatures, all without extra wiring. No
   rate + telemetry ratio.
 - **Whether the 8-byte uplink write limit still holds on current EdgeTX** (the comment cites
   "OpenTX"); EdgeTX may have changed the outbound telemetry buffer. **Verify against EdgeTX
-  source** before sizing OpenBar's write batches.
+  source** before sizing Evora's write batches.
 - **Rotorflight-specific MSP coverage** (vs Betaflight) over CRSF — confirm Rotorflight's MSP
   command set and any larger payloads are within the 512-byte frame limit.
 - **Lua/parameter-system rate limits** for bulk ELRS-link config aren't quantified here.

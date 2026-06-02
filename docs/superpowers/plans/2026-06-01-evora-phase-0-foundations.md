@@ -1,10 +1,10 @@
-# OpenBar Phase 0 — Foundations Implementation Plan
+# Evora Phase 0 — Foundations Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Prove we can fork, build, flash, and recover *stock* versions of all three OpenBar firmwares on the maintainer's actual hardware — establishing the toolchains, repos, and recovery procedures before we change any behavior.
+**Goal:** Prove we can fork, build, flash, and recover *stock* versions of all three Evora firmwares on the maintainer's actual hardware — establishing the toolchains, repos, and recovery procedures before we change any behavior.
 
-**Architecture:** OpenBar is three forks (radio = EdgeTX, link TX + RX = ExpressLRS) riding an untouched Rotorflight FC. Phase 0 does **no feature work** — it de-risks "can we own each end?" The riskiest item (flashing our own ELRS build onto the FlyDragon's built-in, vendor-targeted RX) is proven here.
+**Architecture:** Evora is three forks (radio = EdgeTX, link TX + RX = ExpressLRS) riding an untouched Rotorflight FC. Phase 0 does **no feature work** — it de-risks "can we own each end?" The riskiest item (flashing our own ELRS build onto the FlyDragon's built-in, vendor-targeted RX) is proven here.
 
 **Tech Stack:** EdgeTX (C++/CMake, Docker build), ExpressLRS (C++/PlatformIO), Rotorflight (flashed by the maintainer, not built by us), GitHub forks + Actions CI.
 
@@ -15,7 +15,7 @@
 - FC: **FlyDragon F722 V2 / V2.2** FBL, STM32F722, Rotorflight target `FLYDRAGONF722_V2_2` (confirm exact revision), **latest stable Rotorflight 2.2.1** (maintainer flashes this themselves).
 - RX: **built-in ELRS** on the FlyDragon (ESP8285 + SX1280, 2.4 GHz, on F722 UART1, CRSF), flashed via Rotorflight serial passthrough. **No mainline ELRS target exists — we author one.**
 
-**Workspace layout:** upstream forks are cloned under `~/Projects/OpenBar/forks/` (gitignored; they are their own GitHub repos, not vendored into the OpenBar meta repo).
+**Workspace layout:** upstream forks are cloned under `~/Projects/Evora/forks/` (gitignored; they are their own GitHub repos, not vendored into the Evora meta repo).
 
 ---
 
@@ -23,11 +23,11 @@
 
 | Repo | Origin | Purpose |
 |---|---|---|
-| `ScottThomasGraham/OpenBar` (exists) | — | Meta repo: docs, specs, plans, build orchestration, confirmed-config records. |
-| `ScottThomasGraham/OpenBar-Radio` | fork of `edgetx/edgetx` | OpenBar radio firmware. Work on branch `openbar`. |
-| `ScottThomasGraham/OpenBar-Link` | fork of `ExpressLRS/ExpressLRS` | OpenBar link firmware (TX module + RX). Work on branch `openbar`. |
+| `ScottThomasGraham/Evora` (exists) | — | Meta repo: docs, specs, plans, build orchestration, confirmed-config records. |
+| `ScottThomasGraham/Evora-TX` | fork of `edgetx/edgetx` | Evora radio firmware. Work on branch `evora`. |
+| `ScottThomasGraham/Evora-Link` | fork of `ExpressLRS/ExpressLRS` | Evora link firmware (TX module + RX). Work on branch `evora`. |
 
-Local clones: `~/Projects/OpenBar/forks/OpenBar-Radio`, `~/Projects/OpenBar/forks/OpenBar-Link`.
+Local clones: `~/Projects/Evora/forks/evora-tx`, `~/Projects/Evora/forks/evora-link`.
 
 Phase 0 also creates, in the **meta repo**:
 - `docs/hardware/confirmed-config.md` — the single source of truth for exact targets, versions, board revision, binding phrase location, recovery steps.
@@ -58,7 +58,7 @@ Expected: gh reports logged in as `ScottThomasGraham`. If not logged in, the use
 
 - [ ] **Step 4: Create the forks workspace and gitignore guard**
 
-Run: `mkdir -p ~/Projects/OpenBar/forks/.local && echo "forks workspace ready"`
+Run: `mkdir -p ~/Projects/Evora/forks/.local && echo "forks workspace ready"`
 Expected: `forks workspace ready`. (`/forks/` is already in `.gitignore`.)
 
 ---
@@ -66,62 +66,62 @@ Expected: `forks workspace ready`. (`/forks/` is already in `.gitignore`.)
 ## Task 1: Fork and clone the firmwares [CLAUDE] (+ [USER] if gh not authed)
 
 **Files:**
-- Create: `~/Projects/OpenBar/forks/OpenBar-Radio/` (clone)
-- Create: `~/Projects/OpenBar/forks/OpenBar-Link/` (clone)
-- Create: `~/Projects/OpenBar/forks/OpenBar-Radio/OPENBAR.md`, `.../OpenBar-Link/OPENBAR.md`
+- Create: `~/Projects/Evora/forks/evora-tx/` (clone)
+- Create: `~/Projects/Evora/forks/evora-link/` (clone)
+- Create: `~/Projects/Evora/forks/evora-tx/OPENBAR.md`, `.../Evora-Link/OPENBAR.md`
 
-- [ ] **Step 1: Fork EdgeTX → OpenBar-Radio**
+- [ ] **Step 1: Fork EdgeTX → Evora-TX**
 
-Run: `gh repo fork edgetx/edgetx --fork-name OpenBar-Radio --clone=false --org ScottThomasGraham 2>&1 || gh repo fork edgetx/edgetx --fork-name OpenBar-Radio --clone=false`
-Expected: a fork `ScottThomasGraham/OpenBar-Radio` is created. (If gh is unauthed: **[USER]** clicks "Fork" on https://github.com/edgetx/edgetx, renames to `OpenBar-Radio`, then tell Claude it's done.)
+Run: `gh repo fork edgetx/edgetx --fork-name Evora-TX --clone=false --org ScottThomasGraham 2>&1 || gh repo fork edgetx/edgetx --fork-name Evora-TX --clone=false`
+Expected: a fork `ScottThomasGraham/Evora-TX` is created. (If gh is unauthed: **[USER]** clicks "Fork" on https://github.com/edgetx/edgetx, renames to `Evora-TX`, then tell Claude it's done.)
 
-- [ ] **Step 2: Fork ExpressLRS → OpenBar-Link**
+- [ ] **Step 2: Fork ExpressLRS → Evora-Link**
 
-Run: `gh repo fork ExpressLRS/ExpressLRS --fork-name OpenBar-Link --clone=false 2>&1`
-Expected: a fork `ScottThomasGraham/OpenBar-Link` is created. (Web-UI fallback as above if needed.)
+Run: `gh repo fork ExpressLRS/ExpressLRS --fork-name Evora-Link --clone=false 2>&1`
+Expected: a fork `ScottThomasGraham/Evora-Link` is created. (Web-UI fallback as above if needed.)
 
 - [ ] **Step 3: Clone both forks (shallow-ish, with submodules for EdgeTX)**
 
 Run:
 ```bash
-cd ~/Projects/OpenBar/forks
-git clone --recurse-submodules https://github.com/ScottThomasGraham/OpenBar-Radio.git
-git clone --recurse-submodules https://github.com/ScottThomasGraham/OpenBar-Link.git
+cd ~/Projects/Evora/forks
+git clone --recurse-submodules https://github.com/ScottThomasGraham/Evora-TX.git
+git clone --recurse-submodules https://github.com/ScottThomasGraham/Evora-Link.git
 ```
-Expected: both repos clone, including submodules (EdgeTX and ELRS both use submodules). Verify: `ls OpenBar-Radio/radio && ls OpenBar-Link/src`.
+Expected: both repos clone, including submodules (EdgeTX and ELRS both use submodules). Verify: `ls Evora-TX/radio && ls Evora-Link/src`.
 
 - [ ] **Step 4: Add upstream remotes and record the pinned baseline**
 
 Run:
 ```bash
-cd ~/Projects/OpenBar/forks/OpenBar-Radio && git remote add upstream https://github.com/edgetx/edgetx.git && git fetch --tags upstream && git rev-parse HEAD
-cd ~/Projects/OpenBar/forks/OpenBar-Link && git remote add upstream https://github.com/ExpressLRS/ExpressLRS.git && git fetch --tags upstream && git rev-parse HEAD
+cd ~/Projects/Evora/forks/evora-tx && git remote add upstream https://github.com/edgetx/edgetx.git && git fetch --tags upstream && git rev-parse HEAD
+cd ~/Projects/Evora/forks/evora-link && git remote add upstream https://github.com/ExpressLRS/ExpressLRS.git && git fetch --tags upstream && git rev-parse HEAD
 ```
-Expected: two commit SHAs printed. Note: prefer pinning to the latest **stable release tag** of each (EdgeTX: latest `v2.x.x`; ELRS: latest `3.x.x`). Check out those tags onto an `openbar` branch in Step 5.
+Expected: two commit SHAs printed. Note: prefer pinning to the latest **stable release tag** of each (EdgeTX: latest `v2.x.x`; ELRS: latest `3.x.x`). Check out those tags onto an `evora` branch in Step 5.
 
-- [ ] **Step 5: Create the `openbar` working branch at the latest stable tag**
+- [ ] **Step 5: Create the `evora` working branch at the latest stable tag**
 
 Run (replace tags with the actual latest stable shown by `git tag --sort=-creatordate | head`):
 ```bash
-cd ~/Projects/OpenBar/forks/OpenBar-Radio && git tag --sort=-creatordate | grep -E '^v?2\.' | head -5
-cd ~/Projects/OpenBar/forks/OpenBar-Link && git tag --sort=-creatordate | grep -E '^v?3\.' | head -5
+cd ~/Projects/Evora/forks/evora-tx && git tag --sort=-creatordate | grep -E '^v?2\.' | head -5
+cd ~/Projects/Evora/forks/evora-link && git tag --sort=-creatordate | grep -E '^v?3\.' | head -5
 ```
-Then, for each repo: `git checkout -b openbar <latest-stable-tag> && git submodule update --init --recursive`
-Expected: each repo is on branch `openbar` at a tagged stable commit, submodules synced.
+Then, for each repo: `git checkout -b evora <latest-stable-tag> && git submodule update --init --recursive`
+Expected: each repo is on branch `evora` at a tagged stable commit, submodules synced.
 
 - [ ] **Step 6: Write OPENBAR.md (maintenance strategy) in each fork**
 
 Create `OPENBAR.md` in each fork with this content (adjust SHAs/tags to the recorded values):
 ```markdown
-# OpenBar fork
+# Evora fork
 
 Upstream: <edgetx/edgetx | ExpressLRS/ExpressLRS>
 Pinned baseline: <tag> (<SHA>)
-Working branch: openbar
+Working branch: evora
 
 ## Maintenance
-- Keep OpenBar changes minimal-diff and layered so upstream rebases stay tractable.
-- To update: `git fetch upstream --tags`, branch from new stable tag, cherry-pick/rebase the openbar diff, rebuild + re-run Phase 0 flash/recovery drills before adopting.
+- Keep Evora changes minimal-diff and layered so upstream rebases stay tractable.
+- To update: `git fetch upstream --tags`, branch from new stable tag, cherry-pick/rebase the evora diff, rebuild + re-run Phase 0 flash/recovery drills before adopting.
 - Never modify Rotorflight; never touch flight-safety plumbing (failsafe/arming/ADC) unless a task explicitly requires it.
 ```
 
@@ -129,16 +129,16 @@ Working branch: openbar
 
 Run (each fork):
 ```bash
-git add OPENBAR.md && git commit -m "chore: add OpenBar fork maintenance notes" && git push -u origin openbar
+git add OPENBAR.md && git commit -m "chore: add Evora fork maintenance notes" && git push -u origin evora
 ```
-Expected: branch `openbar` pushed to each fork.
+Expected: branch `evora` pushed to each fork.
 
 ---
 
 ## Task 2: Build stock EdgeTX for the TX16S [CLAUDE]
 
 **Files:**
-- Create: `~/Projects/OpenBar/forks/OpenBar-Radio/build-tx16s/` (build dir)
+- Create: `~/Projects/Evora/forks/evora-tx/build-tx16s/` (build dir)
 
 - [ ] **Step 1: Pull the EdgeTX dev build container**
 
@@ -149,19 +149,19 @@ Expected: image pulled. (This is EdgeTX's official build environment; it contain
 
 Run:
 ```bash
-cd ~/Projects/OpenBar/forks/OpenBar-Radio
+cd ~/Projects/Evora/forks/evora-tx
 docker run --rm -v "$PWD:/src" ghcr.io/edgetx/edgetx-dev bash -lc '
   cd /src && mkdir -p build-tx16s && cd build-tx16s &&
   cmake -DPCB=X10 -DPCBREV=TX16S -DDEFAULT_MODE=2 -DCMAKE_BUILD_TYPE=Release ../ &&
   make -j"$(nproc)" firmware'
 ```
-Expected: build completes with `firmware.bin` produced. (Cross-check flags against `OpenBar-Radio/doc/` / the EdgeTX "Compiling firmware" docs if cmake errors; `PCB=X10 PCBREV=TX16S` is the TX16S family.)
+Expected: build completes with `firmware.bin` produced. (Cross-check flags against `Evora-TX/doc/` / the EdgeTX "Compiling firmware" docs if cmake errors; `PCB=X10 PCBREV=TX16S` is the TX16S family.)
 
 - [ ] **Step 3: Verify the artifact**
 
-Run: `ls -la ~/Projects/OpenBar/forks/OpenBar-Radio/build-tx16s/firmware.bin`
+Run: `ls -la ~/Projects/Evora/forks/evora-tx/build-tx16s/firmware.bin`
 Expected: a `firmware.bin` of roughly 2–4 MB. Copy it to a clear name:
-Run: `cp ~/Projects/OpenBar/forks/OpenBar-Radio/build-tx16s/firmware.bin ~/Projects/OpenBar/forks/.local/edgetx-tx16s-stock.bin`
+Run: `cp ~/Projects/Evora/forks/evora-tx/build-tx16s/firmware.bin ~/Projects/Evora/forks/.local/edgetx-tx16s-stock.bin`
 
 ---
 
@@ -198,17 +198,17 @@ Acceptance: a bad/again flash is always recoverable via bootloader. **Document t
 
 [USER] On the radio: EdgeTX → Tools → run the **ExpressLRS** Lua script. Read the header (maker/model/firmware version). Confirm it identifies as a **RadioMaster 2.4 GHz internal** module (target family `RadioMaster TX16S 2400 TX`). Report the exact model string + version to Claude. Record in `confirmed-config.md`.
 
-- [ ] **Step 2: Choose and store the OpenBar binding phrase**
+- [ ] **Step 2: Choose and store the Evora binding phrase**
 
-[USER] Pick a binding phrase (any memorable string, e.g. `openbar-<word>`). [CLAUDE] store it untracked:
-Run: `printf 'BINDING_PHRASE=%s\n' "<phrase>" > ~/Projects/OpenBar/forks/.local/binding.env && echo stored`
+[USER] Pick a binding phrase (any memorable string, e.g. `evora-<word>`). [CLAUDE] store it untracked:
+Run: `printf 'BINDING_PHRASE=%s\n' "<phrase>" > ~/Projects/Evora/forks/.local/binding.env && echo stored`
 Expected: `stored`. (This file is gitignored; the binding phrase is link-identifying, keep it out of the public repo.)
 
 - [ ] **Step 3: List available ELRS build environments and find the TX16S internal env**
 
 Run:
 ```bash
-cd ~/Projects/OpenBar/forks/OpenBar-Link
+cd ~/Projects/Evora/forks/evora-link
 grep -ril "TX16S" targets/ | head; grep -rl "2400" targets/*TX* 2>/dev/null | head
 ```
 Expected: locate the target JSON for the RadioMaster TX16S 2.4 GHz internal module. Record the exact PlatformIO env / target id (`$ELRS_TX_ENV`).
@@ -217,15 +217,15 @@ Expected: locate the target JSON for the RadioMaster TX16S 2.4 GHz internal modu
 
 Run:
 ```bash
-cd ~/Projects/OpenBar/forks/OpenBar-Link
-source ~/Projects/OpenBar/forks/.local/binding.env
+cd ~/Projects/Evora/forks/evora-link
+source ~/Projects/Evora/forks/.local/binding.env
 pio run -e "$ELRS_TX_ENV"
 ```
 Expected: build succeeds, a `firmware.bin` is produced under `.pio/build/$ELRS_TX_ENV/`. (Binding phrase is applied via the ELRS options/target system; if the env needs the phrase injected differently, use the `options.json`/`-D MY_BINDING_PHRASE` mechanism documented in the ELRS source.)
 
 - [ ] **Step 5: Verify the artifact**
 
-Run: `ls -la ~/Projects/OpenBar/forks/OpenBar-Link/.pio/build/$ELRS_TX_ENV/firmware.bin && cp $_ ~/Projects/OpenBar/forks/.local/elrs-tx16s-stock.bin`
+Run: `ls -la ~/Projects/Evora/forks/evora-link/.pio/build/$ELRS_TX_ENV/firmware.bin && cp $_ ~/Projects/Evora/forks/.local/elrs-tx16s-stock.bin`
 Expected: a firmware binary exists and is copied to `.local/`.
 
 ---
@@ -255,7 +255,7 @@ Acceptance: module is re-flashable/recoverable.
 ## Task 6: Build stock ELRS for the FlyDragon built-in RX — author the custom target [CLAUDE] ⚠ key de-risk
 
 **Files:**
-- Create: `~/Projects/OpenBar/forks/OpenBar-Link/targets/openbar-flydragon-r24d.json` (custom hardware definition)
+- Create: `~/Projects/Evora/forks/evora-link/targets/evora-flydragon-r24d.json` (custom hardware definition)
 
 - [ ] **Step 1: Gather the RX pin/hardware mapping**
 
@@ -263,21 +263,21 @@ Acceptance: module is re-flashable/recoverable.
 
 - [ ] **Step 2: Author the custom hardware definition**
 
-Create `targets/openbar-flydragon-r24d.json` modeled on an existing ESP8285 2400 diversity RX target in `targets/`, with the gathered pin map. Keep it minimal and clearly commented as OpenBar-authored.
+Create `targets/evora-flydragon-r24d.json` modeled on an existing ESP8285 2400 diversity RX target in `targets/`, with the gathered pin map. Keep it minimal and clearly commented as Evora-authored.
 
 - [ ] **Step 3: Build the RX firmware against the custom target**
 
 Run:
 ```bash
-cd ~/Projects/OpenBar/forks/OpenBar-Link
-source ~/Projects/OpenBar/forks/.local/binding.env
-pio run -e <esp8285 RX env using openbar-flydragon-r24d>   # record as $ELRS_RX_ENV
+cd ~/Projects/Evora/forks/evora-link
+source ~/Projects/Evora/forks/.local/binding.env
+pio run -e <esp8285 RX env using evora-flydragon-r24d>   # record as $ELRS_RX_ENV
 ```
 Expected: a build completes producing an RX `firmware.bin`. If pin assumptions are wrong the build still compiles (pins are data) — correctness is verified on hardware in Task 7. If the custom target proves intractable, **fallback:** build the closest **Generic ESP8285 2400 RX** target and note the limitation.
 
 - [ ] **Step 4: Verify + stage the artifact**
 
-Run: `ls -la ~/Projects/OpenBar/forks/OpenBar-Link/.pio/build/$ELRS_RX_ENV/firmware.bin && cp $_ ~/Projects/OpenBar/forks/.local/elrs-flydragon-rx.bin`
+Run: `ls -la ~/Projects/Evora/forks/evora-link/.pio/build/$ELRS_RX_ENV/firmware.bin && cp $_ ~/Projects/Evora/forks/.local/elrs-flydragon-rx.bin`
 Expected: RX firmware staged in `.local/`.
 
 ---
@@ -301,7 +301,7 @@ Expected: RX firmware staged in `.local/`.
 - [ ] **Step 4: Verify bind + RC control + telemetry**
 
 [USER] Power TX (internal module, same binding phrase) and the heli (props off / motor disabled). Confirm: the RX **binds** automatically (phrase match), Rotorflight shows **RC channels moving** with stick input (Receiver tab), and **link telemetry** (RSSI/LQ) appears on the radio. Report each.
-Acceptance: **we built and flashed our own ELRS firmware onto the built-in RX, and it binds + controls + reports telemetry.** This proves OpenBar can own the RX end. ✅
+Acceptance: **we built and flashed our own ELRS firmware onto the built-in RX, and it binds + controls + reports telemetry.** This proves Evora can own the RX end. ✅
 
 - [ ] **Step 5: Recovery drill (and decision record)**
 
@@ -315,15 +315,15 @@ Acceptance: **we built and flashed our own ELRS firmware onto the built-in RX, a
 ## Task 8: Continuous Integration [CLAUDE]
 
 **Files:**
-- Create: `~/Projects/OpenBar/forks/OpenBar-Radio/.github/workflows/openbar-build.yml`
-- Create: `~/Projects/OpenBar/forks/OpenBar-Link/.github/workflows/openbar-build.yml`
+- Create: `~/Projects/Evora/forks/evora-tx/.github/workflows/evora-build.yml`
+- Create: `~/Projects/Evora/forks/evora-link/.github/workflows/evora-build.yml`
 
 - [ ] **Step 1: Add a radio CI workflow that builds the TX16S target**
 
-Create `OpenBar-Radio/.github/workflows/openbar-build.yml`:
+Create `Evora-TX/.github/workflows/evora-build.yml`:
 ```yaml
-name: OpenBar Radio build
-on: { push: { branches: [openbar] }, pull_request: { branches: [openbar] } }
+name: Evora TX build
+on: { push: { branches: [evora] }, pull_request: { branches: [evora] } }
 jobs:
   tx16s:
     runs-on: ubuntu-latest
@@ -338,10 +338,10 @@ jobs:
 
 - [ ] **Step 2: Add a link CI workflow that builds the TX + RX targets**
 
-Create `OpenBar-Link/.github/workflows/openbar-build.yml`:
+Create `Evora-Link/.github/workflows/evora-build.yml`:
 ```yaml
-name: OpenBar Link build
-on: { push: { branches: [openbar] }, pull_request: { branches: [openbar] } }
+name: Evora Link build
+on: { push: { branches: [evora] }, pull_request: { branches: [evora] } }
 jobs:
   firmware:
     runs-on: ubuntu-latest
@@ -357,7 +357,7 @@ jobs:
 
 - [ ] **Step 3: Push and confirm green**
 
-Run (each fork): `git add .github/workflows/openbar-build.yml && git commit -m "ci: build OpenBar targets" && git push`
+Run (each fork): `git add .github/workflows/evora-build.yml && git commit -m "ci: build Evora targets" && git push`
 Then: `gh run watch` (or check the Actions tab).
 Expected: both workflows pass. Fix env names/flags until green.
 
@@ -366,8 +366,8 @@ Expected: both workflows pass. Fix env names/flags until green.
 ## Task 9: Phase 0 wrap-up [CLAUDE]
 
 **Files:**
-- Create: `~/Projects/OpenBar/docs/hardware/confirmed-config.md`
-- Modify: `~/Projects/OpenBar/README.md` (Status line)
+- Create: `~/Projects/Evora/docs/hardware/confirmed-config.md`
+- Modify: `~/Projects/Evora/README.md` (Status line)
 
 - [ ] **Step 1: Write the confirmed-config record**
 
@@ -381,7 +381,7 @@ Edit `README.md` Status line to: `Phase 0 complete — all three firmwares fork/
 
 Run:
 ```bash
-cd ~/Projects/OpenBar && git add -A && git commit -m "docs: Phase 0 foundations complete — confirmed hardware config + recovery"
+cd ~/Projects/Evora && git add -A && git commit -m "docs: Phase 0 foundations complete — confirmed hardware config + recovery"
 ```
 Expected: committed. (Push when the user asks.)
 

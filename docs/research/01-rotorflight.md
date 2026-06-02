@@ -1,11 +1,11 @@
-# Rotorflight Ecosystem Research (for OpenBar)
+# Rotorflight Ecosystem Research (for Evora)
 
-_Research date: 2026-06-01. Repos shallow-cloned to `/tmp/openbar-research/rotorflight`._
+_Research date: 2026-06-01. Repos shallow-cloned to `/tmp/evora-research/rotorflight`._
 
-OpenBar aims to recreate the Mikado VBar Control experience (wizard-driven, beginner-friendly,
+Evora aims to recreate the Mikado VBar Control experience (wizard-driven, beginner-friendly,
 radio-only heli setup, no PC) on EdgeTX + ExpressLRS + Rotorflight, while preserving Rotorflight's
 full flight-control core and tuning power behind a gated "Pro" mode. This document characterizes
-what Rotorflight is today and what OpenBar can build on.
+what Rotorflight is today and what Evora can build on.
 
 ---
 
@@ -92,7 +92,7 @@ S.Port, or GHST transport on demand).
 **Maturity / honesty:** Over-the-air MSP config is **real, established, and used daily** in the
 field — it is the entire basis of the Lua suites. Requirements (from the EdgeTX scripts README):
 CRSF v2.11+, **ELRS 2.0.1+**, and **ELRS baud set to 1.87M or higher** in the radio Hardware menu.
-**Caveats OpenBar must respect:** it is **slow** (small frames, queued, retried) — reading/writing a
+**Caveats Evora must respect:** it is **slow** (small frames, queued, retried) — reading/writing a
 full page takes noticeable time vs USB; it is **lossy** (needs the queue/retry layer); and there is
 a separate richer telemetry path (CRSF custom telemetry, frame type **`0x88`**, decoded by the
 suite's `rf2tlm`) for dashboards. There is also an open firmware issue (#81, "Better telemetry with
@@ -131,7 +131,7 @@ Rotorflight's config domain (mirrored across firmware, Configurator tabs, and Lu
 
 ## 5. On-Radio Tooling Today (MOST IMPORTANT)
 
-There are **three** Rotorflight radio-side Lua repos. OpenBar will almost certainly build on / extend
+There are **three** Rotorflight radio-side Lua repos. Evora will almost certainly build on / extend
 the modern one (RFSuite).
 
 | Repo | Platform | Style | Maturity |
@@ -169,9 +169,9 @@ serious, actively-maintained, near-feature-parity-with-the-PC tool.
 The **richest, most modern UX is RFSuite, which is ETHOS-only** (FrSky X20/X18 touchscreens). The
 **EdgeTX/OpenTX** suite (`rotorflight-lua-scripts`) is functionally broad but is the **text-menu**
 generation; there is no EdgeTX equivalent of the RFSuite touchscreen dashboard system.
-**Implication for OpenBar:** OpenBar targets **EdgeTX**, so it would build on the EdgeTX
+**Implication for Evora:** Evora targets **EdgeTX**, so it would build on the EdgeTX
 `rotorflight-lua-scripts` MSP/transport layer (which is solid and shares the same architecture), but
-the polished touchscreen UX patterns to emulate live in the ETHOS RFSuite — OpenBar would need to
+the polished touchscreen UX patterns to emulate live in the ETHOS RFSuite — Evora would need to
 bring that level of UX to EdgeTX itself. (Worth confirming directly with maintainers whether an
 EdgeTX RFSuite-style suite is planned.)
 
@@ -195,7 +195,7 @@ Ordered steps a new user must complete (synthesized from docs + Configurator tab
 10. **Rescue / failsafe / modes / adjustments** as desired.
 11. **Blackbox/dataflash** enable, then careful first spool-up.
 
-### Where it's confusing / error-prone (OpenBar's opportunity)
+### Where it's confusing / error-prone (Evora's opportunity)
 - **Swashplate + servo geometry/direction calibration** is the classic beginner trap — wrong
   servo direction or swash type = instant crash; requires understanding of geometry.
 - **Gear ratio + pole count** must be right or the governor headspeed is wrong/dangerous.
@@ -211,27 +211,27 @@ Ordered steps a new user must complete (synthesized from docs + Configurator tab
 
 ---
 
-## 7. What OpenBar Can Build On
+## 7. What Evora Can Build On
 
 - **MSP v2 + over-the-air transport is solved.** The CRSF MSP frame types (`0x7A/0x7B/0x7C`),
   MSP-over-telemetry, the MSP **queue/chunking/retry** layer, and a clean **transport abstraction**
-  all already exist in the EdgeTX `rotorflight-lua-scripts` (and ETHOS suites). OpenBar should reuse
+  all already exist in the EdgeTX `rotorflight-lua-scripts` (and ETHOS suites). Evora should reuse
   this rather than reinvent the link.
 - **A complete on-radio domain library:** per-domain MSP read/write Lua modules already exist for
   PIDs, rates, governor, rescue, servos, mixer, ESC, battery, telemetry, etc. These map 1:1 to the
-  firmware's RF-specific MSP commands — OpenBar's "Pro mode" can wrap/expose these directly,
+  firmware's RF-specific MSP commands — Evora's "Pro mode" can wrap/expose these directly,
   satisfying the "never dumb down tuning" constraint.
 - **RFSuite as a UX reference** for touchscreen config, dashboards, i18n (12 langs), and a web
   simulator workflow — a proven blueprint for radio-only full config.
-- **Presets infrastructure** (`rotorflight-presets`) — a ready source of smart defaults OpenBar's
+- **Presets infrastructure** (`rotorflight-presets`) — a ready source of smart defaults Evora's
   wizard can apply by heli class.
 - **Conservative firmware defaults** (esp. governor) that are intentionally maiden-flight-safe.
 - **Mature, well-factored firmware** (Betaflight pedigree, active 2.3 development) — the protected
-  core is stable and unlikely to need OpenBar changes.
+  core is stable and unlikely to need Evora changes.
 
-## 8. Gaps OpenBar Must Fill
+## 8. Gaps Evora Must Fill
 
-1. **A real first-setup WIZARD.** None of the existing tools has one. This is OpenBar's core value:
+1. **A real first-setup WIZARD.** None of the existing tools has one. This is Evora's core value:
    a guided, step-gated, validated flow (flash → orientation → RX → power → ESC → servos → swash
    geometry → governor → safety check → first spool-up).
 2. **Beginner-safe swashplate/servo setup** with strong visual feedback and direction/geometry
@@ -240,7 +240,7 @@ Ordered steps a new user must complete (synthesized from docs + Configurator tab
    governor, filtering, geometry" auto-applied from presets, with conservative governor filtering.
 4. **Progressive disclosure / gated Pro mode.** Hide expert terminology by default; reveal full
    Rotorflight tuning (the existing modules) only in Pro mode — preserving full power.
-5. **An EdgeTX-first polished UX.** The best modern UX (RFSuite) is ETHOS-only; OpenBar must deliver
+5. **An EdgeTX-first polished UX.** The best modern UX (RFSuite) is ETHOS-only; Evora must deliver
    comparable polish on **EdgeTX** (the target stack), building on the EdgeTX MSP layer.
 6. **Validation + safety guardrails:** sanity-check pole count/gear ratio, servo rate vs servo type,
    refuse unsafe states, explicit "safe to spool up" gate.
@@ -258,7 +258,7 @@ Ordered steps a new user must complete (synthesized from docs + Configurator tab
 - The **Configurator Svelte rewrite** is mid-flight on `master` (placeholder version `0.0.0`);
   current stable config UX may differ from what's in the repo.
 - Stable-vs-snapshot: firmware source is `4.6.0` / RF 2.3 development; **RF 2.2.x is the current
-  stable** end-users run. OpenBar should target the stable MSP API and track 2.3.
+  stable** end-users run. Evora should target the stable MSP API and track 2.3.
 - Precise list of swashplate geometry types and PID Mode semantics not exhaustively enumerated here;
   verify against `firmware/docs/Mixer.md`, `PID tuning.md`, `Governor.md` when implementing.
 
@@ -266,7 +266,7 @@ Ordered steps a new user must complete (synthesized from docs + Configurator tab
 
 ## Sources
 
-### Repos (shallow-cloned to `/tmp/openbar-research/rotorflight`)
+### Repos (shallow-cloned to `/tmp/evora-research/rotorflight`)
 - Firmware: https://github.com/rotorflight/rotorflight-firmware
   - `src/main/build/version.h` (FC 4.6.0), `Changes.md`, `Releases.md`
   - `src/main/msp/msp.c`, `msp_protocol_v2_rotorflight.h`, `docs/API/MSP_extensions.md`
