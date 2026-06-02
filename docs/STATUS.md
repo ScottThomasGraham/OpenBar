@@ -21,6 +21,7 @@ healthy). Flight performance stays Rotorflight's (untouched FC).
 - **Rotorflight** = untouched FC, configured over the link via MSP.
 
 ## What's built (in firmware, emulator-verified)
+- **Two radios, resolution-aware DONE (2026-06-02):** TX16S (480x272) + TX16S MK3 (STM32H7, 800x480). One codebase authored in logical 480x272, scaled per panel via `EV_SC`; per-resolution font/dog-image sets (`fonts/evora` / `fonts/evora-lrg`). Both build green (CI matrix). MK3 captures: `docs/emulator/mk3-*.png`. Boot splash per radio under `docs/sdcard/<radio>/IMAGES/splash.png`.
 - **"Aerospace instrument" visual pass DONE (2026-06-02)** — custom LVGL fonts (Rajdhani numerals + Barlow labels, `radio/src/fonts/evora/`, declared in `mainview/evora_fonts.h`), circular `lv_arc` headspeed gauge, gradient cards, amber/green accents. ARM firmware fits flash; CI green. Captures: `docs/emulator/fw-*.png`. Reproduce: see memory `[[evora-project]]` "Firmware visual pass".
 - Identity: Evora boot splash (full-screen SD `/IMAGES/splash.png`, asset at `docs/sdcard/IMAGES/splash.png`) + embedded dog+EVORA `splash_logo.png` fallback.
 - **Two-state home** — idle radio-info ↔ flight dashboard (big battery), switches on `TELEMETRY_STREAMING()`.
