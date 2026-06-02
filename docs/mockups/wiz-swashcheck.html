@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>swash check</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="wiz.css"></head><body>
+<div class="screen">
+  <div class="hd"><span class="bk">‹</span><b>NEW HELI</b><span class="sec">Swashplate</span><span class="step">STEP 7 / 12</span><div class="pbar" style="width:58%"></div></div>
+  <div class="title">Swash check <span class="live">LIVE</span></div>
+  <div class="sub">Raise collective — the swash must rise level. Tap a servo that moves wrong.</div>
+  <div class="stage">
+    <div class="diagram" style="flex:0 0 360px;height:212px">
+      <svg width="360" height="212" viewBox="0 0 360 212">
+        <!-- iso swashplate, level, rising -->
+        <ellipse cx="180" cy="120" rx="120" ry="34" fill="rgba(255,146,66,.06)" stroke="var(--amber)" stroke-width="3"/>
+        <ellipse cx="180" cy="120" rx="120" ry="34" fill="none" stroke="var(--amber)" stroke-width="3" transform="translate(0,-36)" opacity=".35"/>
+        <!-- 3 servo links -->
+        <g stroke="#3a4756" stroke-width="4"><line x1="80" y1="128" x2="80" y2="170"/><line x1="280" y1="128" x2="280" y2="170"/><line x1="180" y1="154" x2="180" y2="186"/></g>
+        <g fill="#1a1108" stroke="var(--amber)" stroke-width="2.5"><rect x="68" y="170" width="24" height="16" rx="3"/><rect x="268" y="170" width="24" height="16" rx="3"/><rect x="168" y="186" width="24" height="16" rx="3"/></g>
+        <!-- collective up arrow -->
+        <path d="M180 96 l0 -56 m-12 14 l12 -14 l12 14" fill="none" stroke="var(--green)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="180" y="30" fill="var(--green)" font-family="Barlow Semi Condensed" font-weight="600" font-size="15" text-anchor="middle">LEVEL · RISING</text>
+      </svg>
+    </div>
+    <div class="chips">
+      <div style="display:flex;gap:8px">
+        <div class="card" style="padding:8px 6px"><b style="font-size:22px;color:var(--green)">CH1 ✓</b></div>
+        <div class="card on" style="padding:8px 6px"><b style="font-size:22px">CH2 ⟳</b><span>reverse</span></div>
+        <div class="card" style="padding:8px 6px"><b style="font-size:22px;color:var(--green)">CH3 ✓</b></div>
+      </div>
+      <div class="chip" style="padding:10px 14px"><div class="tx" style="text-align:left"><b style="font-size:24px">Leading edge</b><span>Blade-grip control side — tap to flip</span></div></div>
+    </div>
+  </div>
+  <div class="ft"><span class="ms"><span class="d"></span>MOTOR SAFE</span><span class="next">Looks right ›</span></div>
+</div>
+<script>var s=document.querySelector(".screen");function fit(){s.style.transform="scale("+Math.min(innerWidth/960,innerHeight/544)+")";}fit();onresize=fit;setTimeout(fit,500);</script>
+</body></html>

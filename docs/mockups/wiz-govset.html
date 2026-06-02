@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>gov settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="wiz.css"></head><body>
+<div class="screen">
+  <div class="hd"><span class="bk">‹</span><b>NEW HELI</b><span class="sec">Governor · Rotorflight</span><span class="step">STEP 11 / 12</span><div class="pbar" style="width:92%"></div></div>
+  <div class="title">Governor settings</div>
+  <div class="sub">So Evora knows your true headspeed. Magnets = motor poles ÷ 2.</div>
+  <div class="stage" style="align-items:stretch;gap:14px">
+    <!-- gear + motor diagram -->
+    <div class="diagram" style="flex:0 0 250px;height:212px">
+      <svg width="240" height="200" viewBox="0 0 240 200">
+        <!-- main gear -->
+        <circle cx="92" cy="104" r="58" fill="rgba(255,255,255,.03)" stroke="#2a3644" stroke-width="3" stroke-dasharray="6 7"/>
+        <text x="92" y="110" fill="var(--dim)" font-family="Rajdhani" font-weight="700" font-size="22" text-anchor="middle">112T</text>
+        <!-- pinion -->
+        <circle cx="178" cy="104" r="22" fill="rgba(255,146,66,.08)" stroke="var(--amber)" stroke-width="3" stroke-dasharray="4 5"/>
+        <text x="178" y="110" fill="var(--amber2)" font-family="Rajdhani" font-weight="700" font-size="16" text-anchor="middle">12T</text>
+        <!-- motor -->
+        <rect x="186" y="86" width="44" height="36" rx="6" fill="#18222e" stroke="#2a3644"/><text x="208" y="110" fill="var(--dim)" font-family="Barlow Semi Condensed" font-size="14" text-anchor="middle">motor</text>
+        <text x="120" y="186" fill="var(--muted)" font-family="Barlow Semi Condensed" font-size="15" text-anchor="middle">gear ratio 9.33 : 1</text>
+      </svg>
+    </div>
+    <!-- numeric fields -->
+    <div style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center">
+      <div class="chip" style="padding:8px 16px"><div class="tx" style="flex:1"><span>PINION / MAIN TEETH</span><b style="font-family:Rajdhani;font-size:30px">12 / 112</b></div><div style="display:flex;gap:8px"><div class="btn" style="width:44px;height:44px;font-size:30px">−</div><div class="btn" style="width:44px;height:44px;font-size:30px">+</div></div></div>
+      <div class="chip" style="padding:8px 16px"><div class="tx" style="flex:1"><span>MOTOR POLES</span><b style="font-family:Rajdhani;font-size:30px">10</b></div><div style="display:flex;gap:8px"><div class="btn" style="width:44px;height:44px;font-size:30px">−</div><div class="btn" style="width:44px;height:44px;font-size:30px">+</div></div></div>
+      <div class="chip on" style="padding:8px 16px"><div class="tx" style="flex:1"><span>HEAD SPEED · BANK 3</span><b style="font-family:Rajdhani;font-size:30px;color:var(--amber2)">2150 rpm</b></div><div style="display:flex;gap:8px"><div class="btn" style="width:44px;height:44px;font-size:30px">−</div><div class="btn" style="width:44px;height:44px;font-size:30px">+</div></div></div>
+    </div>
+  </div>
+  <div class="ft"><span class="ms"><span class="d"></span>MOTOR SAFE</span><span class="next">Continue ›</span></div>
+</div>
+<script>var s=document.querySelector(".screen");function fit(){s.style.transform="scale("+Math.min(innerWidth/960,innerHeight/544)+")";}fit();onresize=fit;setTimeout(fit,500);</script>
+</body></html>

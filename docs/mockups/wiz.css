@@ -1,0 +1,36 @@
+/* Shared Evora wizard chrome — visual-first setup steps (authored at 960x544 = 480x272 @2x) */
+:root{--ink:#f4f7fb;--dim:#aeb8c4;--muted:#6f7c89;--amber:#ff9242;--amber2:#ffb274;--green:#3fe0a0;--red:#ff5a5f;--line:#2a3644;--card:#18222e;--card2:#0d141c;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{margin:0;background:#04050a;font-family:"Barlow Semi Condensed",sans-serif;}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;}
+.screen{position:relative;width:960px;height:544px;overflow:hidden;color:var(--ink);background:linear-gradient(180deg,#121c28,#05080d);}
+.hd{position:relative;height:68px;background:#0e151e;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid var(--line);}
+.hd .bk{color:var(--amber);font-family:"Rajdhani";font-weight:700;font-size:40px;margin-right:14px;}
+.hd b{font-family:"Rajdhani";font-weight:700;font-size:30px;letter-spacing:2px;}
+.hd .sec{color:var(--muted);font-weight:600;letter-spacing:3px;font-size:20px;margin-left:16px;text-transform:uppercase;}
+.hd .step{margin-left:auto;color:var(--muted);font-weight:600;letter-spacing:2px;font-size:20px;}
+.pbar{position:absolute;left:0;bottom:-1px;height:5px;background:var(--amber);box-shadow:0 0 14px var(--amber);}
+.title{font-family:"Rajdhani";font-weight:700;font-size:52px;line-height:1;padding:16px 24px 0;display:flex;align-items:center;gap:14px;}
+.live{font-family:"Barlow Semi Condensed";font-size:17px;font-weight:700;letter-spacing:2px;color:#06281a;background:var(--green);padding:3px 12px;border-radius:8px;box-shadow:0 0 14px rgba(63,224,160,.5);}
+.sub{color:var(--dim);font-size:22px;font-weight:500;padding:5px 24px 0;}
+.stage{display:flex;align-items:center;gap:12px;padding:8px 24px 0;}
+.diagram{display:flex;align-items:center;justify-content:center;}
+.chips{flex:1;display:flex;flex-direction:column;gap:12px;}
+.chip{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(165deg,rgba(255,255,255,.05),rgba(255,255,255,.01));}
+.chip.on{border-color:var(--amber);background:linear-gradient(165deg,rgba(255,146,66,.18),rgba(255,146,66,.04));}
+.chip .ico{width:46px;height:40px;flex:0 0 46px;display:flex;align-items:center;justify-content:center;}
+.chip .tx b{font-family:"Rajdhani";font-weight:700;font-size:28px;display:block;line-height:1;}
+.chip .tx span{color:var(--muted);font-size:17px;font-weight:500;}
+.chip.on .tx b{color:var(--amber2);}
+.val{font-family:"Rajdhani";font-weight:700;font-size:110px;line-height:.8;background:linear-gradient(180deg,#fff,#bcc8d6);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.vlbl{color:var(--muted);font-weight:600;letter-spacing:4px;font-size:18px;}
+.adj{display:flex;align-items:center;gap:16px;margin-top:8px;}
+.btn{width:62px;height:62px;border-radius:16px;border:1px solid var(--amber);background:rgba(255,146,66,.14);color:var(--amber2);font-family:"Rajdhani";font-weight:700;font-size:46px;display:flex;align-items:center;justify-content:center;}
+.ft{position:absolute;left:0;right:0;bottom:0;height:80px;background:#0e151e;border-top:1px solid var(--line);display:flex;align-items:center;padding:0 24px;}
+.ms{display:flex;align-items:center;gap:10px;color:var(--red);font-weight:600;letter-spacing:1px;font-size:20px;}
+.ms.go{color:var(--green);} .ms .d{width:12px;height:12px;border-radius:50%;background:currentColor;}
+.next{margin-left:auto;background:var(--green);color:#06281a;font-family:"Rajdhani";font-weight:700;font-size:30px;padding:12px 30px;border-radius:14px;}
+.card{flex:1;border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center;background:linear-gradient(165deg,rgba(255,255,255,.05),rgba(255,255,255,.01));}
+.card.on{border-color:var(--amber);background:linear-gradient(165deg,rgba(255,146,66,.16),rgba(255,146,66,.03));}
+.card b{font-family:"Rajdhani";font-weight:700;font-size:28px;display:block;margin-top:4px;}
+.card.on b{color:var(--amber2);} .card span{color:var(--muted);font-size:16px;font-weight:500;}

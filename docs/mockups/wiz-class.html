@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>class</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="wiz.css"></head><body>
+<div class="screen">
+  <div class="hd"><span class="bk">‹</span><b>NEW HELI</b><span class="sec">Your heli</span><span class="step">STEP 2 / 12</span><div class="pbar" style="width:17%"></div></div>
+  <div class="title">Pick your heli</div>
+  <div class="sub">This loads tuned defaults — rates, filters, governor — for the size.</div>
+  <div class="cards" style="display:flex;gap:16px;padding:18px 24px 0">
+    <!-- each card: a heli side-silhouette scaled by class -->
+    <div class="card"><svg width="150" height="120" viewBox="0 0 150 120"><g stroke="#6f7c89" stroke-width="3" fill="none" stroke-linecap="round"><line x1="40" y1="44" x2="110" y2="44"/><line x1="75" y1="44" x2="75" y2="74"/><rect x="64" y="74" width="22" height="20" rx="5" fill="#18222e"/><line x1="86" y1="84" x2="120" y2="84"/><line x1="118" y1="78" x2="118" y2="90"/></g></svg><b>450</b><span>Small / agile</span></div>
+    <div class="card"><svg width="150" height="120" viewBox="0 0 150 120"><g stroke="#6f7c89" stroke-width="3" fill="none" stroke-linecap="round"><line x1="32" y1="40" x2="118" y2="40"/><line x1="75" y1="40" x2="75" y2="74"/><rect x="62" y="74" width="26" height="24" rx="6" fill="#18222e"/><line x1="88" y1="86" x2="128" y2="86"/><line x1="126" y1="79" x2="126" y2="93"/></g></svg><b>550</b><span>Sport</span></div>
+    <div class="card on"><svg width="150" height="120" viewBox="0 0 150 120"><g stroke="var(--amber)" stroke-width="3.5" fill="none" stroke-linecap="round"><line x1="22" y1="36" x2="128" y2="36"/><line x1="75" y1="36" x2="75" y2="74"/><rect x="60" y="74" width="30" height="28" rx="7" fill="#1a1108"/><line x1="90" y1="88" x2="134" y2="88"/><line x1="132" y1="80" x2="132" y2="96"/></g></svg><b>700</b><span>3D / scale</span></div>
+    <div class="card"><svg width="150" height="120" viewBox="0 0 150 120"><g stroke="#6f7c89" stroke-width="3" fill="none" stroke-linecap="round"><line x1="16" y1="34" x2="134" y2="34"/><line x1="75" y1="34" x2="75" y2="74"/><rect x="58" y="74" width="34" height="30" rx="7" fill="#18222e"/><line x1="92" y1="89" x2="138" y2="89"/><line x1="136" y1="81" x2="136" y2="97"/></g></svg><b>800</b><span>Big air</span></div>
+  </div>
+  <div class="ft"><span class="ms go"><span class="d"></span>GOBLIN 770 preset</span><span class="next">Looks right ›</span></div>
+</div>
+<script>var s=document.querySelector(".screen");function fit(){s.style.transform="scale("+Math.min(innerWidth/960,innerHeight/544)+")";}fit();onresize=fit;setTimeout(fit,500);</script>
+</body></html>
