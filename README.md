@@ -80,30 +80,37 @@ See [`docs/superpowers/specs/2026-06-01-evora-architecture-design.md`](docs/supe
 
 Evora exists only because of the open-source work of the **[Rotorflight](https://github.com/rotorflight)**, **[EdgeTX](https://github.com/edgetx)**, and **[ExpressLRS](https://github.com/ExpressLRS)** communities. This project adapts and integrates their work; full credit and licensing obligations to those projects are respected.
 
-## Status (2026-06-01)
+## Status (2026-06-02)
 
-**The bespoke Evora UI shell is built and running in firmware** (verified in the EdgeTX
-simulator). Evora replaces EdgeTX's entire GUI with its own, on EdgeTX's untouched engine.
+**The complete bespoke Evora UI is built and running in real firmware on BOTH radios**
+(verified in arm64 EdgeTX simulators; CI matrix green for `tx16s` + `tx16smk3`). Evora replaces
+EdgeTX's entire GUI with its own, on EdgeTX's untouched engine.
 
 **Done:**
 - **Foundations (Phase 0):** forks (`Evora-TX` = EdgeTX `v2.12.1`, `Evora-Link` = ELRS `4.0.1`),
-  reproducible builds, GitHub Actions CI (green), headless EdgeTX **emulator workbench**
-  (`docs/emulator/`). Flashable Evora firmware artifact builds in CI.
-- **Identity:** Evora boot splash + logo (replaces EdgeTX branding).
-- **Bespoke two-state home:** calm **idle** radio-info screen (toolbar · watermark · "Set up a new
-  heli" CTA) that switches to a **flight** dashboard (big battery hero · headspeed · timer · cards)
-  when telemetry starts.
-- **Navigation:** home toolbar opens bespoke **Models / Link / System / Tools** screens (touch, with
-  back). EdgeTX topbar/menu fully removed.
-- **12-step New Heli Setup wizard:** verify-gated, MOTOR-safe, Basic/Pro, launchable from the home.
+  reproducible builds, GitHub Actions **matrix CI** building both radios, headless EdgeTX **emulator
+  workbench** (`docs/emulator/`). Flashable artifacts build in CI (`evora-tx16s`, `evora-tx16smk3`).
+- **Two radios, resolution-aware:** **TX16S** (STM32F407, 480×272) and **TX16S MK3** (STM32H7, 800×480)
+  from one codebase — authored in logical 480×272 and scaled per panel via `EV_SC`, with per-resolution
+  font + image sets. Each firmware is native-crisp on its own screen.
+- **"Aerospace instrument" identity:** dog-silhouette logo, boot splash, custom **Rajdhani + Barlow**
+  fonts (LVGL), circular `lv_arc` headspeed gauge, gradient cards, amber/green accents.
+- **Two-state home** (idle ↔ flight dashboard), **destination screens** (Helicopters / System / Bind /
+  Tools), EdgeTX topbar/menu fully removed.
+- **13-step New Heli Setup wizard** — the real flow, MOTOR-safe, verify-every-step, with guiding
+  diagrams **drawn from LVGL primitives** (servo-pulse, board orientation, swash, rotor, live
+  swash-check / collective / tail, governor ESC/Rotorflight/Nitro, governor settings, ready). Built
+  from the VBar "Non-Mikado helis" wizard, mapped to Rotorflight (`docs/design/heli-setup-parameters.md`).
+- **The radio is a fixed universal controller** — no radio settings; all flight config lives in
+  Rotorflight, written over the link via MSP (`docs/design/radio-is-a-controller.md`).
 
-All UI uses a **Mikado VBar Control Touch-inspired, iPhone-grade** visual language (dark, calm,
-label/value, hairlines, amber accent / green = healthy). Mockups: [`docs/mockups/`](docs/mockups/);
-real firmware captures: [`docs/emulator/`](docs/emulator/).
+Visual language = **"aerospace instrument, blacked-out."** Mockups: [`docs/mockups/`](docs/mockups/);
+real-firmware overviews: [`docs/emulator/overview-tx16s.png`](docs/emulator/) + `overview-mk3.png`.
 
-**Next (needs the heli on the bench):** live Rotorflight/ELRS **telemetry** into the home/wizard, and
-the wizard's real **MSP setup actions**. Plus: custom giant hero font, interactive wizard controls,
-TX16S MK3 port, and the Phase 0 hardware flashes (owner flashes firmware + picks a binding phrase).
+**Next (needs the heli on the bench):** wire the wizard's real **MSP writes** + live Rotorflight/ELRS
+**telemetry** into the home/wizard (UI is collect-only today); bake the standard Rotorflight preset +
+owner's per-class tuning; build the **Evora Link** (ELRS) ends + binding phrase; and the Phase 0
+hardware flashes (owner flashes firmware once the SD reader arrives).
 
 ### Resume here (fresh session)
 Read this README, then [`docs/STATUS.md`](docs/STATUS.md) (current state + how to build/emulate/resume),
