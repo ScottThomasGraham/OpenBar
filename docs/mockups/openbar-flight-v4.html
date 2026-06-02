@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>OpenBar flight v4</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  html,body{height:100%;overflow:hidden;background:#05070a;display:flex;align-items:center;justify-content:center;}
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .cap{color:#6b7682;font-size:14px;font-weight:600;}
+  .bezel{padding:14px;background:#04060a;border:1px solid #161d27;border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.6);}
+  .screen{position:relative;width:960px;height:544px;border-radius:10px;overflow:hidden;
+    background:radial-gradient(130% 100% at 12% 0%, #121823 0%, #0a0e14 55%, #05080c 100%);color:#eef3f9;}
+  .muted{color:#7e8a98;}.grn{color:#39d98a;}.amb{color:#ff8a3d;}
+  /* top */
+  .top{position:absolute;top:0;left:0;right:0;height:64px;display:flex;align-items:center;padding:0 26px;gap:30px;border-bottom:1px solid rgba(255,255,255,.06);}
+  .kv{display:flex;flex-direction:column;line-height:1;}
+  .kv .k{color:#7e8a98;font-size:15px;font-weight:600;letter-spacing:.4px;}
+  .kv .v{font-size:24px;font-weight:800;margin-top:5px;}
+  .sp{flex:1;}.ic{width:26px;height:26px;color:#9aa6b3;}.ic svg{width:26px;height:26px;}.clock{color:#aeb8c4;font-size:22px;font-weight:600;}
+  /* left telemetry */
+  .left{position:absolute;left:26px;top:78px;width:486px;}
+  .hero{display:flex;align-items:flex-end;gap:42px;}
+  .hblk .l{color:#7e8a98;font-size:17px;font-weight:700;letter-spacing:4px;}
+  .hblk .n{font-size:128px;line-height:.82;font-weight:800;letter-spacing:-3px;background:linear-gradient(180deg,#fff,#c4cedb);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hblk .u{color:#7e8a98;font-size:20px;font-weight:700;margin-top:2px;}
+  .hblk.t .n{font-size:84px;}
+  .mini{display:flex;gap:13px;margin-top:30px;}
+  .m{flex:1;background:#11161d;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px 14px;}
+  .m .k{color:#7e8a98;font-size:14px;font-weight:700;letter-spacing:.5px;}
+  .m .v{font-size:28px;font-weight:800;margin-top:6px;}.m .v small{color:#7e8a98;font-size:15px;}
+  /* BIG battery hero (right) */
+  .batt{position:absolute;right:26px;top:84px;width:386px;height:300px;background:linear-gradient(180deg,#0f151d,#0b0f15);
+    border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:20px 22px;}
+  .batt .hd{display:flex;justify-content:space-between;align-items:center;color:#7e8a98;font-size:17px;font-weight:700;letter-spacing:.5px;}
+  .batt .hd .cells{color:#39d98a;}
+  .big{display:flex;align-items:baseline;gap:6px;margin-top:6px;}
+  .big .p{font-size:104px;font-weight:800;line-height:.9;color:#fff;letter-spacing:-3px;}
+  .big .pp{font-size:40px;font-weight:800;color:#39d98a;}
+  .volts{color:#aeb8c4;font-size:26px;font-weight:700;margin-top:2px;}
+  .volts small{color:#7e8a98;font-size:18px;font-weight:600;}
+  /* segmented battery bar */
+  .cap{display:flex;gap:5px;margin-top:20px;height:34px;}
+  .cap span{flex:1;border-radius:5px;background:#1a212b;}
+  .cap span.on{background:linear-gradient(180deg,#2fbf78,#39d98a);}
+  .cap span.lo{background:linear-gradient(180deg,#caa23a,#e9c45a);}
+  .sub{display:flex;justify-content:space-between;color:#7e8a98;font-size:17px;font-weight:600;margin-top:14px;}
+  .sub b{color:#dfe6ee;font-weight:800;}
+  .model{position:absolute;right:26px;bottom:16px;width:386px;display:flex;justify-content:space-between;align-items:baseline;}
+  .model .k{color:#ff8a3d;font-size:15px;font-weight:700;letter-spacing:.5px;}
+  .model .v{font-size:26px;font-weight:800;}
+</style></head>
+<body><div class="wrap">
+  <div class="cap">OpenBar — FLIGHT home (model connected, big battery) · 480×272</div>
+  <div class="bezel"><div class="screen">
+    <div class="top">
+      <div class="kv"><span class="k">BANK</span><span class="v amb">3 · Sport</span></div>
+      <div class="kv"><span class="k">MOTOR</span><span class="v grn">ARMED</span></div>
+      <div class="kv"><span class="k">RESCUE</span><span class="v grn">READY</span></div>
+      <div class="sp"></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 17a8 8 0 0 1 16 0"/><path d="M7.5 17a4.5 4.5 0 0 1 9 0"/><circle cx="12" cy="17" r="1.4" fill="currentColor"/></svg></div>
+      <div class="kv"><span class="k">LINK</span><span class="v grn" style="font-size:20px">100</span></div>
+      <div class="clock">14:32</div>
+    </div>
+
+    <div class="left">
+      <div class="hero">
+        <div class="hblk"><div class="l">HEADSPEED</div><div class="n">1,850</div><div class="u">RPM · GOVERNOR</div></div>
+        <div class="hblk t"><div class="l">FLIGHT</div><div class="n">04:31</div></div>
+      </div>
+      <div class="mini">
+        <div class="m"><div class="k">ESC TEMP</div><div class="v">61<small>°C</small></div></div>
+        <div class="m"><div class="k">CURRENT</div><div class="v">38<small>A</small></div></div>
+        <div class="m"><div class="k">THROTTLE</div><div class="v">72<small>%</small></div></div>
+      </div>
+    </div>
+
+    <div class="batt">
+      <div class="hd"><span>PACK</span><span class="cells">6S · 5500mAh</span></div>
+      <div class="big"><span class="p">72</span><span class="pp">%</span></div>
+      <div class="volts">24.6<small> V</small> &nbsp;·&nbsp; 4.10<small> V/cell</small></div>
+      <div class="cap"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="lo"></span><span></span><span></span></div>
+      <div class="sub"><span>Used <b>1,850 mAh</b></span><span>Min <b>22.9 V</b></span></div>
+    </div>
+    <div class="model"><span class="k">MODEL</span><span class="v">Goblin 770</span></div>
+  </div></div>
+</div>
+<script>
+  function fit(){var d=document.querySelector('.bezel');d.style.transform='scale(1)';var r=d.getBoundingClientRect();
+    var s=Math.min((innerWidth*.96)/r.width,(innerHeight*.9)/r.height);d.style.transform='scale('+s+')';d.style.transformOrigin='center';}
+  fit();addEventListener('resize',fit);
+</script>
+</body></html>
