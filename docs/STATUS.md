@@ -21,7 +21,8 @@ healthy). Flight performance stays Rotorflight's (untouched FC).
 - **Rotorflight** = untouched FC, configured over the link via MSP.
 
 ## What's built (in firmware, emulator-verified)
-- Identity: Evora boot splash + logo.
+- **"Aerospace instrument" visual pass DONE (2026-06-02)** — custom LVGL fonts (Rajdhani numerals + Barlow labels, `radio/src/fonts/evora/`, declared in `mainview/evora_fonts.h`), circular `lv_arc` headspeed gauge, gradient cards, amber/green accents. ARM firmware fits flash; CI green. Captures: `docs/emulator/fw-*.png`. Reproduce: see memory `[[evora-project]]` "Firmware visual pass".
+- Identity: Evora boot splash (full-screen SD `/IMAGES/splash.png`, asset at `docs/sdcard/IMAGES/splash.png`) + embedded dog+EVORA `splash_logo.png` fallback.
 - **Two-state home** — idle radio-info ↔ flight dashboard (big battery), switches on `TELEMETRY_STREAMING()`.
 - **Navigation** — home toolbar → Models / Link / System / Tools screens (touch + back).
 - **12-step New Heli Setup wizard** — verify-gated, MOTOR-safe, Basic/Pro, launchable from home CTA / Models "+New model". **Interactive**: tap choices (heli class, swash type, directions) → selects, remembered per step; Next/Back via touch + keys.
