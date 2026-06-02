@@ -24,8 +24,9 @@ healthy). Flight performance stays Rotorflight's (untouched FC).
 - Identity: OpenBar boot splash + logo.
 - **Two-state home** — idle radio-info ↔ flight dashboard (big battery), switches on `TELEMETRY_STREAMING()`.
 - **Navigation** — home toolbar → Models / Link / System / Tools screens (touch + back).
-- **12-step New Heli Setup wizard** — verify-gated, MOTOR-safe, Basic/Pro, launchable from home.
-- All values are **DEMO placeholders** (no live telemetry yet).
+- **12-step New Heli Setup wizard** — verify-gated, MOTOR-safe, Basic/Pro, launchable from home CTA / Models "+New model". **Interactive**: tap choices (heli class, swash type, directions) → selects, remembered per step; Next/Back via touch + keys.
+- **Models screen interactive** — tap a model to make it active; "+ New model" launches the wizard.
+- All telemetry/setup **values are DEMO placeholders** (no live data — needs the heli). The *interactions* (selection, navigation) are real.
 
 ### UI source files (in `forks/OpenBar-Radio/radio/src/gui/colorlcd/`)
 - `mainview/openbar_home.{h,cpp}` — the two-state home (build/buildIdle/buildFlight, checkEvents switch).
