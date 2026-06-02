@@ -80,6 +80,33 @@ See [`docs/superpowers/specs/2026-06-01-openbar-architecture-design.md`](docs/su
 
 OpenBar exists only because of the open-source work of the **[Rotorflight](https://github.com/rotorflight)**, **[EdgeTX](https://github.com/edgetx)**, and **[ExpressLRS](https://github.com/ExpressLRS)** communities. This project adapts and integrates their work; full credit and licensing obligations to those projects are respected.
 
-## Status
+## Status (2026-06-01)
 
-Early design. Research complete (see [`docs/research/`](docs/research/)); architecture approved; Phase 0 next.
+**The bespoke OpenBar UI shell is built and running in firmware** (verified in the EdgeTX
+simulator). OpenBar replaces EdgeTX's entire GUI with its own, on EdgeTX's untouched engine.
+
+**Done:**
+- **Foundations (Phase 0):** forks (`OpenBar-Radio` = EdgeTX `v2.12.1`, `OpenBar-Link` = ELRS `4.0.1`),
+  reproducible builds, GitHub Actions CI (green), headless EdgeTX **emulator workbench**
+  (`docs/emulator/`). Flashable OpenBar firmware artifact builds in CI.
+- **Identity:** OpenBar boot splash + logo (replaces EdgeTX branding).
+- **Bespoke two-state home:** calm **idle** radio-info screen (toolbar · watermark · "Set up a new
+  heli" CTA) that switches to a **flight** dashboard (big battery hero · headspeed · timer · cards)
+  when telemetry starts.
+- **Navigation:** home toolbar opens bespoke **Models / Link / System / Tools** screens (touch, with
+  back). EdgeTX topbar/menu fully removed.
+- **12-step New Heli Setup wizard:** verify-gated, MOTOR-safe, Basic/Pro, launchable from the home.
+
+All UI uses a **Mikado VBar Control Touch-inspired, iPhone-grade** visual language (dark, calm,
+label/value, hairlines, amber accent / green = healthy). Mockups: [`docs/mockups/`](docs/mockups/);
+real firmware captures: [`docs/emulator/`](docs/emulator/).
+
+**Next (needs the heli on the bench):** live Rotorflight/ELRS **telemetry** into the home/wizard, and
+the wizard's real **MSP setup actions**. Plus: custom giant hero font, interactive wizard controls,
+TX16S MK3 port, and the Phase 0 hardware flashes (owner flashes firmware + picks a binding phrase).
+
+### Resume here (fresh session)
+Read this README, then [`docs/STATUS.md`](docs/STATUS.md) (current state + how to build/emulate/resume),
+then [`docs/emulator/README.md`](docs/emulator/README.md) (the capture workflow). Forks are cloned
+under `~/Projects/OpenBar/forks/` (gitignored); UI code lives in
+`forks/OpenBar-Radio/radio/src/gui/colorlcd/mainview/openbar_*.{h,cpp}`.
