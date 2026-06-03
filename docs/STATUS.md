@@ -79,6 +79,20 @@ repos: [`upstream-baselines.md`](upstream-baselines.md).
 4. **Phase 0 hardware (owner):** flash `evora-tx16s` (bootloader-recoverable) once the SD reader arrives; copy `docs/sdcard/tx16s/IMAGES/splash.png` to the SD. MK3 when on hand.
 
 ## Session log
+**2026-06-03 (late) — VBar-style sectioned right-side menu + Tuning pages.**
+- Built the **VBar Control Touch menu structure** in the instrument theme (`EvoraHome::openMenu/
+  closeMenu/menuTab`): slide-in panel from the right over the dimmed home, amber edge tab, scrim/X to
+  close. **Data-driven sections** — MODEL (New/Edit/Switch/Bind) · TUNING (Main/Tail/ESC/Governor) ·
+  MONITOR · RADIO · TOOLS — each row an `LV_SYMBOL` icon + label + desc. **Context-gating** (MONITOR
+  only when connected) + **`expert` markers** (progressive disclosure).
+- **Three-layer model:** New model = wizard (+ erase-&-start-fresh confirm, keeps bind) · Edit model =
+  set-once geometry by discipline (main/tail/ESC) · **Tuning = the feel layer** (4 new `PG_TUNE_*`
+  pages via `EvoraScreen::openTune`: quick PID + stick-feel chips, tap-to-adjust).
+- Spec: [`superpowers/specs/2026-06-03-vbar-menu-design.md`]. Mockup + sim renders in `mockups/gallery/`
+  (`menu-vbar`, `sim-menu`, `sim-tune-main`). Bin: `evora-tx16s.bin`. **MSP writes still stubbed.**
+  TODO: wire MONITOR screens (currently rows only); the actual RF-default load on reset; trim the
+  redundant bottom toolbar now that the menu is primary nav.
+
 **2026-06-03 (night) — REVERTED Brutalist; back to the instrument theme.**
 - After living with the full Brutalist build, owner preferred the original **amber/teal "aerospace
   instrument"** look. Reverted `Evora-TX` `evora` to **`cdedbd508`** (the pre-Brutalist tip) — this
