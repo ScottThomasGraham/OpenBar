@@ -11,7 +11,7 @@ diff our forks against clean upstream when things get sticky.
 | Element | Role in Evora | Upstream | Pinned baseline | Our fork |
 |---|---|---|---|---|
 | **EdgeTX** | Radio OS we fork (keep engine, replace GUI) | `edgetx/edgetx` | **`v2.12.1`** (commit `1511b3f29`) | `ScottThomasGraham/Evora-TX`, branch `evora` |
-| **ExpressLRS** | Radio link, both ends (TX module + RX) we fork | `ExpressLRS/ExpressLRS` | ⚠️ currently `4.0.1` (`b5a5b5fd`) — **recommend re-pin to `3.6.3`**, see below | `ScottThomasGraham/Evora-Link`, branch `evora` |
+| **ExpressLRS** | Radio link, both ends (TX module + RX) we fork | `ExpressLRS/ExpressLRS` | **`3.6.3`** (`288efe1a`) — re-pinned from 4.0.1 on 2026-06-02, see below | `ScottThomasGraham/Evora-Link`, branch `evora` |
 | **Rotorflight** | Flight controller — **untouched**, configured over the link via MSP | `rotorflight/rotorflight-firmware` | **`2.2.1`** (current stable; RF2 on Betaflight 4.3) | not forked — we ride it |
 
 Rotorflight requires **CRSF ≥ 2.11 or ELRS ≥ 3.5.0**, so any ELRS 3.5+ satisfies the FC link.
@@ -44,8 +44,9 @@ Rotorflight's ELRS ≥ 3.5 requirement, and supports our ESP targets. **Revisit 
 our custom FlyDragon RX target is confirmed working, (b) we can measure whether V4's extra telemetry
 bandwidth actually helps the private channel, and (c) 4.x has more field history.
 
-> Status: **recommended, not yet executed** — awaiting owner go-ahead to re-pin the `evora` branch of
-> Evora-Link onto the `3.6.3` tag (rebase the brand-only diff; trivial today).
+> Status: **DONE (2026-06-02).** Evora-Link `evora` branch rebased onto the `3.6.3` tag (brand-only
+> commits replayed clean; now `3.6.3-4-g548beb8d`). History was rewritten — push needs
+> `--force-with-lease`. Revisit 4.x once the FlyDragon RX target is proven and V4 has matured.
 
 ## Reference repos (pristine upstream for diffing)
 

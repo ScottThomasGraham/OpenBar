@@ -32,7 +32,7 @@ anchor to the real edge via `height()`. Per-resolution font + dog-image sets (`f
 
 ## Architecture
 - **Evora TX** = fork of **EdgeTX** (`ScottThomasGraham/Evora-TX`, baseline `v2.12.1`, branch `evora`).
-- **Evora Link** = fork of **ExpressLRS** (`ScottThomasGraham/Evora-Link`, baseline `4.0.1`, branch `evora`) — both TX module + RX; later a private high-bandwidth config channel. (Brand only so far; ELRS build is a Phase-0 task.) ⚠️ **Pin under review:** recommend re-pinning `4.0.1 → 3.6.3` before any ELRS work — see [`upstream-baselines.md`](upstream-baselines.md).
+- **Evora Link** = fork of **ExpressLRS** (`ScottThomasGraham/Evora-Link`, baseline **`3.6.3`**, branch `evora`) — both TX module + RX; later a private high-bandwidth config channel. (Brand only so far; ELRS build is a Phase-0 task.) Re-pinned `4.0.1 → 3.6.3` on 2026-06-02 (ELRS 4.0 breaking changes) — see [`upstream-baselines.md`](upstream-baselines.md).
 - **Rotorflight** = untouched FC, configured over the link via MSP.
 - Meta repo: `ScottThomasGraham/Evora` (branch `main`) — docs, mockups, design.
 
