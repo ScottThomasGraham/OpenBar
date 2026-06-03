@@ -11,12 +11,12 @@ for the full architecture.
 Evora is its **own bespoke OS with a gorgeous interface**. We keep EdgeTX's *engine* (gimbal/ADC
 drivers, RF/CRSF, mixer, failsafe, storage, bootloader — the dangerous, proven plumbing) and **rip
 out EdgeTX's entire GUI**, replacing it with Evora's own (boot, home, navigation, wizard). Not a
-widget/skin inside EdgeTX. **Visual language = BRUTALIST** (locked 2026-06-03, canonical reference
-`mockups/gallery/board-06x.html`; see memory `[[evora-design-language]]`): true black `#0a0a0a`,
-Archivo Black display slabs + IBM Plex Mono data, hard squared edges, **giant numbers not dials**,
-and a **functional color system** — LIME `#c6f24e` primary/live · ORANGE `#ff8a3d` pro/advanced ·
-RED `#ff5e5e` danger only · WHITE the Evora dog/brand. Two-tone wordmark **EVO**(white)+**RA**(lime)
-= "Evolution Radio". Flight performance stays Rotorflight's (untouched FC). **The radio is a fixed
+widget/skin inside EdgeTX. Visual language = **"aerospace instrument, blacked-out"**: layered dark
+backgrounds (navy `#121c28`), Rajdhani instrument numerals + Barlow labels, **amber `#ff9242`** accent +
+**green `#3fe0a0`** = healthy, circular gauges, gradient cards, hairlines. (A BRUTALIST re-skin —
+black + lime/orange/red/white, Archivo Black, big numbers — was built and **reverted 2026-06-03** at
+owner's call; preserved on `Evora-TX@brutalist-theme` + `mockups/gallery/` if ever wanted again.)
+Flight performance stays Rotorflight's (untouched FC). **The radio is a fixed
 universal controller** — no radio settings; all flight layering lives in Rotorflight (see
 `design/radio-is-a-controller.md`).
 
@@ -41,11 +41,11 @@ anchor to the real edge via `height()`. Per-resolution font + dog-image sets (`f
 
 ## What's built (real firmware, both radios, CI-green, emulator-verified)
 - **Boot splash** — full-screen SD `/IMAGES/splash.png` (per-radio asset under `docs/sdcard/<radio>/IMAGES/`) with the dog+EVORA hero; embedded `splash_logo.png` (per-res, RGBA) is the no-SD fallback.
-- **Two-state home** — idle identity (two-tone `EVO`/`RA` wordmark, prominent white dog right) ↔ flight dashboard (**giant lime headspeed numeral** + battery hero + mini-stats), switches on `TELEMETRY_STREAMING()`. **Right-side slide-out app drawer** (`openDrawer`/`closeDrawer`, lime pull-tab) holds new_model / edit_model + nav. Faint dog watermark on sub-pages.
+- **Two-state home** — idle radio-info ↔ flight dashboard (circular `lv_arc` headspeed gauge + battery hero + mini-stats), switches on `TELEMETRY_STREAMING()`. Faint dog watermark + amber dog corner-glyph. New model (wizard) + Edit model CTAs on the home.
 - **Destination screens** — Helicopters / System ("no flight settings here") / Bind / Tools (touch + back).
 - **13-step New Heli Setup wizard** — the real flow, MOTOR-safe, verify-every-step. Steps: Before we begin · Bind · **Servo pulse (760/1520)** · Pick heli · Board orientation · Swash type · Rotor direction · **Swash check (live)** · **Collective pitch (live)** · **Tail travel (live)** · Governor (ESC/Rotorflight/Nitro) · Governor settings · Ready to fly. Diagrams are **drawn with LVGL primitives** (rings/arcs/lines/labels — ~0 flash, scale via EV_SC). Interactions are real (select/segmented/live ±/governor branch); **MSP writes are stubbed** until the heli's on the bench.
 - **Real-firmware overviews:** `docs/emulator/overview-tx16s.png` + `overview-mk3.png` (every screen). Per-screen: `fw-*.png` / `mk3-*.png`; wizard steps `fw-wiz-*.png` / `mk3-wiz-*.png`.
-- **Custom fonts** generated via `npx lv_font_conv` (**Archivo Black** display + **IBM Plex Mono** data) in `radio/src/fonts/evora{,-lrg}/`, declared in `mainview/evora_fonts.h` (EVF_* macros, same symbol names). Regenerate with `tools/fonts/regen.sh`. Fits F407 flash (bin ~1.75 MB).
+- **Custom fonts** generated via lv_font_conv (Rajdhani Bold/SemiBold + Barlow Semi-Condensed) in `radio/src/fonts/evora{,-lrg}/`, declared in `mainview/evora_fonts.h` (EVF_* macros). Fits F407 flash. (`tools/fonts/regen.sh` + the Archivo/Plex TTFs remain in the meta repo for the shelved Brutalist theme.)
 - All telemetry/setup **values are DEMO placeholders** — live data needs the heli.
 
 ### UI source files (`forks/evora-tx/radio/src/gui/colorlcd/`)
@@ -79,7 +79,18 @@ repos: [`upstream-baselines.md`](upstream-baselines.md).
 4. **Phase 0 hardware (owner):** flash `evora-tx16s` (bootloader-recoverable) once the SD reader arrives; copy `docs/sdcard/tx16s/IMAGES/splash.png` to the SD. MK3 when on hand.
 
 ## Session log
-**2026-06-03 (eve) — BRUTALIST re-skin (locked design language) + right-side app drawer.**
+**2026-06-03 (night) — REVERTED Brutalist; back to the instrument theme.**
+- After living with the full Brutalist build, owner preferred the original **amber/teal "aerospace
+  instrument"** look. Reverted `Evora-TX` `evora` to **`cdedbd508`** (the pre-Brutalist tip) — this
+  restores the instrument theme **and keeps** the Edit-Model discipline **tiles + horizontal scroll**
+  and the **per-discipline Pro mode** (all built before the re-skin). The **right-side drawer + two-tone
+  wordmark + giant-number flight + watermarks came off** with the theme (bundled in the Brutalist commit).
+- **Nothing lost:** Brutalist is preserved on branch **`Evora-TX@brutalist-theme`** (fonts, palette, drawer,
+  pull-tab) + `mockups/gallery/` (concepts, boards, `board-06x` color system) + memory `[[evora-design-language]]`.
+  To resurrect: `git merge brutalist-theme` (or cherry-pick the drawer commit) and rebuild.
+- Bin rebuilt from `cdedbd508` = the instrument look back on hardware.
+
+**2026-06-03 (eve) — BRUTALIST re-skin (SHELVED — see revert above) + right-side app drawer.**
 - After a 12-concept gallery + finalist boards (`mockups/gallery/`), owner **locked BRUTALIST** with a
   functional color system: true black, **LIME** primary/live · **ORANGE** pro/advanced · **RED** danger ·
   **WHITE** dog/brand. Canonical reference `mockups/gallery/board-06x.html`. Memory: `[[evora-design-language]]`.
