@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#050505;font-family:"IBM Plex Mono";padding:30px;}
+  h1{font-family:"Archivo";font-weight:800;color:#e9e9e6;font-size:30px;margin-bottom:4px;}
+  h1 b{color:#c6f24e;}
+  .sub{color:#6a6d64;font-size:16px;margin-bottom:24px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 30px;width:880px;}
+  .cell .lbl{color:#e9e9e6;font-size:18px;font-weight:600;margin:0 0 9px 2px;}
+  .cell .lbl .nn{background:#c6f24e;color:#0a0a0a;font-weight:700;padding:1px 9px;border-radius:5px;margin-right:11px;}
+  .cell .lbl .ds{color:#6a6d64;font-weight:400;font-size:15px;margin-left:8px;}
+  /* LCD crop: the 480x272 panel sits at (5,125) inside the 690x400 sim shot */
+  .shot{width:400px;height:227px;overflow:hidden;border:1px solid #2a2a2c;border-radius:6px;background:#000;}
+  .clip{width:480px;height:272px;overflow:hidden;position:relative;transform:scale(.833);transform-origin:top left;}
+  .clip img{position:absolute;left:-5px;top:-125px;width:690px;height:400px;image-rendering:-webkit-optimize-contrast;}
+</style></head>
+<body>
+  <h1>EVO<b>RA</b> — real firmware screens</h1>
+  <div class="sub">TX16S simulator · Brutalist · black + lime/orange/red/white · the actual LVGL UI on-device</div>
+  <div class="grid">
+    <div class="cell"><div class="lbl"><span class="nn">01</span>HOME<span class="ds">two-tone wordmark · white dog · drawer tab</span></div><div class="shot"><div class="clip"><img src="spread-home.png"></div></div></div>
+    <div class="cell"><div class="lbl"><span class="nn">02</span>FLIGHT<span class="ds">giant lime headspeed · battery · stats</span></div><div class="shot"><div class="clip"><img src="spread-flight.png"></div></div></div>
+    <div class="cell"><div class="lbl"><span class="nn">03</span>APP DRAWER<span class="ds">new/edit model + nav, slides from right</span></div><div class="shot"><div class="clip"><img src="spread-drawer.png"></div></div></div>
+    <div class="cell"><div class="lbl"><span class="nn">04</span>EDIT MODEL<span class="ds">discipline tiles, horizontal scroll</span></div><div class="shot"><div class="clip"><img src="spread-edithub.png"></div></div></div>
+    <div class="cell"><div class="lbl"><span class="nn">05</span>DISCIPLINE<span class="ds">essentials chips · red danger · orange PRO bar</span></div><div class="shot"><div class="clip"><img src="spread-discipline.png"></div></div></div>
+    <div class="cell"><div class="lbl"><span class="nn">06</span>PRO MODE<span class="ds">full settings, orange = expert</span></div><div class="shot"><div class="clip"><img src="spread-pro.png"></div></div></div>
+    <div class="cell"><div class="lbl"><span class="nn">07</span>NEW-HELI WIZARD<span class="ds">guided, verify-gated setup</span></div><div class="shot"><div class="clip"><img src="spread-wizard.png"></div></div></div>
+    <div class="cell"><div class="lbl"><span class="nn">08</span>SYSTEM<span class="ds">radio device settings only</span></div><div class="shot"><div class="clip"><img src="spread-system.png"></div></div></div>
+  </div>
+</body></html>
