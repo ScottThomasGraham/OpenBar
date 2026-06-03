@@ -88,6 +88,12 @@ repos: [`upstream-baselines.md`](upstream-baselines.md).
   factory-reset that **preserves RX/bind** (snapshot receiver cfg → reset flight groups → restore);
   per-field **editors** + live values (both wire in with Rotorflight MSP); horizontal **snap-paging**
   (currently free drag); split Main/Tail rotor Pro from the shared mixer PTab.
+- **Autonomous follow-up batch (same day):** tap-a-chip **editor** (explain + +/- stepper, local
+  overrides until MSP); plain-language **hints on every chip**; **MK3/800 verified** (Edit-Model flow
+  scales clean, no defects); **New Model reset design** ([`design/new-model-reset.md`] — snapshot RX →
+  reset → restore); **VBar drawer concept** mockup (`mockups/evora-drawer.*`); **System** is now
+  device-settings-only (Pro retired from Settings - lives under Edit Model); **Tail Rotor** has its
+  own Pro page. Bins through `Evora-TX@cdedbd508`. Remaining: horizontal snap-paging; wire MSP.
 
 **2026-06-03 — menu system + Pro area + ELRS re-pin + visual pass.**
 - **ELRS re-pinned `4.0.1 → 3.6.3`** (Evora-Link rebased; ELRS 4.0 breaking changes) — [`upstream-baselines.md`](upstream-baselines.md).
