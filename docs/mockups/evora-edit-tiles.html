@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Evora — Edit Model tiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#f4f7fb;--dim:#aeb8c4;--muted:#6f7c89;--amber:#ff9242;--amber-soft:#ffb274;--green:#3fe0a0;--line:rgba(255,255,255,.08);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#04050a;display:flex;align-items:center;justify-content:center;font-family:"Barlow Semi Condensed",sans-serif;}
+  .bezel{padding:16px;background:linear-gradient(180deg,#0a0c12,#05070b);border:1px solid #1b2330;border-radius:24px;box-shadow:0 30px 80px rgba(0,0,0,.7);}
+  .screen{position:relative;width:960px;height:544px;border-radius:12px;overflow:hidden;color:var(--ink);background:radial-gradient(130% 120% at 50% -20%,#16202e 0%,#0a1019 45%,#06090f 100%);}
+  .top{position:absolute;top:0;left:0;right:0;height:62px;display:flex;align-items:center;gap:16px;padding:0 28px;border-bottom:1px solid var(--line);}
+  .back{display:flex;align-items:center;gap:10px;color:var(--amber);font-family:Rajdhani;font-weight:700;font-size:26px;}
+  .back .lt{font-size:30px;}
+  .ttl{font-family:Rajdhani;font-weight:700;font-size:30px;letter-spacing:3px;}
+  .sub{color:var(--muted);font-size:18px;letter-spacing:1px;}
+  .sp{flex:1;}
+  .clock{font-family:Rajdhani;font-weight:600;font-size:22px;color:var(--muted);}
+  .batt{color:var(--green);font-family:Rajdhani;font-weight:700;font-size:22px;}
+  .grid{position:absolute;top:78px;left:24px;right:24px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:16px;bottom:60px;}
+  .tile{background:linear-gradient(180deg,#18222e,#0d141c);border:1px solid var(--line);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
+  .tile.sel{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber),0 8px 30px rgba(255,146,66,.12);}
+  .ic{width:42px;height:42px;border-radius:11px;background:rgba(255,146,66,.12);display:flex;align-items:center;justify-content:center;color:var(--amber-soft);font-size:24px;}
+  .nm{font-family:Rajdhani;font-weight:700;font-size:27px;color:var(--ink);line-height:1.05;margin-top:6px;}
+  .st{color:var(--green);font-size:17px;font-weight:600;font-family:Rajdhani;letter-spacing:.5px;}
+  .st.warn{color:var(--amber-soft);}
+  .dots{position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:center;gap:9px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18);}
+  .dot.on{background:var(--amber);width:26px;border-radius:5px;}
+  .arrow{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:34px;opacity:.5;}
+</style></head>
+<body>
+<div class="bezel"><div class="screen">
+  <div class="top">
+    <div class="back"><span class="lt">&lt;</span> HOME</div>
+    <div><div class="ttl">EDIT MODEL</div></div>
+    <div class="sub">GOBLIN 770</div>
+    <div class="sp"></div>
+    <div class="batt">92%</div><div class="clock">14:32</div>
+  </div>
+  <div class="grid">
+    <div class="tile sel"><div class="ic">&#9889;</div><div><div class="nm">ESC / Motor</div></div><div class="st">DShot600 · 6S</div></div>
+    <div class="tile"><div class="ic">&#10227;</div><div><div class="nm">Main Rotor</div></div><div class="st">H3-120 · CW</div></div>
+    <div class="tile"><div class="ic">&#9776;</div><div><div class="nm">Swashplate</div></div><div class="st">3-servo · 12&deg;</div></div>
+    <div class="tile"><div class="ic">&#8635;</div><div><div class="nm">Tail Rotor</div></div><div class="st">variable pitch</div></div>
+    <div class="tile"><div class="ic">&#9201;</div><div><div class="nm">Governor</div></div><div class="st">2150 rpm</div></div>
+    <div class="tile"><div class="ic">&#9881;</div><div><div class="nm">Flight Tuning</div></div><div class="st warn">Bank 3 · Sport</div></div>
+  </div>
+  <div class="arrow">&#8250;</div>
+  <div class="dots"><span class="dot on"></span><span class="dot"></span></div>
+</div></div>
+</body></html>

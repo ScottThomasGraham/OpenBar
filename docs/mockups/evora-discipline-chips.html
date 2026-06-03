@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Evora — Discipline (chips)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#f4f7fb;--dim:#aeb8c4;--muted:#6f7c89;--amber:#ff9242;--amber-soft:#ffb274;--green:#3fe0a0;--line:rgba(255,255,255,.08);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#04050a;display:flex;align-items:center;justify-content:center;font-family:"Barlow Semi Condensed",sans-serif;}
+  .bezel{padding:16px;background:linear-gradient(180deg,#0a0c12,#05070b);border:1px solid #1b2330;border-radius:24px;box-shadow:0 30px 80px rgba(0,0,0,.7);}
+  .screen{position:relative;width:960px;height:544px;border-radius:12px;overflow:hidden;color:var(--ink);background:radial-gradient(130% 120% at 50% -20%,#16202e 0%,#0a1019 45%,#06090f 100%);}
+  .top{position:absolute;top:0;left:0;right:0;height:62px;display:flex;align-items:center;gap:16px;padding:0 28px;border-bottom:1px solid var(--line);}
+  .back{display:flex;align-items:center;gap:10px;color:var(--amber);font-family:Rajdhani;font-weight:700;font-size:26px;}
+  .ttl{font-family:Rajdhani;font-weight:700;font-size:30px;letter-spacing:3px;}
+  .sp{flex:1;}.clock{font-family:Rajdhani;font-weight:600;font-size:22px;color:var(--muted);}.batt{color:var(--green);font-family:Rajdhani;font-weight:700;font-size:22px;}
+  .lead{position:absolute;top:74px;left:28px;right:28px;color:var(--dim);font-size:20px;line-height:1.25;}
+  .chips{position:absolute;top:120px;left:24px;right:24px;bottom:84px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:14px;}
+  .chip{background:linear-gradient(180deg,#18222e,#0d141c);border:1px solid var(--line);border-radius:15px;padding:13px 18px 14px;min-width:202px;display:flex;flex-direction:column;gap:3px;}
+  .chip.sel{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber);}
+  .chip.danger{border-color:rgba(255,90,95,.55);}
+  .chip .k{color:var(--muted);font-size:15px;letter-spacing:.6px;text-transform:uppercase;font-weight:600;}
+  .chip .v{font-family:Rajdhani;font-weight:700;font-size:32px;color:var(--amber-soft);line-height:1;}
+  .chip .v .u{font-size:18px;color:var(--muted);font-weight:600;margin-left:3px;}
+  .chip.danger .v{color:#ff8a8e;}
+  .pro{position:absolute;bottom:0;left:0;right:0;height:70px;background:linear-gradient(180deg,#3a2410,#241406);border-top:1.5px solid var(--amber);display:flex;align-items:center;justify-content:center;gap:12px;}
+  .pro .lab{font-family:Rajdhani;font-weight:700;font-size:27px;letter-spacing:2px;color:var(--amber-soft);}
+  .pro .sub{color:#b98a5a;font-size:17px;letter-spacing:.5px;}
+  .pro .warn{font-size:24px;}
+</style></head>
+<body>
+<div class="bezel"><div class="screen">
+  <div class="top">
+    <div class="back">&lt; BACK</div>
+    <div class="ttl">MAIN ROTOR</div>
+    <div class="sp"></div><div class="batt">92%</div><div class="clock">14:32</div>
+  </div>
+  <div class="lead">The essentials for the head. Tap a chip to change it.</div>
+  <div class="chips">
+    <div class="chip danger"><span class="k">Swash type</span><span class="v">H3-120</span></div>
+    <div class="chip danger"><span class="k">Rotor direction</span><span class="v">CW</span></div>
+    <div class="chip sel"><span class="k">Collective pitch</span><span class="v">12.0<span class="u">deg</span></span></div>
+    <div class="chip"><span class="k">Cyclic pitch</span><span class="v">8.0<span class="u">deg</span></span></div>
+    <div class="chip"><span class="k">Swash phase</span><span class="v">0<span class="u">deg</span></span></div>
+    <div class="chip"><span class="k">Swash ring</span><span class="v">100<span class="u">%</span></span></div>
+  </div>
+  <div class="pro">
+    <span class="warn">&#9888;</span>
+    <span class="lab">PRO MODE</span>
+    <span class="sub">— all main-rotor settings</span>
+  </div>
+</div></div>
+</body></html>
