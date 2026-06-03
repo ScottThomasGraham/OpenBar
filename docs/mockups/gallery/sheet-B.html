@@ -1,0 +1,242 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700;800&family=Archivo:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;background:#050505;display:flex;align-items:center;justify-content:center;}
+.bezel{padding:15px;background:#141414;border:1px solid #2a2a2c;border-radius:18px;}
+.s{position:relative;width:960px;height:544px;border-radius:9px;overflow:hidden;background:#0a0a0a;color:#e9e9e6;font-family:"IBM Plex Mono",monospace;}
+.lime{color:#c6f24e;}.mut{color:#5f6157;}.ink{color:#e9e9e6;}.red{color:#ff5e5e;}
+</style><style>
+.t01 .top{display:flex;align-items:center;gap:14px;padding:18px 26px;border-bottom:1px solid #232323;font-weight:600;font-size:19px;letter-spacing:1px;}
+.t01 .g{height:24px;fill:#c6f24e;filter:drop-shadow(0 0 6px rgba(198,242,78,.5));}
+.t01 .sp{flex:1;}
+.t01 .wm{position:absolute;left:28px;top:128px;font-family:"IBM Plex Sans";font-weight:800;font-size:120px;letter-spacing:-4px;line-height:.85;}
+.t01 .tx{font-family:"IBM Plex Mono";font-weight:700;font-size:30px;color:#0a0a0a;background:#c6f24e;padding:2px 9px;vertical-align:36px;margin-left:16px;}
+.t01 .sub{position:absolute;left:30px;top:262px;letter-spacing:6px;color:#5f6157;font-size:18px;}
+.t01 .st{position:absolute;left:30px;top:312px;font-size:20px;}
+.t01 .st::before{content:"● ";color:#c6f24e;}
+.t01 .acts{position:absolute;left:26px;right:26px;top:356px;display:flex;gap:16px;}
+.t01 .ab{flex:1;border:1px solid #2f2f2f;background:#121212;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:25px;}
+.t01 .ab.on{border-color:#c6f24e;background:rgba(198,242,78,.07);color:#c6f24e;}
+.t01 .ab .k{color:#5f6157;font-size:19px;}
+.t01 .wmk{position:absolute;right:-30px;top:70px;height:440px;opacity:.06;fill:#c6f24e;}
+.t01 .data{position:absolute;left:0;right:0;bottom:0;display:flex;border-top:1px solid #232323;}
+.t01 .c{flex:1;padding:14px 26px;border-right:1px solid #1b1b1b;}
+.t01 .c .k{color:#5f6157;font-size:14px;letter-spacing:1px;}.t01 .c .v{font-weight:600;font-size:26px;margin-top:3px;}
+
+.t02{font-family:"IBM Plex Mono";}
+.t02 .top{display:flex;align-items:center;gap:12px;padding:16px 26px;font-weight:600;font-size:17px;letter-spacing:1px;}
+.t02 .g{height:22px;fill:#c6f24e;}.t02 .sp{flex:1;}
+.t02 svg.dial{position:absolute;left:40px;top:96px;}
+.t02 .dv{position:absolute;left:104px;top:230px;width:212px;text-align:center;}
+.t02 .dv .n{font-family:"IBM Plex Sans";font-weight:700;font-size:64px;line-height:.9;color:#c6f24e;}
+.t02 .dv .u{color:#5f6157;font-size:16px;}
+.t02 .r{position:absolute;left:400px;top:104px;right:34px;}
+.t02 .row{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #1e1e1e;padding:15px 2px;}
+.t02 .row .k{color:#5f6157;font-size:18px;letter-spacing:1px;}
+.t02 .row .v{font-family:"IBM Plex Sans";font-weight:700;font-size:34px;}
+.t02 .row .v.l{color:#c6f24e;}
+.t02 .foot{position:absolute;left:40px;bottom:22px;right:34px;display:flex;gap:14px;}
+.t02 .ab{flex:1;border:1px solid #2f2f2f;text-align:center;padding:13px;font-weight:600;font-size:21px;}
+.t02 .ab.on{border-color:#c6f24e;color:#c6f24e;}
+
+.t03{background:#0a0a0a;font-family:"IBM Plex Sans";}
+.t03 .kick{position:absolute;top:40px;left:54px;font-family:"IBM Plex Mono";letter-spacing:7px;font-size:16px;color:#5f6157;}
+.t03 .kick b{color:#c6f24e;font-weight:500;}
+.t03 .wm{position:absolute;top:120px;left:50px;font-weight:800;font-size:150px;letter-spacing:-6px;line-height:.82;}
+.t03 .rule{position:absolute;left:54px;top:300px;width:360px;height:2px;background:#c6f24e;}
+.t03 .tag{position:absolute;left:54px;top:322px;font-family:"IBM Plex Mono";font-size:21px;color:#9a9a93;letter-spacing:1px;}
+.t03 .dogwrap{position:absolute;right:40px;top:70px;height:420px;}
+.t03 .dogwrap svg{height:420px;fill:none;stroke:#c6f24e;stroke-width:6;opacity:.85;}
+.t03 .nav{position:absolute;left:54px;bottom:46px;display:flex;gap:40px;font-family:"IBM Plex Mono";font-size:23px;}
+.t03 .nav .a{color:#c6f24e;}.t03 .nav .a::before{content:"→ ";}
+.t03 .nav .b::before{content:"→ ";color:#5f6157;}
+.t03 .pg{position:absolute;right:48px;bottom:46px;font-family:"IBM Plex Mono";color:#5f6157;font-size:18px;}
+
+.t04{font-family:"IBM Plex Mono";background:#080908;}
+.t04 .frame{position:absolute;inset:18px;border:1px solid #233322;}
+.t04 .cnr{position:absolute;width:22px;height:22px;border:2px solid #c6f24e;}
+.t04 .cnr.tl{left:10px;top:10px;border-right:0;border-bottom:0;}.t04 .cnr.tr{right:10px;top:10px;border-left:0;border-bottom:0;}
+.t04 .cnr.bl{left:10px;bottom:10px;border-right:0;border-top:0;}.t04 .cnr.br{right:10px;bottom:10px;border-left:0;border-top:0;}
+.t04 .hdr{position:absolute;top:34px;left:42px;right:42px;display:flex;font-size:16px;letter-spacing:2px;color:#7f8f74;}
+.t04 .hdr .sp{flex:1;}.t04 .hdr .lime{color:#c6f24e;}
+.t04 .reticle{position:absolute;left:150px;top:150px;width:230px;height:230px;}
+.t04 .reticle svg{width:230px;height:230px;}
+.t04 .dogc{position:absolute;left:196px;top:206px;height:120px;fill:#c6f24e;opacity:.9;}
+.t04 .uid{position:absolute;left:150px;top:392px;width:230px;text-align:center;font-size:15px;color:#7f8f74;letter-spacing:2px;}
+.t04 .panel{position:absolute;right:54px;top:150px;width:330px;font-size:18px;}
+.t04 .panel .l{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #1c241b;}
+.t04 .panel .l .k{color:#7f8f74;letter-spacing:1px;}.t04 .panel .l .v{color:#e9e9e6;}.t04 .panel .l .v.g{color:#c6f24e;}
+.t04 .cmd{position:absolute;right:54px;bottom:60px;width:330px;display:flex;gap:12px;}
+.t04 .cmd .b{flex:1;border:1px solid #2f3f2c;text-align:center;padding:13px;font-size:18px;letter-spacing:1px;}
+.t04 .cmd .b.on{border-color:#c6f24e;color:#c6f24e;background:rgba(198,242,78,.06);}
+
+.t05{font-family:"Space Grotesk",sans-serif;background:#0c0c0c;}
+.t05 .top{display:flex;align-items:center;gap:12px;padding:20px 26px;font-weight:600;font-size:18px;}
+.t05 .g{height:22px;fill:#c6f24e;}.t05 .sp{flex:1;}.t05 .top .mut{font-family:"IBM Plex Mono";font-size:15px;}
+.t05 .grid{position:absolute;top:74px;left:24px;right:24px;bottom:24px;display:grid;grid-template-columns:1.4fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;}
+.t05 .m{background:#151515;border-radius:14px;padding:18px 20px;position:relative;}
+.t05 .m .num{position:absolute;top:14px;right:16px;font-family:"IBM Plex Mono";font-size:14px;color:#5f6157;}
+.t05 .m .lab{font-family:"IBM Plex Mono";font-size:14px;letter-spacing:2px;color:#5f6157;}
+.t05 .m .big{font-weight:700;font-size:46px;margin-top:6px;}
+.t05 .hero{grid-row:span 2;background:#c6f24e;color:#0a0a0a;display:flex;flex-direction:column;justify-content:space-between;}
+.t05 .hero .wm{font-weight:700;font-size:54px;letter-spacing:-2px;line-height:.9;}
+.t05 .hero svg{height:120px;fill:#0a0a0a;align-self:flex-end;}
+.t05 .btn{display:flex;align-items:center;gap:12px;}
+.t05 .dot{width:38px;height:38px;border-radius:50%;background:#c6f24e;display:inline-block;}
+.t05 .dot.o{background:#2a2a2a;}
+.t05 .m.act{display:flex;align-items:center;font-weight:600;font-size:24px;}
+
+.t06{font-family:"Archivo",sans-serif;background:#0a0a0a;}
+.t06 .bar{position:absolute;top:0;left:0;right:0;height:46px;background:#c6f24e;color:#0a0a0a;display:flex;align-items:center;padding:0 22px;font-weight:800;font-size:20px;letter-spacing:1px;gap:14px;}
+.t06 .bar .sp{flex:1;}.t06 .bar svg{height:24px;fill:#0a0a0a;}
+.t06 .wm{position:absolute;top:64px;left:30px;font-weight:900;font-size:172px;letter-spacing:-8px;line-height:.78;color:#e9e9e6;}
+.t06 .wm em{color:#c6f24e;font-style:normal;}
+.t06 .dogblk{position:absolute;right:26px;top:80px;width:240px;height:330px;background:#c6f24e;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
+.t06 .dogblk svg{height:300px;fill:#0a0a0a;}
+.t06 .acts{position:absolute;left:30px;bottom:30px;display:flex;gap:0;}
+.t06 .acts .b{font-weight:800;font-size:30px;padding:16px 30px;border:3px solid #e9e9e6;}
+.t06 .acts .b.on{background:#c6f24e;color:#0a0a0a;border-color:#c6f24e;}
+.t06 .acts .b.off{color:#e9e9e6;border-left:0;}
+.t06 .meta{position:absolute;right:30px;bottom:38px;font-family:"IBM Plex Mono";font-size:18px;color:#5f6157;text-align:right;line-height:1.5;}
+
+.t07{font-family:"IBM Plex Sans";background:#0a0b0c;}
+.t07 .top{display:flex;align-items:center;gap:12px;padding:16px 24px;font-family:"IBM Plex Mono";font-weight:600;font-size:17px;}
+.t07 .g{height:22px;fill:#c6f24e;}.t07 .sp{flex:1;}
+.t07 .wrap{position:absolute;top:60px;left:20px;right:20px;bottom:18px;display:grid;grid-template-columns:300px 1fr;gap:16px;}
+.t07 .card{background:#15171a;border:1px solid #23262a;border-radius:20px;}
+.t07 .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;}
+.t07 .hero .lbl{position:absolute;top:24px;font-family:"IBM Plex Mono";font-size:13px;letter-spacing:2px;color:#6a6d64;}
+.t07 .hero .wm{font-weight:800;font-size:44px;letter-spacing:-1px;}.t07 .hero .sub{font-family:"IBM Plex Mono";color:#6a6d64;font-size:14px;margin-top:4px;}
+.t07 .hero svg.ring{position:absolute;}
+.t07 .right{display:grid;grid-template-rows:1fr 1fr;gap:16px;}
+.t07 .acts{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.t07 .ab{border-radius:20px;border:1px solid #23262a;background:#15171a;display:flex;flex-direction:column;justify-content:space-between;padding:20px;}
+.t07 .ab.on{border-color:#c6f24e;background:rgba(198,242,78,.06);}
+.t07 .ab .t{font-family:"IBM Plex Mono";font-weight:600;font-size:26px;}.t07 .ab.on .t{color:#c6f24e;}
+.t07 .ab .k{font-family:"IBM Plex Mono";color:#6a6d64;font-size:15px;}
+.t07 .stats{display:flex;gap:16px;}
+.t07 .st{flex:1;border-radius:18px;border:1px solid #23262a;background:#15171a;padding:14px 18px;}
+.t07 .st .v{font-weight:700;font-size:30px;}.t07 .st .k{font-family:"IBM Plex Mono";color:#6a6d64;font-size:13px;letter-spacing:1px;}
+.t07 .wmk{position:absolute;right:-20px;bottom:-20px;height:300px;opacity:.05;fill:#c6f24e;}
+
+.t08{font-family:"IBM Plex Mono";background:#0a0c0a;background-image:linear-gradient(#10160f 1px,transparent 1px),linear-gradient(90deg,#10160f 1px,transparent 1px);background-size:32px 32px;}
+.t08 .hdr{position:absolute;top:26px;left:34px;right:34px;display:flex;font-size:16px;letter-spacing:2px;color:#6f7d66;}
+.t08 .hdr .lime{color:#c6f24e;}.t08 .hdr .sp{flex:1;}
+.t08 .dogwrap{position:absolute;left:120px;top:96px;height:360px;}
+.t08 .dogwrap svg{height:360px;fill:none;stroke:#c6f24e;stroke-width:4;}
+.t08 .dim{position:absolute;font-size:14px;color:#7f8f74;}
+.t08 .dl{position:absolute;background:#3a4a36;}
+.t08 .title{position:absolute;left:34px;bottom:120px;}
+.t08 .title .e{font-family:"IBM Plex Sans";font-weight:700;font-size:58px;letter-spacing:-1px;color:#e9e9e6;}
+.t08 .title .s{font-size:16px;color:#6f7d66;letter-spacing:3px;margin-top:4px;}
+.t08 .stamp{position:absolute;right:40px;bottom:40px;border:1px solid #3a4a36;padding:12px 18px;font-size:15px;color:#7f8f74;line-height:1.6;}
+.t08 .stamp b{color:#c6f24e;font-weight:500;}
+.t08 .acts{position:absolute;left:34px;bottom:40px;display:flex;gap:14px;}
+.t08 .acts .b{border:1px solid #3a4a36;padding:12px 22px;font-size:19px;}
+.t08 .acts .b.on{border-color:#c6f24e;color:#c6f24e;}
+
+.t09{background:#090909;font-family:"IBM Plex Mono";}
+.t09 .g{position:absolute;top:46px;left:54px;height:30px;fill:#c6f24e;}
+.t09 .wm{position:absolute;top:44px;left:100px;font-family:"IBM Plex Sans";font-weight:600;font-size:30px;letter-spacing:1px;}
+.t09 .clock{position:absolute;top:52px;right:54px;color:#5f6157;font-size:18px;}
+.t09 .line{position:absolute;left:54px;right:54px;top:272px;height:1px;background:#c6f24e;opacity:.5;}
+.t09 .st{position:absolute;left:54px;top:236px;color:#9a9a93;font-size:22px;}
+.t09 .st b{color:#c6f24e;font-weight:500;}
+.t09 .acts{position:absolute;left:54px;top:300px;display:flex;gap:18px;}
+.t09 .ab{border:1px solid #2a2a2a;padding:14px 28px;font-size:23px;color:#9a9a93;}
+.t09 .ab.on{border-color:#c6f24e;color:#c6f24e;}
+.t09 .foot{position:absolute;left:54px;bottom:44px;color:#3f413c;font-size:17px;letter-spacing:3px;}
+
+.t10{font-family:"Archivo",sans-serif;background:#0b0b0b;overflow:hidden;}
+.t10 .stripe{position:absolute;top:0;bottom:0;width:60px;background:repeating-linear-gradient(45deg,#c6f24e 0 14px,#0b0b0b 14px 28px);opacity:.9;}
+.t10 .stripe.l{left:-10px;transform:skewX(-10deg);}
+.t10 .top{position:absolute;top:22px;left:90px;right:34px;display:flex;align-items:center;gap:12px;font-family:"IBM Plex Mono";font-size:16px;letter-spacing:2px;color:#5f6157;}
+.t10 .top svg{height:22px;fill:#c6f24e;}.t10 .top .lime{color:#c6f24e;}.t10 .top .sp{flex:1;}
+.t10 .badge{position:absolute;left:110px;top:120px;width:300px;height:300px;border-radius:50%;border:6px solid #c6f24e;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#13160c,#0b0b0b);}
+.t10 .badge svg{height:200px;fill:#c6f24e;}
+.t10 .arc{position:absolute;left:110px;top:120px;width:300px;height:300px;}
+.t10 .plate{position:absolute;right:60px;top:150px;background:#e9e9e6;color:#0a0a0a;font-weight:900;font-size:120px;padding:6px 30px;border-radius:12px;letter-spacing:-4px;}
+.t10 .sub{position:absolute;right:60px;top:300px;font-weight:800;font-size:34px;color:#c6f24e;letter-spacing:1px;}
+.t10 .acts{position:absolute;right:60px;bottom:50px;display:flex;gap:14px;}
+.t10 .acts .b{font-weight:800;font-size:22px;padding:14px 26px;border-radius:10px;background:#1a1a1a;color:#e9e9e6;}
+.t10 .acts .b.on{background:#c6f24e;color:#0a0a0a;}
+
+.t11{font-family:"IBM Plex Mono";background:#0a0b0c;}
+.ice{color:#5fd6e6;}
+.t11 .top{display:flex;align-items:center;gap:12px;padding:16px 24px;font-weight:600;font-size:17px;}
+.t11 .g{height:22px;fill:#c6f24e;}.t11 .sp{flex:1;}
+.t11 .wrap{position:absolute;top:62px;left:22px;right:22px;bottom:20px;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr;gap:14px;}
+.t11 .hero{grid-column:span 3;border:1px solid #23262a;border-radius:18px;background:#121417;display:flex;align-items:center;padding:0 28px;gap:24px;}
+.t11 .hero .wm{font-family:"IBM Plex Sans";font-weight:800;font-size:60px;letter-spacing:-2px;}
+.t11 .hero .tx{font-size:24px;color:#0a0a0a;background:#c6f24e;padding:1px 8px;}
+.t11 .hero .sub{font-size:16px;color:#5f6157;letter-spacing:3px;margin-left:auto;}
+.t11 .card{border:1px solid #23262a;border-radius:18px;background:#121417;padding:18px 20px;}
+.t11 .card .k{color:#5f6157;font-size:15px;letter-spacing:1px;}
+.t11 .card .v{font-family:"IBM Plex Sans";font-weight:700;font-size:40px;margin-top:6px;}
+.t11 .ring{display:flex;align-items:center;gap:16px;}
+.t11 .acts{grid-column:span 3;display:flex;gap:14px;}
+.t11 .ab{flex:1;border:1px solid #2f2f2f;border-radius:14px;padding:16px 22px;font-weight:600;font-size:24px;display:flex;justify-content:space-between;align-items:center;}
+.t11 .ab.on{border-color:#c6f24e;color:#c6f24e;background:rgba(198,242,78,.06);}
+.t11 .ab .k{color:#5f6157;font-size:16px;}
+
+.t12{background:radial-gradient(120% 90% at 72% 50%, #14210a 0%, #0a0d07 38%, #060706 100%);font-family:"IBM Plex Mono";overflow:hidden;}
+.t12 .glow{position:absolute;right:120px;top:90px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(198,242,78,.22),transparent 65%);}
+.t12 .dogwrap{position:absolute;right:80px;top:48px;height:460px;}
+.t12 .dogwrap svg{height:460px;fill:#0a0d07;stroke:#c6f24e;stroke-width:3;filter:drop-shadow(0 0 16px rgba(198,242,78,.4));}
+.t12 .top{position:absolute;top:34px;left:46px;display:flex;align-items:center;gap:12px;font-weight:600;font-size:18px;letter-spacing:1px;}
+.t12 .g{height:24px;fill:#c6f24e;filter:drop-shadow(0 0 8px rgba(198,242,78,.6));}
+.t12 .wm{position:absolute;left:46px;top:200px;font-family:"IBM Plex Sans";font-weight:800;font-size:104px;letter-spacing:-4px;line-height:.85;text-shadow:0 0 30px rgba(0,0,0,.6);}
+.t12 .st{position:absolute;left:50px;top:328px;font-size:21px;color:#aeb4a6;}
+.t12 .st::before{content:"● ";color:#c6f24e;}
+.t12 .acts{position:absolute;left:46px;bottom:50px;display:flex;gap:16px;}
+.t12 .ab{border:1px solid #3a4a2c;background:rgba(10,13,7,.6);padding:15px 30px;font-size:23px;color:#cdd3c4;border-radius:8px;}
+.t12 .ab.on{border-color:#c6f24e;color:#c6f24e;box-shadow:0 0 22px rgba(198,242,78,.18);}
+html,body{display:block;background:#050505;}
+.sheet{display:grid;grid-template-columns:1fr 1fr;gap:26px;padding:30px;width:1010px;}
+.cell{}
+.lbl{font-family:"IBM Plex Mono";color:#e9e9e6;font-size:21px;font-weight:600;margin:0 0 9px 2px;}
+.lbl .nn{display:inline-block;background:#c6f24e;color:#0a0a0a;font-weight:700;padding:1px 10px;border-radius:5px;margin-right:11px;}
+.lbl .ds{color:#5f6157;font-weight:400;font-size:16px;margin-left:8px;}
+.frame{width:456px;height:258px;overflow:hidden;border-radius:9px;border:1px solid #2a2a2c;}
+.frame .s{transform:scale(.475);transform-origin:top left;border-radius:0;}</style></head><body><svg width="0" height="0" style="position:absolute"><defs><path id="dog" d="M 790.741 302.649 C 797.255 303.686 799.925 307.237 802.911 312.909 C 812.889 331.862 816.733 353.614 822.525 374.059 C 826.751 388.978 831.338 403.895 834.953 418.913 C 828.562 416.501 824.603 415.309 817.977 413.587 C 826.15 418.586 842.662 427.189 851.382 430.396 C 865.141 418.719 944.413 342.778 959.651 349.356 C 966.838 357.3 966.008 377.248 966.147 387.788 C 966.669 427.538 964.016 508.855 935.085 537.986 C 964.215 591.91 977.933 647.813 992.133 707.122 C 994.98 719.012 1003.09 771.122 1007.25 778.459 C 1018.17 797.701 1042.15 827.008 1054.84 847.13 C 1067.24 866.808 1074.31 889.124 1087.52 907.796 C 1100.13 925.614 1115.61 942.978 1129.69 959.899 C 1151.76 986.403 1174.2 1012.18 1194.63 1040.2 C 1273.76 1148.71 1338.61 1282.1 1363.87 1414.31 C 1369.02 1441.29 1370.11 1468.71 1370.07 1495.68 C 1405.44 1526.06 1473.19 1528.5 1519.63 1538.83 C 1562.13 1548.28 1629.26 1561.33 1654.86 1602.86 C 1660.8 1612.49 1646.65 1614.41 1645.37 1617.22 L 1652.9 1621.61 C 1646.71 1628.49 1639.15 1633.79 1630.73 1637.47 C 1560.02 1668.34 1422.96 1668.28 1352.03 1643.38 C 1378.08 1635.49 1408.52 1623.18 1435.19 1614.37 C 1430.6 1614.48 1426 1614.52 1421.41 1614.48 C 1390.29 1614.07 1340.19 1603.25 1317.86 1580.47 C 1318.29 1591.83 1318.95 1600.79 1316.52 1611.87 C 1264.19 1615.4 1209.69 1613.73 1156.47 1616.48 C 1123.01 1618.25 1089.57 1620.37 1056.15 1622.83 C 1026.55 1624.96 991.467 1629.92 962.235 1625.38 C 943.731 1622.51 941.083 1602.93 935.697 1601.92 C 925.612 1600.04 906.35 1605.87 898.561 1597.79 C 895.972 1595.1 895.183 1592.12 895.189 1588.49 C 895.212 1575.09 902.476 1559.85 911.877 1550.55 C 934.155 1528.53 980.212 1525.8 1009.89 1526.04 C 976.264 1504.67 959.488 1483.8 941.984 1448.54 C 940.01 1444.67 938.306 1441.28 938.446 1436.87 C 939.122 1415.48 942.49 1392.22 945.18 1371.01 L 958.008 1268.47 C 958.681 1263.32 963.137 1227.89 962.797 1224.73 C 960.875 1229.2 959.058 1235.43 958.248 1240.23 C 946.81 1307.99 928.158 1378.31 918.742 1446.19 C 917.519 1454.47 916.729 1462.81 916.376 1471.17 C 916.136 1478.11 916.717 1485.75 915.474 1492.56 C 913.093 1505.61 902.144 1517.86 897.265 1530.38 C 888.255 1553.48 884.249 1578.14 876.324 1601.53 C 873.399 1610.16 869.766 1617.84 861.097 1621.81 C 847.278 1628.13 772.154 1629.32 757.887 1623.92 C 753.244 1622.17 748.601 1619.14 746.711 1614.37 C 744.897 1609.79 746.129 1602.09 747.003 1597.31 C 754.694 1555.23 794.281 1563.01 808.737 1531.77 C 817.285 1513.3 821.527 1492.44 824.368 1472.39 C 832.179 1417.26 835.806 1265.91 816.716 1215.63 C 816.563 1215.23 816.398 1214.83 816.24 1214.43 C 816.167 1269.87 813.298 1324.83 812.127 1380.03 L 811.303 1436.66 C 811.234 1442.56 811.376 1466.2 810.127 1470.88 C 805.194 1489.37 797.484 1514.73 790.013 1532.09 C 783.296 1547.7 761.578 1555.03 750.679 1570.72 C 740.345 1585.59 741.881 1596.18 734.746 1609.84 C 713.25 1610.73 656.942 1615.57 639.219 1607.32 C 635.564 1605.62 632.813 1602.96 631.613 1599.05 C 629.05 1590.68 633.637 1578.13 637.594 1570.78 C 649.039 1549.52 665.794 1542.23 687.877 1535.65 C 699.305 1532.25 706.201 1527.17 711.859 1516.4 C 742.804 1457.46 724.845 1265.25 715.232 1198.74 C 713.026 1183.48 711.714 1166.79 707.057 1152.11 C 702.813 1138.73 692.413 1126.41 686.009 1113.79 C 671.966 1086.13 660.097 1056.22 650.685 1026.67 C 633.486 972.658 640.89 935.993 666.739 886.116 C 655 852.211 664.94 808.64 672.271 774.728 C 669.19 780.684 666.472 787.276 660.618 790.643 L 659.15 789.843 C 653.968 765.983 704.251 672.838 697.934 619.758 C 694.487 590.795 673.656 577.216 652.615 560.425 C 623.759 537.398 606.883 515.659 602.851 477.984 C 601.431 464.717 599.419 435.094 608.844 424.427 C 620.035 411.762 666.624 430.314 681.997 433.534 C 690.512 435.318 698.375 435.315 707.031 434.791 C 724.414 421.586 723.912 411.608 749.076 405.496 C 751.333 375.518 768.826 323.383 790.741 302.649 z M 989.89 1389.34 C 984.583 1356.35 983.54 1331.06 1004.43 1301.88 C 1005.59 1300.27 1006.78 1298.68 1008.01 1297.12 C 1051.27 1248.63 1097.29 1260.52 1150.46 1286.07 C 1129.83 1267.69 1078.4 1249.15 1050.61 1252.37 C 1036.16 1254.24 1024.17 1256.67 1012.32 1265.7 C 974.962 1294.17 974.106 1349.37 989.89 1389.34 z M 769.421 461.377 C 776.566 462.883 792.183 467.616 798.37 471.251 C 802.595 472.867 802.77 473.757 806.435 473.006 C 808.541 465.81 797.363 458.079 791.276 456.324 C 789.025 455.675 785.45 455.954 783.083 456.12 C 778.618 457.791 773.767 459.496 769.421 461.377 z"/></defs></svg><div class="sheet"><div class="cell"><div class="lbl"><span class="nn">07</span>SOFT DASH<span class="ds">rounded cards · ring medallion</span></div><div class="frame"><div class="s t07"><div class="t07"><svg class="wmk" viewBox="585 290 1090 1390"><use href="#dog"/></svg>
+<div class="top"><svg class="g" viewBox="585 290 1090 1390"><use href="#dog"/></svg><span class="lime">EVORA</span><span class="mut">/ home · standby</span><span class="sp"></span><span class="mut">92% 14:32</span></div>
+<div class="wrap">
+ <div class="card hero"><div class="lbl">EVORA TX</div><svg class="ring" width="220" height="220" viewBox="0 0 220 220"><circle cx="110" cy="110" r="96" fill="none" stroke="#23262a" stroke-width="12"/><circle cx="110" cy="110" r="96" fill="none" stroke="#c6f24e" stroke-width="12" stroke-linecap="round" stroke-dasharray="452 603" transform="rotate(-90 110 110)"/></svg><div class="wm">EVORA</div><div class="sub">open heli os</div></div>
+ <div class="right">
+  <div class="acts"><div class="ab on"><div class="t">new<br>model</div><div class="k">↵ configure</div></div><div class="ab"><div class="t">edit<br>model</div><div class="k">→ disciplines</div></div></div>
+  <div class="stats"><div class="st"><div class="v mut">idle</div><div class="k">LINK</div></div><div class="st"><div class="v">04</div><div class="k">HELIS</div></div><div class="st"><div class="v lime">0.3.0</div><div class="k">FIRMWARE</div></div></div></div></div></div></div></div></div>
+<div class="cell"><div class="lbl"><span class="nn">08</span>BLUEPRINT<span class="ds">schematic · line-art dog · grid</span></div><div class="frame"><div class="s t08"><div class="t08">
+<div class="hdr"><span class="lime">⊞ EVORA</span><span>&nbsp; DWG. 770-A</span><span class="sp"></span><span>SCALE 1:1 · REV 0.3</span></div>
+<div class="dogwrap"><svg class="" viewBox="585 290 1090 1390"><use href="#dog"/></svg></div>
+<div class="dl" style="left:96px;top:120px;width:1px;height:336px;"></div>
+<div class="dl" style="left:96px;top:120px;width:18px;height:1px;"></div>
+<div class="dl" style="left:96px;top:455px;width:18px;height:1px;"></div>
+<div class="dim" style="left:60px;top:280px;transform:rotate(-90deg);">176.0</div>
+<div class="title"><div class="e">EVORA TX</div><div class="s">OPEN HELI OS · STANDBY</div></div>
+<div class="acts"><div class="b on">new model</div><div class="b">edit model</div></div>
+<div class="stamp">UNIT <b>770</b><br>HELIS <b>04</b><br>LINK <b>idle</b></div></div></div></div></div>
+<div class="cell"><div class="lbl"><span class="nn">09</span>MINIMAL<span class="ds">mono-line · restraint · void</span></div><div class="frame"><div class="s t09"><div class="t09"><svg class="g" viewBox="585 290 1090 1390"><use href="#dog"/></svg><div class="wm">evora</div><div class="clock">14:32</div>
+<div class="st"><b>standby</b> — no heli connected</div>
+<div class="line"></div>
+<div class="acts"><div class="ab on">new model</div><div class="ab">edit model</div></div>
+<div class="foot">OPEN HELI OS · 04 HELIS · 0.3.0</div></div></div></div></div>
+<div class="cell"><div class="lbl"><span class="nn">10</span>MOTORSPORT<span class="ds">race badge · number plate · energy</span></div><div class="frame"><div class="s t10"><div class="t10"><div class="stripe l"></div>
+<div class="top"><svg class="" viewBox="585 290 1090 1390"><use href="#dog"/></svg><span class="lime">EVORA</span><span>RACING</span><span class="sp"></span><span>STANDBY · 14:32</span></div>
+<div class="badge"><svg class="" viewBox="585 290 1090 1390"><use href="#dog"/></svg></div>
+<svg class="arc" viewBox="0 0 300 300"><circle cx="150" cy="150" r="146" fill="none" stroke="#c6f24e" stroke-width="2" stroke-dasharray="6 8" opacity=".5"/></svg>
+<div class="plate">770</div><div class="sub">EVORA · TX</div>
+<div class="acts"><div class="b on">NEW MODEL</div><div class="b">EDIT</div></div></div></div></div></div>
+<div class="cell"><div class="lbl"><span class="nn">11</span>★ LIME + ICE<span class="ds">wildcard · second hue for data</span></div><div class="frame"><div class="s t11"><div class="t11">
+<div class="top"><svg class="g" viewBox="585 290 1090 1390"><use href="#dog"/></svg><span class="lime">EVORA</span><span class="mut">/ home</span><span class="sp"></span><span class="ice">standby</span><span class="mut">14:32</span></div>
+<div class="wrap">
+ <div class="hero"><div class="wm">EVORA<span class="tx">TX</span></div><div class="sub">OPEN HELI OS</div></div>
+ <div class="card"><div class="k">LINK</div><div class="v ice">idle</div></div>
+ <div class="card ring"><svg width="74" height="74" viewBox="0 0 74 74"><circle cx="37" cy="37" r="30" fill="none" stroke="#23262a" stroke-width="8"/><circle cx="37" cy="37" r="30" fill="none" stroke="#5fd6e6" stroke-width="8" stroke-linecap="round" stroke-dasharray="160 188" transform="rotate(-90 37 37)"/></svg><div><div class="k">SIGNAL</div><div class="v ice" style="font-size:30px">85<span style="font-size:16px;color:#5f6157">%</span></div></div></div>
+ <div class="card"><div class="k">HELIS</div><div class="v">04</div></div>
+ <div class="acts"><div class="ab on">new_model<span class="k">[ ↵ ]</span></div><div class="ab">edit_model<span class="k">[ → ]</span></div></div></div></div></div></div></div>
+<div class="cell"><div class="lbl"><span class="nn">12</span>★ NIGHT FLIGHT<span class="ds">wildcard · cinematic · ghost dog</span></div><div class="frame"><div class="s t12"><div class="t12"><div class="glow"></div><div class="dogwrap"><svg class="" viewBox="585 290 1090 1390"><use href="#dog"/></svg></div>
+<div class="top"><svg class="g" viewBox="585 290 1090 1390"><use href="#dog"/></svg><span class="lime">EVORA</span></div>
+<div class="wm">EVORA</div>
+<div class="st">standby — ready when you are</div>
+<div class="acts"><div class="ab on">new model</div><div class="ab">edit model</div></div></div></div></div></div></div></body></html>
