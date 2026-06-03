@@ -14,3 +14,6 @@ Thumbs.db
 
 # Research scratch clones
 /.research/
+
+# pristine upstream reference checkouts (fetch with references/fetch-references.sh)
+/upstream/

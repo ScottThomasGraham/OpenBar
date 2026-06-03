@@ -32,7 +32,7 @@ anchor to the real edge via `height()`. Per-resolution font + dog-image sets (`f
 
 ## Architecture
 - **Evora TX** = fork of **EdgeTX** (`ScottThomasGraham/Evora-TX`, baseline `v2.12.1`, branch `evora`).
-- **Evora Link** = fork of **ExpressLRS** (`ScottThomasGraham/Evora-Link`, baseline `4.0.1`, branch `evora`) — both TX module + RX; later a private high-bandwidth config channel. (Brand only so far; ELRS build is a Phase-0 task.)
+- **Evora Link** = fork of **ExpressLRS** (`ScottThomasGraham/Evora-Link`, baseline `4.0.1`, branch `evora`) — both TX module + RX; later a private high-bandwidth config channel. (Brand only so far; ELRS build is a Phase-0 task.) ⚠️ **Pin under review:** recommend re-pinning `4.0.1 → 3.6.3` before any ELRS work — see [`upstream-baselines.md`](upstream-baselines.md).
 - **Rotorflight** = untouched FC, configured over the link via MSP.
 - Meta repo: `ScottThomasGraham/Evora` (branch `main`) — docs, mockups, design.
 
@@ -56,21 +56,18 @@ anchor to the real edge via `height()`. Per-resolution font + dog-image sets (`f
 ### Emulator preview toggles (ship as default; flip only to screenshot)
 `evora_home.cpp`: `EV_FORCE_STATE` (0 auto / 1 flight / 2 idle), `EV_PREVIEW_SCREEN` (-1..3), `EV_PREVIEW_WIZARD` (0/1). `evora_wizard.cpp`: `EV_WIZARD_START` (0..12).
 
-## How to build
-- **Flashable firmware (ARM):** push to `evora` → GitHub Actions matrix builds **both** radios; download
-  `evora-tx16s` / `evora-tx16smk3` (`gh run download <id> -R ScottThomasGraham/Evora-TX -n evora-tx16s`).
-  - ⚠️ Do NOT build firmware locally (edgetx-dev image is amd64; `arm-none-eabi-g++` segfaults under qemu on this Mac). Use CI.
-- **Emulators (UI dev, arm64-native in container `evora-simu`, profile `colima-evora`):**
-  - 480×272: `cd /src/build-simu/native && cmake . && make -j simu`  →  `build-simu/native/simu`
-  - 800×480: `cd /src/build-mk3/native && make -j simu`  (configured `cmake -DPCB=TX16SMK3 -DDEFAULT_MODE=2 ..`)
-  - **Build at `native/`, NOT the superbuild root** (root `make simu` is a no-op). After a file rename, delete stale `*.o` + `VerifyGlobs.cmake`.
+## How to build  →  see [`build-and-simulator.md`](build-and-simulator.md)
+Local builds now work natively on this Mac (the old qemu-segfault blocker is solved). In short, from
+`forks/evora-tx/`:
+- **Flashable firmware:** `./build-evora-tx.sh` → `build-tx16s-native/arm-none-eabi/firmware.bin` (+ `dist/`).
+  Native arm64 toolchain image (`evora-tx-native:14.2`), no emulation ICEs. MK3 local build = TODO.
+- **Simulator (fast UI loop):** `./sim.sh` → `sim-shot.png`. Verifies anything **visual** in seconds;
+  **can't** verify audio or rotary-encoder input (touch sim — test those on hardware).
+- CI still builds both radios on push to `evora` (`gh run download … -n evora-tx16s`); use it for the MK3 artifact.
 
-## Emulator capture workflow (reliable)
-- Restore the settings seed (`/root/sim/settings_seed`, calibrated, warnings off); never re-wipe.
-- 480: `docker exec evora-simu bash /src/build-simu/cap.sh <delay> [keys]` → `/tmp/out.png`; crop `480x272+404+355`; Xvfb 1280×720.
-- MK3: `docker exec evora-simu bash /src/build-mk3/capm.sh <delay>` → `/tmp/out.png`; crop `564x338+566+433`; Xvfb 1920×1080.
-- `docker cp evora-simu:/tmp/out.png …` (the container mounts the **fork** at /src; meta `docs/` is NOT mounted → cp out).
-- Touch (mouse→LCD) works top-row; footer taps drift → use the preview toggles for screenshots.
+The full toolchain rationale, preview hooks, and sim caveats live in
+[`build-and-simulator.md`](build-and-simulator.md). Upstream pins (EdgeTX/ELRS/Rotorflight) + reference
+repos: [`upstream-baselines.md`](upstream-baselines.md).
 
 ## Next steps
 1. **(needs heli on bench)** Wire the wizard's **MSP writes** + live telemetry/servo motion (the steps are collect-only today); live data in home + flight dashboards.
@@ -78,12 +75,39 @@ anchor to the real edge via `height()`. Per-resolution font + dog-image sets (`f
 3. **Evora Link (ELRS):** build TX (`Unified_ESP32_2400_TX_via_ETX`) + author the FlyDragon RX hardware layout (`Unified_ESP8285_2400_RX_via_BetaflightPassthrough`); pick a binding phrase; then the private fast-config channel.
 4. **Phase 0 hardware (owner):** flash `evora-tx16s` (bootloader-recoverable) once the SD reader arrives; copy `docs/sdcard/tx16s/IMAGES/splash.png` to the SD. MK3 when on hand.
 
+## Session log
+**2026-06-02 — first on-hardware flash + UI fixes + local toolchain.**
+- **Local native build solved.** Built a native arm64 toolchain image (ARM aarch64 `arm-none-eabi
+  14.2.rel1`) → firmware compiles clean on this Mac with no qemu segfaults. `./build-evora-tx.sh`.
+  Also stood up a headless **simulator screenshot loop** (`./sim.sh`) — see [`build-and-simulator.md`](build-and-simulator.md).
+- **First flash to the real TX16S** (owner) — booted as Evora; surfaced the backlog below.
+- **Fixed + verified in sim, committed (`Evora-TX@e1b561776`):**
+  - Wizard **board-orientation** (Flat/Inverted/On side) and **swashplate** (H3-120/H3-140/H1)
+    diagrams now **redraw per selection** (were static art). `diagBoard`/`diagSwash` take the index.
+  - **"OpenBar" → "EVORA"**: the quick-menu title was the `ICON_TOP_LOGO` **bitmap**
+    (`mask_top_logo.png`), never rebranded — regenerated as an EVORA wordmark (both resolutions).
+  - **"About EdgeTX" → "About Evora"** (`TR_MAIN_MENU_ABOUT_EDGETX`, en).
+- **Boot chime** generated (`dist/hello.wav`, replaces "welcome to EdgeTX" — it's an SD file, not firmware).
+- **ELRS pin researched** — recommend `4.0.1 → 3.6.3`, see [`upstream-baselines.md`](upstream-baselines.md).
+
+## Open backlog (from on-hardware testing 2026-06-02)
+1. **Scroll wheel adjusts the focused field/trim** (owner request). Real input-layer work: Evora's
+   touch-built screens aren't wired to the rotary encoder's LVGL group. **Can't be sim-verified**
+   (encoder ≠ touch) — needs hardware iteration.
+2. **Ground-up settings, not EdgeTX skins** (owner direction). Model screens mostly *removed* (config
+   is baked-in / wizard-driven); **Radio Settings rebuilt ground-up** as native Evora screens (like
+   `evora_home`/`evora_wizard`), referencing EdgeTX only for *how the plumbing works*. Needs a design pass.
+3. **Branding sweep** — `About EdgeTX` fixed for `en`; other languages (es/nl/fi) + any remaining
+   EdgeTX wordmarks/strings still TODO.
+
 ## Hardware (owner's bench)
 - Radios: RadioMaster **TX16S** (now) + **TX16S MK3** (H7) — both supported. Internal **ELRS** module (`RadioMaster TX16S 2400 TX`).
 - FC: **FlyDragon F722 V2** (Rotorflight `FLYDRAGONF722_V2_2`, STM32F722) with **built-in ELRS RX** (ESP8285+SX1280, FC UART1, flash via Rotorflight passthrough; no mainline ELRS target — author one).
 - Rotorflight: latest stable **2.2.1** (owner flashes).
 
 ## Key docs
+- [`build-and-simulator.md`](build-and-simulator.md) — native local build + simulator dev loop (current).
+- [`upstream-baselines.md`](upstream-baselines.md) — EdgeTX/ELRS/Rotorflight pins, the ELRS version decision, reference repos.
 - `superpowers/specs/2026-06-01-evora-architecture-design.md` — architecture + roadmap.
 - `design/radio-is-a-controller.md` — the fixed-channel-map design law (`AECR1T23`).
 - `design/heli-setup-parameters.md` — VBar setup params → Rotorflight mapping + the 13-step wizard spec.
