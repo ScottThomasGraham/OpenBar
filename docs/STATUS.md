@@ -82,9 +82,13 @@ repos: [`upstream-baselines.md`](upstream-baselines.md).
   numerals-only), the `12 / 112` / `2150 rpm` glyph drops, and the governor numRow label/value overlap.
 - **Menu system rebuilt** (`evora_screen.{h,cpp}`, `Evora-TX@b0c04905d`): scrollable list pages + a
   push/pop nav stack; **System** gains a **Pro-mode toggle**; Pro reveals **PRO TUNING — the full
-  Rotorflight Configurator surface** (19 tabs) as navigable shells (placeholders until MSP). Tools
-  gains sub-pages. Design: [`design/menu-system.md`](design/menu-system.md). **TODO:** encoder
-  scroll/edit wiring; wire real `g_eeGeneral` editors + Rotorflight MSP read/writes.
+  Rotorflight Configurator surface**. All 18 Pro tabs are **built out** (`Evora-TX@eceaf8f90`) with
+  real parameters/ranges/defaults pulled from the Rotorflight firmware `settings.c` — sectioned,
+  each setting with a one-line plain-language hint, crash-causers flagged red (data-driven
+  PParam/PSection/PTab renderer). Tools gains sub-pages. Design: [`design/menu-system.md`](design/menu-system.md).
+  **Values are read-only placeholders until MSP. TODO:** Rotorflight MSP read/write + per-field
+  editors (steppers/pickers) to make Pro live; encoder scroll/edit wiring; real `g_eeGeneral` device
+  editors; deepen the advanced long-tail params (all servos, PID error-decay/iterm-relax, rescue).
 
 **2026-06-02 — first on-hardware flash + UI fixes + local toolchain.**
 - **Local native build solved.** Built a native arm64 toolchain image (ARM aarch64 `arm-none-eabi
