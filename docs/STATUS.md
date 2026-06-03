@@ -76,6 +76,19 @@ repos: [`upstream-baselines.md`](upstream-baselines.md).
 4. **Phase 0 hardware (owner):** flash `evora-tx16s` (bootloader-recoverable) once the SD reader arrives; copy `docs/sdcard/tx16s/IMAGES/splash.png` to the SD. MK3 when on hand.
 
 ## Session log
+**2026-06-03 (pm) — Edit Model IA: discipline tiles + chips + per-discipline Pro.**
+- Reworked the menu around the owner's VBar-style vision (`Evora-TX@2cfe523f7`). Home now has
+  **New model** (wizard) + **Edit model**. Edit Model = a horizontal-scroll grid of **discipline
+  tiles** (ESC/Motor, Main Rotor, Swashplate, Tail Rotor, Governor, Flight Tuning, Filters, Receiver,
+  Battery, Failsafe, Banks, Blackbox) → a discipline's **essentials as touch chips** + an amber
+  **PRO MODE** bar → the discipline's **full settings as chips** (reusing the Configurator-depth
+  PTabs), crash-causers red. Data-driven (`renderChips` + `Discipline`), so depth scales. Verified
+  across the flow in the 480 sim. Mockups: `design/menu-system.md`, `mockups/evora-edit-*.html`.
+- **TODO:** VBar-style right slide-out **drawer** for nav (owner sending a reference shot); New Model
+  factory-reset that **preserves RX/bind** (snapshot receiver cfg → reset flight groups → restore);
+  per-field **editors** + live values (both wire in with Rotorflight MSP); horizontal **snap-paging**
+  (currently free drag); split Main/Tail rotor Pro from the shared mixer PTab.
+
 **2026-06-03 — menu system + Pro area + ELRS re-pin + visual pass.**
 - **ELRS re-pinned `4.0.1 → 3.6.3`** (Evora-Link rebased; ELRS 4.0 breaking changes) — [`upstream-baselines.md`](upstream-baselines.md).
 - **Critical visual pass, both resolutions** — fixed the wizard stepper `+/-` glyphs (EVF_NUM_MD is
