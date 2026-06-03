@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Evora concept — Gauge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Spectral:wght@500;600&family=Saira+Semi+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#0c0c0d;display:flex;align-items:center;justify-content:center;font-family:"Saira Semi Condensed",sans-serif;}
+  .bezel{padding:18px;background:#1c1a17;border:1px solid #34302a;border-radius:18px;}
+  /* aged instrument face */
+  .s{position:relative;width:960px;height:544px;border-radius:8px;overflow:hidden;
+     background:radial-gradient(120% 130% at 30% 20%,#efe7d2 0%,#e4d8bd 60%,#d8c9a8 100%);color:#2a241b;}
+  .grain{position:absolute;inset:0;opacity:.5;mix-blend-mode:multiply;
+     background:radial-gradient(circle at 80% 90%,rgba(120,90,40,.18),transparent 55%);}
+  .top{position:absolute;top:0;left:0;right:0;display:flex;align-items:baseline;gap:14px;padding:16px 26px;border-bottom:1.5px solid #2a241b;}
+  .brand{font-family:"Saira Condensed";font-weight:700;font-size:30px;letter-spacing:5px;}
+  .sp{flex:1;}
+  .meta{font-family:"Spectral";font-style:italic;font-size:20px;color:#6b5a3c;}
+  /* analog dial */
+  svg{position:absolute;left:40px;top:96px;}
+  .needle{transform-origin:140px 140px;transform:rotate(150deg);}
+  .right{position:absolute;left:330px;top:118px;right:36px;}
+  .wm{font-family:"Saira Condensed";font-weight:700;font-size:96px;letter-spacing:-1px;line-height:.9;}
+  .wm .tx{font-family:"Saira Condensed";font-size:26px;font-weight:600;border:2px solid #7b2d26;color:#7b2d26;padding:1px 8px;vertical-align:24px;margin-left:10px;letter-spacing:1px;}
+  .os{font-family:"Spectral";font-style:italic;font-size:21px;color:#6b5a3c;margin-top:2px;}
+  .rule{height:1.5px;background:#2a241b;margin:16px 0;}
+  .row{display:flex;gap:14px;}
+  .b{flex:1;border:1.5px solid #2a241b;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.25);}
+  .b.fill{background:#7b2d26;border-color:#7b2d26;color:#efe7d2;}
+  .b .t{font-family:"Saira Condensed";font-weight:600;font-size:27px;letter-spacing:.5px;}
+  .foot{position:absolute;left:36px;bottom:18px;font-family:"Spectral";font-style:italic;font-size:19px;color:#6b5a3c;}
+  .b08 .t{color:#b08d57;}
+</style></head>
+<body><div class="bezel"><div class="s"><div class="grain"></div>
+  <div class="top"><span class="brand">EVORA</span><span class="sp"></span><span class="meta">92% · 14:32</span></div>
+  <svg width="280" height="280" viewBox="0 0 280 280">
+    <circle cx="140" cy="140" r="128" fill="none" stroke="#2a241b" stroke-width="2"/>
+    <circle cx="140" cy="140" r="120" fill="none" stroke="#7b2d26" stroke-width="1" opacity=".5"/>
+    <g stroke="#2a241b" stroke-width="2">
+      <!-- ticks -->
+      <line x1="140" y1="22" x2="140" y2="40"/><line x1="244" y1="92" x2="228" y2="100"/>
+      <line x1="244" y1="188" x2="228" y2="180"/><line x1="140" y1="258" x2="140" y2="240"/>
+      <line x1="36" y1="188" x2="52" y2="180"/><line x1="36" y1="92" x2="52" y2="100"/>
+    </g>
+    <text x="140" y="120" text-anchor="middle" font-family="Spectral" font-style="italic" font-size="17" fill="#6b5a3c">STANDBY</text>
+    <text x="140" y="170" text-anchor="middle" font-family="Saira Condensed" font-weight="700" font-size="46" fill="#2a241b">0</text>
+    <text x="140" y="196" text-anchor="middle" font-family="Spectral" font-style="italic" font-size="15" fill="#6b5a3c">rpm</text>
+    <g class="needle"><line x1="140" y1="140" x2="140" y2="46" stroke="#7b2d26" stroke-width="3.5"/><circle cx="140" cy="140" r="9" fill="#2a241b"/></g>
+  </svg>
+  <div class="right">
+    <div class="wm">EVORA<span class="tx">TX</span></div>
+    <div class="os">Open Heli OS — no heli connected</div>
+    <div class="rule"></div>
+    <div class="row">
+      <div class="b fill"><span class="t">New model</span></div>
+      <div class="b"><span class="t">Edit model</span></div>
+    </div>
+    <div class="rule"></div>
+    <div class="row">
+      <div class="b b08"><span class="t">Bind</span></div>
+      <div class="b b08"><span class="t">Helicopters</span></div>
+      <div class="b b08"><span class="t">Tools</span></div>
+    </div>
+  </div>
+  <div class="foot">v0.3 — 4 helis on file</div>
+</div></div></body></html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Evora concept — Mono</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#0c0c0d;display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;}
+  .bezel{padding:16px;background:#161617;border:1px solid #2a2a2c;border-radius:18px;}
+  .s{position:relative;width:960px;height:544px;border-radius:8px;overflow:hidden;background:#0a0a0a;color:#e9e9e6;}
+  .lime{color:#c6f24e;} .mut{color:#5f6157;}
+  .top{display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid #232323;}
+  .top .b{font-weight:600;font-size:18px;letter-spacing:2px;}
+  .sp{flex:1;}
+  .top .m{color:#9a9a93;font-weight:500;font-size:18px;}
+  .wm{position:absolute;left:24px;top:120px;}
+  .wm .e{font-family:"IBM Plex Sans";font-weight:700;font-size:118px;letter-spacing:-3px;line-height:.85;}
+  .wm .tx{font-family:"IBM Plex Mono";font-weight:700;font-size:30px;color:#0a0a0a;background:#c6f24e;padding:2px 8px;vertical-align:34px;margin-left:14px;}
+  .wm .sub{font-size:18px;letter-spacing:5px;color:#5f6157;margin-top:8px;}
+  .st{position:absolute;left:26px;top:302px;font-size:19px;font-weight:500;}
+  .st::before{content:"●";color:#c6f24e;margin-right:10px;}
+  .acts{position:absolute;left:24px;right:24px;top:344px;display:flex;gap:14px;}
+  .ab{flex:1;border:1px solid #2f2f2f;background:#131313;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;}
+  .ab.on{border-color:#c6f24e;background:rgba(198,242,78,.07);}
+  .ab .t{font-family:"IBM Plex Mono";font-weight:600;font-size:24px;}
+  .ab.on .t{color:#c6f24e;}
+  .ab .k{color:#5f6157;font-size:18px;}
+  .data{position:absolute;left:0;right:0;bottom:0;display:flex;border-top:1px solid #232323;}
+  .c{flex:1;padding:13px 22px;border-right:1px solid #1c1c1c;}
+  .c .k{color:#5f6157;font-size:13px;letter-spacing:1px;}
+  .c .v{font-weight:600;font-size:24px;margin-top:2px;}
+</style></head>
+<body><div class="bezel"><div class="s">
+  <div class="top"><span class="b lime">EVORA</span><span class="b mut">/ HOME</span><span class="sp"></span><span class="m">92%</span><span class="m">14:32</span></div>
+  <div class="wm"><div class="e">EVORA<span class="tx">TX</span></div><div class="sub">OPEN HELI OS</div></div>
+  <div class="st">STANDBY — NO HELI CONNECTED</div>
+  <div class="acts">
+    <div class="ab on"><span class="t">new_model</span><span class="k">[ ↵ ]</span></div>
+    <div class="ab"><span class="t">edit_model</span><span class="k">[ → ]</span></div>
+  </div>
+  <div class="data">
+    <div class="c"><div class="k">LINK</div><div class="v mut">idle</div></div>
+    <div class="c"><div class="k">HELIS</div><div class="v">04</div></div>
+    <div class="c"><div class="k">FIRMWARE</div><div class="v">0.3.0</div></div>
+  </div>
+</div></div></body></html>

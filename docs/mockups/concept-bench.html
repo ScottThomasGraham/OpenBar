@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Evora concept — Bench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#0c0c0d;display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Sans",sans-serif;}
+  .bezel{padding:16px;background:#161617;border:1px solid #2a2a2c;border-radius:18px;}
+  /* light "instrument paper" screen */
+  .s{position:relative;width:960px;height:544px;border-radius:8px;overflow:hidden;background:#eceae3;color:#191917;}
+  .top{display:flex;align-items:center;gap:14px;padding:18px 26px;border-bottom:2px solid #191917;}
+  .lbl{font-family:"IBM Plex Mono";font-weight:600;font-size:18px;letter-spacing:1px;text-transform:uppercase;color:#191917;}
+  .mut{color:#7a766c;}
+  .sp{flex:1;}
+  .chip-id{font-family:"IBM Plex Mono";font-weight:600;font-size:17px;color:#fff;background:#e2402b;padding:3px 9px;border-radius:3px;}
+  .num{font-family:"IBM Plex Mono";font-weight:600;}
+  .wm{position:absolute;left:26px;top:120px;}
+  .wm .e{font-family:"IBM Plex Sans";font-weight:700;font-size:120px;letter-spacing:-4px;line-height:.86;color:#191917;}
+  .wm .sub{font-family:"IBM Plex Mono";font-size:18px;letter-spacing:6px;color:#7a766c;margin-top:6px;}
+  .stat{position:absolute;left:28px;top:300px;display:flex;align-items:center;gap:12px;font-family:"IBM Plex Mono";font-weight:600;font-size:19px;}
+  .dot{width:11px;height:11px;border-radius:50%;background:#e2402b;}
+  /* flat squared action buttons */
+  .acts{position:absolute;left:26px;right:26px;top:348px;display:flex;gap:14px;}
+  .b{flex:1;border:2px solid #191917;background:transparent;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;}
+  .b.fill{background:#191917;color:#eceae3;}
+  .b .t{font-family:"IBM Plex Sans";font-weight:600;font-size:26px;}
+  .b .a{font-family:"IBM Plex Mono";font-size:22px;}
+  /* data strip */
+  .data{position:absolute;left:0;right:0;bottom:0;display:flex;border-top:2px solid #191917;}
+  .cell{flex:1;padding:12px 22px;border-right:1px solid #c9c5b9;}
+  .cell:last-child{border-right:0;}
+  .cell .k{font-family:"IBM Plex Mono";font-size:13px;letter-spacing:1px;color:#7a766c;text-transform:uppercase;}
+  .cell .v{font-family:"IBM Plex Mono";font-weight:600;font-size:24px;color:#191917;}
+</style></head>
+<body><div class="bezel"><div class="s">
+  <div class="top"><span class="lbl">Evora</span><span class="sp"></span><span class="lbl num mut">92%</span><span class="lbl num">14:32</span></div>
+  <div class="wm"><div class="e">EVORA<span class="chip-id" style="font-size:34px;vertical-align:30px;margin-left:14px;">TX</span></div><div class="sub">OPEN HELI OS</div></div>
+  <div class="stat"><span class="dot"></span> STANDBY · NO HELI CONNECTED</div>
+  <div class="acts">
+    <div class="b fill"><span class="t">New model</span><span class="a">→</span></div>
+    <div class="b"><span class="t">Edit model</span><span class="a">→</span></div>
+  </div>
+  <div class="data">
+    <div class="cell"><div class="k">Link</div><div class="v">IDLE</div></div>
+    <div class="cell"><div class="k">Helis</div><div class="v">04</div></div>
+    <div class="cell"><div class="k">Firmware</div><div class="v">0.3.0</div></div>
+  </div>
+</div></div></body></html>
