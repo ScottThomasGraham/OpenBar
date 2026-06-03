@@ -14,6 +14,7 @@ REFS=(
   "edgetx|https://github.com/edgetx/edgetx|v2.12.1"
   "expresslrs|https://github.com/ExpressLRS/ExpressLRS|3.6.3"   # recommended pin (see upstream-baselines.md)
   "rotorflight|https://github.com/rotorflight/rotorflight-firmware|default"
+  "rotorflight-configurator|https://github.com/rotorflight/rotorflight-configurator|default"  # the GUI Evora's Pro screens mirror
 )
 
 for r in "${REFS[@]}"; do

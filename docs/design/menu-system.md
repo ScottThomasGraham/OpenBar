@@ -59,6 +59,14 @@ Home (idle | flight)
 - `toggleRow(parent, label, bool*, onChange)` — on/off switch row (used by Pro mode).
 - Editors: `stepperPage` (numeric ± with range), `choicePage` (pick-one list) — reused across settings.
 
+## Pro = the whole Rotorflight Configurator
+The Pro area mirrors the **Rotorflight Configurator** field-for-field — that GUI *is* the Pro-screen
+spec. Reference checkout: `upstream/rotorflight-configurator` (via `references/fetch-references.sh`);
+the tab templates in `src/tabs/` (incl. subdirs `governor/ gyro/ motors/ failsafe/ receiver/ profiles/`)
+define every field, labels resolve from `_locales/en/messages.json`, ranges/defaults from the firmware
+`settings.c`. Build every Configurator field as a `PParam` (label, value, unit, plain-language hint,
+PF_DANGER for crash-causers), grouped into the Configurator's own sections.
+
 ## Verification
 Build + screenshot each new screen in the 480 sim (`./sim.sh` / capture sweep); sweep 800 to confirm
 EV_SC scaling. Encoder behavior verified on the 16S when wired.
