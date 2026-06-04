@@ -79,6 +79,32 @@ repos: [`upstream-baselines.md`](upstream-baselines.md).
 4. **Phase 0 hardware (owner):** flash `evora-tx16s` (bootloader-recoverable) once the SD reader arrives; copy `docs/sdcard/tx16s/IMAGES/splash.png` to the SD. MK3 when on hand.
 
 ## Session log
+**2026-06-03 (night 2) — native clickable simulator + home redesign + perf course-correct.**
+- **Native macOS clickable simulator stood up** (the big workflow win — iterate UI without flashing):
+  `brew install cmake sdl2`; build with `cd forks/evora-tx/build-simu-mac && CPATH="$(cc -print-resource-dir)/include:$(xcrun --show-sdk-path)/usr/include" make simu`
+  (the CPATH is REQUIRED — the datastruct codegen parses headers with pip `libclang`, which otherwise
+  can't find `stdarg.h` on macOS). Launch: **`forks/evora-tx/sim-mac.command`** (double-click) — a real
+  480×272 Evora SDL window you click like the touchscreen, reusing `.native-build/sim-{sd,settings}`.
+  Python codegen deps: `pip3 install --user Pillow Jinja2 PyYAML lz4 pyelftools asciitree libclang requests`.
+  **Loop: look/layout iterates in the sim (free); speed/feel is hardware-only (flash rarely).**
+- **Perf course-correct:** the earlier flat-fills hurt the look for marginal gain (felt-slowness is
+  animation *duration* + the 30ms refresh cap, not fill throughput) — **reverted to gradients**. Kept
+  **DMA2D** (correct, no artifacts) + dropped `LV_DISP_DEF_REFR_PERIOD` 30→**16 (~60fps)** + shortened
+  the menu slide (90/80ms) + **build-once menu** (no per-tap construction).
+- **Home redesign (owner, live in the sim):** two-tone **EVO**(white)+**RA**(amber) wordmark
+  ("Evolution Radio" / dog Evora); **MENU** grab-tab wider+shorter (no chevron); New/Edit CTAs removed
+  (they're in the menu); standby dot **amber** + "WAITING FOR HELI" (green implied connected); bottom
+  row is now **status** (INPUT · TELEMETRY · VERSION), not redundant nav; everything centered + dog as a
+  centered backdrop. Renders: `mockups/gallery/sim-home-v{2,3}.png`.
+- **TODO (next session):**
+  1. **Input monitor** — make the home INPUT cell tap to a LIVE stick/pot/switch screen (crosshairs +
+     named switches/pots, real values). APIs: `getValue(MIXSRC_FIRST_STICK/POT/SWITCH + i)`,
+     `getSwitchName()`, `getSourceString()`, `switchGetMaxSwitches()`; live via a `checkEvents()` override.
+     (Header decls were started + reverted to keep the tree clean — redo fresh.)
+  2. **Flight dashboard** — rebuild the connected/flight screen to copy the **VBar flight menu** (owner
+     is sending the reference). It's what shows the instant telemetry streams (`TELEMETRY_STREAMING()`).
+  3. Minor: the `RA` colour on the MENU tab; rebalance the now-open home middle.
+
 **2026-06-03 (perf) — DMA2D acceleration + render simplification (fast UI pass).**
 - Owner flagged sluggish tile-drag + menu-open. Root cause: LVGL was software-rendering
   gradients/alpha on every frame, and the menu rebuilt ~80 objects on each open. The
