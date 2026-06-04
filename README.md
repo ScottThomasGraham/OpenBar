@@ -80,7 +80,22 @@ See [`docs/superpowers/specs/2026-06-01-evora-architecture-design.md`](docs/supe
 
 Evora exists only because of the open-source work of the **[Rotorflight](https://github.com/rotorflight)**, **[EdgeTX](https://github.com/edgetx)**, and **[ExpressLRS](https://github.com/ExpressLRS)** communities. This project adapts and integrates their work; full credit and licensing obligations to those projects are respected.
 
-## Status (2026-06-02)
+## Build & flash
+
+The current flashable firmware sits **at the repo root**: **[`evora-tx16s.bin`](evora-tx16s.bin)**
+(TX16S / MK2). Flash via the EdgeTX bootloader (hold a horizontal trim toward centre at power-on, or
+drop it in the SD `/FIRMWARE` folder), or USB-DFU — your RX bind + models are preserved.
+
+Rebuild from source (native arm64, no x86 emulation), from `forks/evora-tx/`:
+
+```
+./build-evora-tx.sh     # -> build-tx16s-native/arm-none-eabi/firmware.bin
+./sim.sh                # fast UI loop in the EdgeTX simulator -> sim-shot.png
+```
+
+The root `evora-tx16s.bin` is a copy of the latest build output, kept there so it's always easy to find.
+
+## Status (2026-06-03)
 
 **The complete bespoke Evora UI is built and running in real firmware on BOTH radios**
 (verified in arm64 EdgeTX simulators; CI matrix green for `tx16s` + `tx16smk3`). Evora replaces
@@ -95,8 +110,13 @@ EdgeTX's entire GUI with its own, on EdgeTX's untouched engine.
   font + image sets. Each firmware is native-crisp on its own screen.
 - **"Aerospace instrument" identity:** dog-silhouette logo, boot splash, custom **Rajdhani + Barlow**
   fonts (LVGL), circular `lv_arc` headspeed gauge, gradient cards, amber/green accents.
-- **Two-state home** (idle ↔ flight dashboard), **destination screens** (Helicopters / System / Bind /
-  Tools), EdgeTX topbar/menu fully removed.
+- **Two-state home** (idle ↔ flight dashboard) with a **VBar-style sectioned right-side menu** — a
+  slide-out (MODEL · TUNING · MONITOR · RADIO · TOOLS) of icon+label rows, context-gated, with
+  progressive-disclosure `expert` markers. EdgeTX topbar/menu fully removed.
+- **Three-layer model UX:** **New model** (wizard + erase-&-start-fresh) · **Edit model** (set-once
+  geometry by discipline — main rotor / tail / ESC) · **Tuning** (the feel layer — per-component PID +
+  stick feel + governor, tap-to-adjust) · gated **Pro** = the full Rotorflight Configurator surface.
+  Destination screens: Helicopters / System / Bind / Tools.
 - **13-step New Heli Setup wizard** — the real flow, MOTOR-safe, verify-every-step, with guiding
   diagrams **drawn from LVGL primitives** (servo-pulse, board orientation, swash, rotor, live
   swash-check / collective / tail, governor ESC/Rotorflight/Nitro, governor settings, ready). Built
@@ -104,7 +124,9 @@ EdgeTX's entire GUI with its own, on EdgeTX's untouched engine.
 - **The radio is a fixed universal controller** — no radio settings; all flight config lives in
   Rotorflight, written over the link via MSP (`docs/design/radio-is-a-controller.md`).
 
-Visual language = **"aerospace instrument, blacked-out."** Mockups: [`docs/mockups/`](docs/mockups/);
+Visual language = **"aerospace instrument, blacked-out"** (navy + amber + teal, Rajdhani/Barlow). A
+Brutalist re-skin (black + lime) was explored and **shelved** — preserved on `Evora-TX@brutalist-theme`.
+Mockups + firmware renders: [`docs/mockups/gallery/`](docs/mockups/gallery/) (see its `README.md`);
 real-firmware overviews: [`docs/emulator/overview-tx16s.png`](docs/emulator/) + `overview-mk3.png`.
 
 **Next (needs the heli on the bench):** wire the wizard's real **MSP writes** + live Rotorflight/ELRS

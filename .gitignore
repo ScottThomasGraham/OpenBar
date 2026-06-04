@@ -15,5 +15,9 @@ Thumbs.db
 # Research scratch clones
 /.research/
 
+# scratch / intermediate render captures (leading underscore = throwaway)
+_*.png
+/docs/mockups/gallery/r-*.png
+
 # pristine upstream reference checkouts (fetch with references/fetch-references.sh)
 /upstream/
